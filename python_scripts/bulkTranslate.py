@@ -7,6 +7,9 @@ import sys
 import re
 import datetime
 
+sys.path.append('~/Documents/ManHatTan/python_scripts/')
+from test_bulkTranslate import *
+
 def detect_src(self, N : int = 0):
     """Auto-detect languages in wordset given and arrange them by occurrences
     Parameters:
@@ -66,6 +69,13 @@ def format_src(src : pd.Series) -> (str, pd.Series):
 
     return src
 
+def split_dest(dest_str : str) -> list:
+    """Split translated chunk by line and clean numbers and blank spaces"""
+    dest_list = re.split('\n', dest_str)
+    nonum = [re.sub(r'[0-9]', '', t) for t in dest_list]
+    dest_clean = [re.sub(r'\s', '', e) for e in nonum]
+    return dest_clean
+
 def bulk_translate(src : pd.Series, dest_lang : str) -> pd.Series:
     """Send single src_str for bulk translation request to server,
     split retrieved dest_str into its entries using RegEx.
@@ -73,23 +83,13 @@ def bulk_translate(src : pd.Series, dest_lang : str) -> pd.Series:
 
     dest_str = translator.translate(src.to_string(), src=src.name, dest=dest_lang).text
 
-    dest_list = re.split(pattern = '\n\d+', string = dest_str)
-    dest_list[0] = dest_list[0][2:]
+    dest_clean = split_dest(dest_str)
 
-    ### Some translated entries follow the pattern '\n\w \d+' instead of '\n\d+', loop over them
-    for i, w in enumerate(dest_list):
-        if('\n' in w):
-            subsplit = re.split(pattern = '\n', string = w)
-            subsplit[1] = re.split('\w\d', subsplit[1])[0]
-            dest_list[i] = subsplit[0]
-            dest_list.insert(i+1, subsplit[1])
+    dest = pd.Series(dest_clean, name = dest_lang)
 
-    dest = pd.Series(dest_list, name = dest_lang)
-    if len(src) == len(dest):
-        print('Attempted translation of %i entries. Check DB for mistranslations.' %len(dest))
-        return dest
-    else:
-        print('bulk_translate error: len(dest) does not match len(src)')
+    print('Attempted translation of %i entries. Check DB for mistranslations.' %len(dest))
+    return dest
+
 
 def make_dicdf(src : pd.Series, dest : pd.Series, cadera_path : str) -> pd.DataFrame:
     """Assemble src and dest pd.Series into dictionary df
@@ -107,7 +107,7 @@ def write_gota(cadera_path : str, dicdf : pd.DataFrame):
     pathname = os.path.splitext(os.path.abspath(cadera_path))[0]
     path, filename = os.path.split(pathname)
     dirPath, _ = os.path.split(path)
-    fpath = os.path.join(dirPath, 'GOTAs', filename+'.cder')
+    fpath = os.path.join(dirPath, 'GOTAs', filename+'.got')
     dicdf.to_csv(fpath)
 
     print('Created GOTA file %s' %fpath)
@@ -123,21 +123,23 @@ def check_language(lang : str, meta_lang : str):
         print(langKeys)
         exit
 
-####### MAIN ######
 
-cadera_path = sys.argv[1]
-dest_lang = sys.argv[2]
-src_lang = sys.argv[3]
+######### Main #########
+if __name__ == "__main__":
+    cadera_path = sys.argv[1]
+    dest_lang = sys.argv[2]
+    src_lang = sys.argv[3]
 
-check_language(dest_lang, 'dest')
-check_language(src_lang, 'src')
+    check_language(dest_lang, 'dest')
+    check_language(src_lang, 'src')
 
-src = load_blue_words(cadera_path, src_lang)
-src = format_src(src)
+    src = load_blue_words(cadera_path, src_lang)
+    src = format_src(src)    # Remove non-alphanumeric characters
+    src = test_long_sentence(src)   # Seek & destroy entries longer than 3 words
 
-dest = bulk_translate(src, dest_lang)
+    dest = bulk_translate(src, dest_lang)
 
-dicDf = make_dicdf(src, dest, cadera_path)
+    dicDf = make_dicdf(src, dest, cadera_path)
 
-write_gota(cadera_path, dicDf)
-#transl.detect_fails()
+    write_gota(cadera_path, dicDf)
+    #transl.detect_fails()
