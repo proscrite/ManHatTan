@@ -1,6 +1,6 @@
 #!/bin/bash
 dialog="/Users/pabloherrero/Documents/ManHatTan/applescripts/usingBundle.scpt"
-pyupdate="/Users/pabloherrero/Documents/ManHatTan/python_scripts/updatePerformance.py"
+pyupdate="/Users/pabloherrero/Documents/ManHatTan/python_scripts/test_update_lipstick.py"
 selGota="/Users/pabloherrero/Documents/ManHatTan/applescripts/selectGota.scpt"
 #gota="/Users/pabloherrero/Documents/ManHatTan/GOTAs/Die_Verwandlung.got"
 gota="$(osascript $selGota 2>^1)"
@@ -15,7 +15,7 @@ while $CONTINUE; do
 
   for ((c=$rmin; c>=1; c--))
   do
-      sleep 1
+      sleep 60
     done
 
   OUTPUT="$(osascript $dialog $gota)"
