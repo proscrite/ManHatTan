@@ -1,0 +1,97 @@
+#: import FadeTransition kivy.uix.screenmanager.FadeTransition
+#: import main wotester
+
+ScreenManagement:
+    transition: FadeTransition()
+    MainScreen:
+    EditWorkoutScreen:
+
+####### Layout Outlines #############################################################
+<GridLayout>:
+    canvas.after:
+        Color:
+            rgb: 1,0,0
+        Line:
+            rectangle: self.x+1,self.y+1,self.width-1,self.height-1
+        Color:
+            rgb: 1,1,1
+
+<FloatLayout>:
+    canvas.after:
+        Color:
+            rgb: 1,0,0
+        Line:
+            rectangle: self.x+1,self.y+1,self.width-1,self.height-1
+        Color:
+            rgb: 1,1,1
+<BoxLayout>:
+    canvas.after:
+        Color:
+            rgb: 1,0,0
+        Line:
+            rectangle: self.x+1,self.y+1,self.width-1,self.height-1
+        Color:
+            rgb: 1,1,1
+#########################################################################################
+
+
+<MainScreen>:
+    name: "main"
+    FloatLayout:
+        id: test
+        canvas.before:
+            Color:
+                rgba: 0, 0, 1, .5
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        Label:
+            text: "Workout Creator"
+            pos_hint:{"x": 0, "y": .4}
+            font_size: 40
+        Label:
+            text: "Welcome"
+            pos_hint:{"x": -.4, "y": .4}
+            font_size: 20
+        Button:
+            text: "Click here"
+            color: 0,1,0,1
+            size_hint: .2, .1
+            pos_hint: {"x":.4, "y":.7}
+            on_release: root.manager.current = "editworkout"
+
+<MyGrid>:
+    rows: 1
+
+<EditWorkoutScreen>:
+    name:'editworkout'
+    on_enter: root.setupscreen()
+    FloatLayout:
+        Label:
+            text: 'Verify/Edit Workout'
+            pos: 0, 550
+            font_size: 20
+
+        ScrollView:
+            pos_hint: {"x":.160, "y":-.15}
+            GridLayout:
+                id: exercisestoverify
+                size_hint_y: None
+                size_hint_x: .80
+                orientation: "vertical"
+                height: self.minimum_height
+                row_default_height: 30
+                spacing: 0
+                cols:1
+        Button:
+            text: 'press'
+            on_press: root.addgrids()
+            size: 100,20
+            size_hint: None,None
+        Button:
+            text: 'text input text'
+            on_press: root.printtext()
+            size: 100,20
+            size_hint: None,None
+            pos: 100,100
