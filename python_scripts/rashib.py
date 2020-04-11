@@ -50,20 +50,41 @@ def classify_words_fillcolor(words: str) -> pd.DataFrame:
 
     return cadera
 
+def clean_filename(filename : str)->str:
+    """Remove automatically added "Notes from..." string from filename"""
+    filename = filename.replace(' ', '_')
+    filename = filename.replace('_-_Bloc-notes', '')
+    filename = filename.replace('_-_Notizbuch', '')
+
+    filename = filename.replace('Notes_from__', '')
+    filename = filename.replace('Notizen_aus__', '')
+
+    return filename
+
 def write_cadera(rashib : str, cadera : pd.DataFrame):
     """Convert rashib (full) basename into '.cder' extension and flush CADERA df"""
 
-    basename = os.path.splitext(os.path.abspath(rashib))[0]
+    pathname = os.path.splitext(os.path.abspath(rashib))[0]
+    path, filename = os.path.split(pathname)
+    dirPath, _ = os.path.split(path)
+    fpath = os.path.join(dirPath, 'CADERAs', filename+'.cder')
 
-    cadera.to_csv(basename + '.cder')
-    print('Created CADERA file %s' %basename + '.cder')
+    filename = clean_filename(filename)
+    fpath = os.path.join(dirPath, 'CADERAs', filename+'.cder')
+    cadera.to_csv(fpath)
+    print('Created CADERA file %s' %fpath)
+    return fpath
 
+def rashib_main(rashib):
+
+    words = load_docx(rashib)
+
+    cadera = classify_words_fillcolor(words)
+
+    cadera_path = write_cadera(rashib, cadera)
+    return cadera_path
+
+    
 ######### Main #########
-
-rashib = sys.argv[1]
-
-words = load_docx(rashib)
-
-cadera = classify_words_fillcolor(words)
-
-write_cadera(rashib, cadera)
+if __name__ == "__main__":
+    rashib_main(sys.argv[1])

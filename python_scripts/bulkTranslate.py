@@ -60,7 +60,8 @@ def format_src(src : pd.Series) -> (str, pd.Series):
     src : pd.Series
         Formatted source series
     """
-    src_str = re.sub(pattern = '[\W_](?<![\n\s])', repl='', string=src.to_string())
+    src_str = re.sub(pattern = '[\W_](?<![\n\s])', repl='', string=src.to_string()) # Remove tabs
+    src_str = re.sub(r'[,.;:"]', '', src_str)  #Remove ortographic symbols
 
     ### Remove also index number from Series
     src_list = re.split(pattern = '\n\d+\s+', string = src_str)
@@ -72,8 +73,8 @@ def format_src(src : pd.Series) -> (str, pd.Series):
 def split_dest(dest_str : str) -> list:
     """Split translated chunk by line and clean numbers and blank spaces"""
     dest_list = re.split('\n', dest_str)
-    nonum = [re.sub(r'[0-9]', '', t) for t in dest_list]
-    dest_clean = [re.sub(r'\s', '', e) for e in nonum]
+    nonum = [re.sub(r'[0-9,.;:"]', '', t) for t in dest_list]  # Remove numbers and punctuation symbols
+    dest_clean = [e.strip() for e in nonum]  # Strip from whitespaces at beginning & end of string
     return dest_clean
 
 def bulk_translate(src : pd.Series, dest_lang : str) -> pd.Series:
@@ -98,7 +99,9 @@ def make_dicdf(src : pd.Series, dest : pd.Series, cadera_path : str) -> pd.DataF
     dicdf = pd.DataFrame([src, dest]).T
     dicdf.name = os.path.splitext(os.path.basename(cadera_path))[0]
 
-    today = datetime.datetime.today()
+    #today = datetime.datetime.today()
+    today = int(datetime.datetime.timestamp(datetime.datetime.today())) # Correct in init_lipstick.py
+
     dicdf['creation_time'] = today
     return dicdf
 
@@ -111,6 +114,7 @@ def write_gota(cadera_path : str, dicdf : pd.DataFrame):
     dicdf.to_csv(fpath)
 
     print('Created GOTA file %s' %fpath)
+    return fpath
 
 def check_language(lang : str, meta_lang : str):
     """Check whether given dest and src languages are valid"""
@@ -123,13 +127,7 @@ def check_language(lang : str, meta_lang : str):
         print(langKeys)
         exit
 
-
-######### Main #########
-if __name__ == "__main__":
-    cadera_path = sys.argv[1]
-    dest_lang = sys.argv[2]
-    src_lang = sys.argv[3]
-
+def bulkTranslate_main(cadera_path : str, dest_lang : str, src_lang : str):
     check_language(dest_lang, 'dest')
     check_language(src_lang, 'src')
 
@@ -139,7 +137,17 @@ if __name__ == "__main__":
 
     dest = bulk_translate(src, dest_lang)
 
+    assert len(src) == len(dest), 'bulk_translate error: len(dest) does not match len(src)'
     dicDf = make_dicdf(src, dest, cadera_path)
 
-    write_gota(cadera_path, dicDf)
+    gota_path = write_gota(cadera_path, dicDf)
+    return gota_path
+
+######### Main #########
+if __name__ == "__main__":
+    cadera_path = sys.argv[1]
+    dest_lang = sys.argv[2]
+    src_lang = sys.argv[3]
+
+    bulkTranslate_main(cadera_path, dest_lang, src_lan)
     #transl.detect_fails()

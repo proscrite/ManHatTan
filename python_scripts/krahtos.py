@@ -118,16 +118,21 @@ def write_cadera(krahtos : str, cadera : pd.DataFrame):
     fpath = os.path.join(dirPath, 'CADERAs', filename+'.cder')
     cadera.to_csv(fpath)
     print('Created CADERA file %s' %fpath)
+    return fpath
 
+def krahtos_main(krahtos):
+    #krahtos = sys.argv[1]
 
-######### Main #########
-if __name__ == "__main__":
-    krahtos = sys.argv[1]
-
+    print('Loading file ', krahtos)
     soup = load_html(krahtos)
 
     mWords, labels = find_words_headings(soup = soup, DEBUG = False)
 
     cadera = make_cadera(mWords, labels)
 
-    write_cadera(krahtos, cadera)
+    cadera_path = write_cadera(krahtos, cadera)
+    return cadera_path
+
+######### Main #########
+if __name__ == "__main__":
+    krahtos_main(sys.argv[1])
