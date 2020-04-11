@@ -11,7 +11,7 @@ from kivy.clock import Clock
 
 from time import sleep
 import sys
-#sys.path.append('../python_scripts/')
+sys.path.append('../python_scripts/')
 sys.path.append('../ML')
 
 from update_lipstick import *
@@ -61,6 +61,8 @@ def train_model():
     model = SpacedRepetitionModel(method='hlr', omit_h_term=False, )
     model.train(trainset)
 
+    print('HLR Model updated, sorting by recall probability')
+
     prob = pd.Series({i.index: model.predict(i)[0] for i in trainset})
     lipstick.p_pred.update(prob)
 
@@ -73,6 +75,7 @@ def update_all(word, perform):
     print(lipstick.loc[word])
     update_performance(lipstick, word, perform)
     update_timedelta(lipstick, word)
+    print('Performance and timedelta updated')
     lipstick.to_csv(lipstick_path, index=False)
     train_model()
 
@@ -112,7 +115,8 @@ class MultipleAnswer(App):
     def load_question(self, question : str):
         lb = Label(text='Translate: %s'%question, size_hint=(1,1), )
         #span.add_widget(lb)
-        self.giveup = Label(text='')
+        self.giveup = Button(text='Exit', background_color=(0.6, 0.5, 0.5, 1))
+        self.giveup.bind(on_release=self.exit)
         self.grid.add_widget(lb)
         self.grid.add_widget(self.giveup)
 
@@ -121,9 +125,13 @@ class MultipleAnswer(App):
             op = Option(el, answers[el])
             self.grid.add_widget(op)
 
+    def exit(self, instance):
+        print("break")
+        App.stop(self)
+
     def on_close(self):
         self.giveup.text='Giving up in 2s'
-        Clock.schedule_interval(self.clock_callback,2)
+        Clock.schedule_interval(self.clock_callback, 2)
         return self.giveup
 
     def clock_callback(self, dt):
@@ -134,20 +142,22 @@ class MultipleAnswer(App):
         #self.box.add_widget(self.grid)
         return self.grid
 
-lipstick_path = '/Users/pabloherrero/Documents/ManHatTan/LIPSTICK/Die_Verwandlung.lip'
-lipstick = pd.read_csv(lipstick_path)
-lipstick.set_index('word_id', inplace=True, drop=False)
+if __name__ == "__main__":
+    lipstick_path = sys.argv[1]
+    #lipstick_path = '/Users/pabloherrero/Documents/ManHatTan/LIPSTICK/Die_Verwandlung.lip'
+    lipstick = pd.read_csv(lipstick_path)
+    lipstick.set_index('word_id', inplace=True, drop=False)
 
-qu, answ = set_question(lipstick_path)
-#print(lipstick.loc[qu])
+    qu, answ = set_question(lipstick_path)
+    #print(lipstick.loc[qu])
 
-opts = rnd_options(lipstick_path)
-opts[answ] = True
-shufOpts = shuffle_dic(opts)
+    opts = rnd_options(lipstick_path)
+    opts[answ] = True
+    shufOpts = shuffle_dic(opts)
 
-MA = MultipleAnswer()
-MA.load_question(qu)
-MA.load_option(shufOpts)
+    MA = MultipleAnswer()
+    MA.load_question(qu)
+    MA.load_option(shufOpts)
 
-perf = MA.run()
-print(perf)
+    perf = MA.run()
+    print(perf)
