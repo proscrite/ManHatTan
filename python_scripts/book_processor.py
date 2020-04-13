@@ -32,6 +32,10 @@ if __name__ == "__main__":
     print("Starting automatic translation...")
     gota_path = bulkTranslate_main(cder_path, dest_lang, src_lang)
     assert '.got' in gota_path, "Wrong GOTA extension"
+
+    print('Initializing word bank...')
+    lippath = init_lipstick_main(gota_path)
+    print("Done! You can start practicing")
 #...
 
 # GUI select raw kindle/playbooks -> file
