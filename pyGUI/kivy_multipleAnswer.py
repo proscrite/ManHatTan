@@ -25,12 +25,13 @@ def set_question(lipstick_path : str, size_head : int = 10):
     rndi = np.random.randint(0, size_head)
     qentry = lips_head.iloc[rndi]
     question, answer = qentry.lexeme_id, qentry.word_id
-    return question, answer
+    return question, answer, rndi
 
-def rnd_options(lipstick_path : str, n_options : int = 3, size_head : int = 0):
+def rnd_options(lipstick_path : str, iquest : int, n_options : int = 3, size_head : int = 0):
     """Pick at random n_options to set as false answers from lipstick head
         (full if size_head == 0)
         Return dict options {'word' : False}"""
+    from random import sample
     if size_head == 0:
         lips_head = pd.read_csv(lipstick_path)
         size_head = len(lips_head)
@@ -38,9 +39,16 @@ def rnd_options(lipstick_path : str, n_options : int = 3, size_head : int = 0):
         lips_head = pd.read_csv(lipstick_path, nrows = size_head)
 
     options = {}
+    list_head = list(range(size_head))
+    if iquest in list_head:
+        list_head.remove(iquest)  # Remove question from possible answers (else only N-1 answers are offered)
+    else:
+        print('iquest:', iquest)#, lips_head.iloc[iquest].word_id)
+
+    rndi = sample(list_head, n_options)
     for i in range(n_options):
-        rndi = np.random.randint(0, size_head)
-        rndOp = lips_head.iloc[rndi].word_id
+        rndOp = lips_head.iloc[rndi[i]].word_id
+        print(rndOp)
         options[rndOp] = False
     return options
 
@@ -78,6 +86,7 @@ def update_all(word, perform):
     print('Performance and timedelta updated')
     lipstick.to_csv(lipstick_path, index=False)
     train_model()
+
 
 class Option(Button):
 
@@ -148,10 +157,10 @@ if __name__ == "__main__":
     lipstick = pd.read_csv(lipstick_path)
     lipstick.set_index('word_id', inplace=True, drop=False)
 
-    qu, answ = set_question(lipstick_path)
+    qu, answ, iqu = set_question(lipstick_path, size_head=10)
     #print(lipstick.loc[qu])
 
-    opts = rnd_options(lipstick_path)
+    opts = rnd_options(lipstick_path, iquest=iqu)
     opts[answ] = True
     shufOpts = shuffle_dic(opts)
 
