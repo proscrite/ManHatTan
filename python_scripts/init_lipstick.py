@@ -50,6 +50,7 @@ def set_lip(gota : pd.DataFrame):
     lipstick['history_correct'] = ptruth
     lipstick['session_seen'] = ptruth
     lipstick['session_correct'] = ptruth
+    lipstick['p_pred'] = ptruth
     return lipstick
     # lipstick['history_seen'] = gota['seen_hist']   # Will change this in gotas     # legacy: to retrieve performance when using GOTA as DB
     # lipstick['history_correct'] = gota['right_hist'].apply(lambda r : int(r))
@@ -79,4 +80,4 @@ def init_lipstick_main(gota_path : str):
 ######### Main #########
 if __name__ == "__main__":
     gota_path = sys.argv[1]
-    init_lipstick(gota_path)
+    init_lipstick_main(gota_path)
