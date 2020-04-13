@@ -1,10 +1,9 @@
 #!/bin/bash
 
 modality="/Users/pabloherrero/Documents/ManHatTan/pyGUI/kivy_multipleAnswer.py"
-selGota="/Users/pabloherrero/Documents/ManHatTan/applescripts/selectGota.scpt"
-lips="/Users/pabloherrero/Documents/ManHatTan/LIPSTICK/Die_Verwandlung.lip"
-#gota="$(osascript $selGota 2>^1)"
+selLip="/Users/pabloherrero/Documents/ManHatTan/pyGUI/kivy_select_book.py"
 
+lips="$(python $selLip 2>^1)"
 echo "Practicing vocabulary from book $lips"
 
 min=$((24 * 60))
@@ -16,7 +15,7 @@ CONTINUE=true
 while $CONTINUE; do
   for ((c=$rmin; c>=1; c--))
   do
-      sleep 60
+      sleep 1
     done
 
   BREAK="$(python $modality $lips)"
