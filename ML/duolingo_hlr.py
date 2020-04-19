@@ -225,7 +225,7 @@ def read_data(input_file, method, omit_bias=False, omit_lexemes=False, max_lines
         t = float(row['delta'])/(60*60*24)  # convert time delta to days
         h = hclip(-t/(math.log(p, 2)))
         lang = '%s->%s' % (row['ui_language'], row['learning_language'])
-        lexeme_id = row['lexeme_id']
+        lexeme_id = row['word_ll']
         lexeme_string = row['lexeme_string']
         timestamp = int(row['timestamp'])
         user_id = row['user_id']
