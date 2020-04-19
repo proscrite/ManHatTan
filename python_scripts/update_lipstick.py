@@ -10,10 +10,11 @@ sys.path.append('../ML')
 from duolingo_hlr import *
 
 def update_performance(lipstick : pd.DataFrame, iw : str, perf : float):
-    """Update times the entry iw was practice and the performance"""
+    """Update times the entry iw was practiced and the performance
+        iw is the index column of lipstick, can be word_ul, word_ll, or a number"""
     lipstick.loc[iw, 'history_seen'] += 1
     lipstick.loc[iw, 'history_correct']+= perf
-    lipstick.loc[iw, 'p_recall'] = lipstick.loc[iw, 'history_seen'] / lipstick.loc[iw, 'history_correct']
+    lipstick.loc[iw, 'p_recall'] = lipstick.loc[iw, 'history_correct'] / lipstick.loc[iw, 'history_seen']
     return lipstick
 
 def update_timedelta(lipstick : pd.DataFrame, iw : str):

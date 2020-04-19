@@ -15,8 +15,8 @@ def set_lip(gota : pd.DataFrame):
         user_id : user name
         learning_language: target language
         ui_language: user reference language
-        lexeme_id: word in target language, lexeme in the future?
-        word_id: word in reference language
+        word_ll: word in learning (target) language, lexeme in the future?
+        word_ul: word in user (reference) language
         lexeme_string: lexeme tag with grammatical/syntactical information, not implemented yet
         history_seen: times the word has been practiced from initialization
         history_correct: times the translation has been correctly recalled from initialization
@@ -43,8 +43,8 @@ def set_lip(gota : pd.DataFrame):
     lipstick['user_id'] = 'pablo'  # Will be customizable later
     lipstick['learning_language'] = lear_lang
     lipstick['ui_language'] = ui_lang
-    lipstick['lexeme_id'] = gota[lear_lang]
-    lipstick['word_id'] = gota[ui_lang]
+    lipstick['word_ll'] = gota[lear_lang]
+    lipstick['word_ul'] = gota[ui_lang]
     lipstick['lexeme_string'] = 'lernt/lernen<vblex><pri><p3><sg>'  # Just to complete the column for now
     lipstick['history_seen'] = ptruth
     lipstick['history_correct'] = ptruth

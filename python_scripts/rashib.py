@@ -84,7 +84,7 @@ def rashib_main(rashib):
     cadera_path = write_cadera(rashib, cadera)
     return cadera_path
 
-    
+
 ######### Main #########
 if __name__ == "__main__":
     rashib_main(sys.argv[1])
