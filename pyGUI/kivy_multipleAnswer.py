@@ -4,8 +4,10 @@ from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.widget import Widget
+from kivy.uix.popup import Popup
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.textinput import TextInput
 
 from kivy.clock import Clock
 
@@ -16,22 +18,36 @@ sys.path.append('../ML')
 
 from update_lipstick import *
 from duolingo_hlr import *
+from add_correctButton import *
 
 def set_question(lipstick_path : str, size_head : int = 10):
     """Read lipstick head (least practiced words) and select a random question and translation
-        size_head : number of options to shuffle from"""
+        size_head : number of options to shuffle from
+        return:
+          word_ll : word in learning language from random head entry
+          word_ul : word in user language from random head entry
+          rndi : index number from random entry (to avoid option repetition in MA)
+    """
     lips_head = pd.read_csv(lipstick_path, nrows = size_head)
 
     rndi = np.random.randint(0, size_head)
     qentry = lips_head.iloc[rndi]
-    question, answer = qentry.lexeme_id, qentry.word_id
-    return question, answer, rndi
+    word_ll, word_ul = qentry.word_ll, qentry.word_ul
+    return word_ll, word_ul, rndi
 
-def rnd_options(lipstick_path : str, iquest : int, n_options : int = 3, size_head : int = 0):
+def rnd_options(lipstick_path : str, iquest : int, modality : str, n_options : int = 3, size_head : int = 0):
     """Pick at random n_options to set as false answers from lipstick head
         (full if size_head == 0)
+        modality :
+            'dt' for Direct Translation (Learning -> User)
+            'rt' for Reverse Translation (User -> Learning)
         Return dict options {'word' : False}"""
     from random import sample
+
+    if modality == 'dt': word_lang = 'word_ul'
+    elif modality == 'rt': word_lang = 'word_ll'
+    else: print('Incorrect modality in rnd_options function')
+
     if size_head == 0:
         lips_head = pd.read_csv(lipstick_path)
         size_head = len(lips_head)
@@ -47,7 +63,7 @@ def rnd_options(lipstick_path : str, iquest : int, n_options : int = 3, size_hea
 
     rndi = sample(list_head, n_options)
     for i in range(n_options):
-        rndOp = lips_head.iloc[rndi[i]].word_id
+        rndOp = lips_head.iloc[rndi[i]][word_lang]
         print(rndOp)
         options[rndOp] = False
     return options
@@ -61,7 +77,7 @@ def shuffle_dic(opts : dict):
     shufOpt = OrderedDict(b)
     return  shufOpt
 
-def train_model():
+def train_model(lipstick : pd.DataFrame, lipstick_path : str):
     trainset, testset = read_data(lipstick_path, method='hlr', omit_lexemes=False)
 
     trainset += testset # Ignore the separation for the update
@@ -77,18 +93,18 @@ def train_model():
     lipstick.sort_values('p_recall', inplace=True)
     lipstick.to_csv(lipstick_path, index=False)
 
-def update_all(word, perform):
+def update_all(lipstick : pd.DataFrame, lipstick_path : str, word : str, perform):
     """Call all update functions and train hlr model"""
 
-    print(lipstick.loc[word])
     update_performance(lipstick, word, perform)
     update_timedelta(lipstick, word)
+
     print('Performance and timedelta updated')
+    print(lipstick.loc[word])
     lipstick.to_csv(lipstick_path, index=False)
-    train_model()
+    train_model(lipstick, lipstick_path)
 
-
-class Option(Button):
+class EachOption(Button):
 
     def __init__(self, text, val):
         self.text : str = text
@@ -109,36 +125,47 @@ class Option(Button):
             self.background_color = (1, 0,0, 1)
             self.perf = 0
         print('Performance: ', self.perf)
-        update_all(self.iw, self.perf)
+        update_all(self.app.lipstick, self.app.lippath, self.iw, self.perf)
         self.app.on_close()
         return self.perf
 
-
 class MultipleAnswer(App):
 
-    def __init__(self):
+    def __init__(self, lipstick : pd.DataFrame, lippath : str):
         App.__init__(self)
+        self.lipstick = lipstick
+        self.lippath = lippath
         #self.box = BoxLayout(orientation = 'vertical') # Used this to nest grid into box
         self.grid = GridLayout(cols=2)
 
     def load_question(self, question : str):
         lb = Label(text='Translate: %s'%question, size_hint=(1,1), )
         #span.add_widget(lb)
-        self.giveup = Button(text='Exit', background_color=(0.6, 0.5, 0.5, 1))
-        self.giveup.bind(on_release=self.exit)
         self.grid.add_widget(lb)
-        self.grid.add_widget(self.giveup)
 
-    def load_option(self, answers: dict):
+    def load_options(self, question : str, answer : str, modality : str):
+        self.optMenu = GridLayout(cols=2)
+        self.giveup = Button(text='Exit', background_color=(0.6, 0.5, 0.5, 1))
+        if modality == 'dt': correction = CorrectionDialog(question, answer)
+        elif modality == 'rt': correction = CorrectionDialog(answer, question)
+
+        self.giveup.bind(on_release=self.exit)
+
+        self.optMenu.add_widget(self.giveup)
+        self.optMenu.add_widget(correction)
+
+        self.grid.add_widget(self.optMenu)
+
+    def load_answers(self, answers: dict):
         for el in answers:
-            op = Option(el, answers[el])
+            op = EachOption(el, answers[el])
             self.grid.add_widget(op)
 
     def exit(self, instance):
         print("break")
         App.stop(self)
 
-    def on_close(self):
+    def on_close(self, *args):
         self.giveup.text='Giving up in 2s'
         Clock.schedule_interval(self.clock_callback, 2)
         return self.giveup
@@ -155,7 +182,7 @@ if __name__ == "__main__":
     lipstick_path = sys.argv[1]
     #lipstick_path = '/Users/pabloherrero/Documents/ManHatTan/LIPSTICK/Die_Verwandlung.lip'
     lipstick = pd.read_csv(lipstick_path)
-    lipstick.set_index('word_id', inplace=True, drop=False)
+    lipstick.set_index('word_ul', inplace=True, drop=False)
 
     qu, answ, iqu = set_question(lipstick_path, size_head=10)
     #print(lipstick.loc[qu])
@@ -164,9 +191,10 @@ if __name__ == "__main__":
     opts[answ] = True
     shufOpts = shuffle_dic(opts)
 
-    MA = MultipleAnswer()
+    MA = MultipleAnswer(lipstick, lipstick_path)
     MA.load_question(qu)
-    MA.load_option(shufOpts)
+    MA.load_options(qu, answ)
+    MA.load_answers(shufOpts)
 
     perf = MA.run()
     print(perf)
