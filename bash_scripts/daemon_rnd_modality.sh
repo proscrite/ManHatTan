@@ -15,7 +15,7 @@ CONTINUE=true
 while $CONTINUE; do
   for ((c=$rmin; c>=1; c--))
     do
-      sleep 1
+      sleep 60
     done
 
   rnd=$(( $RANDOM % 100 ))
