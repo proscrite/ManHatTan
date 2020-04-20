@@ -21,11 +21,11 @@ from duolingo_hlr import *
 from kivy_multipleAnswer import *
 
 class CorrectionDialog(Button):
-    def __init__(self, question, hint_answer):
+    def __init__(self, word_ll, word_ul):
         self.text : str = 'Correct translation'
         self.background_color = (0.6, 0, 1, 1)
-        self.hint_answer : str = hint_answer
-        self.question : str = question
+        self.word_ul : str = word_ul
+        self.word_ll : str = word_ll
         self.app= App.get_running_app()
         self.lipstick = self.app.lipstick
         self.lippath = self.app.lippath
@@ -33,8 +33,8 @@ class CorrectionDialog(Button):
 
     def on_press(self, *args):
         layoutPop = GridLayout(cols=1, padding = 10)
-        label = Label(text='Enter corrected translation for: '+self.question)
-        self.input = TextInput(hint_text=self.hint_answer)
+        label = Label(text='Enter corrected translation for: '+self.word_ll)
+        self.input = TextInput(hint_text=self.word_ul)
 
         enter = Button(text='Enter')
 
@@ -54,15 +54,15 @@ class CorrectionDialog(Button):
         #for k,v in dictCorrect.items():
         #    print('k: {}, v:{}'.format(k,v))
         self.lipstick.set_index('word_ll', inplace=True, drop=False)
-        self.lipstick.loc[self.question, 'word_ul'] = self.input.text
-        print(self.lipstick.loc[self.question, 'word_ul'])
+        self.lipstick.loc[self.word_ll, 'word_ul'] = self.input.text
+        print(self.lipstick.loc[self.word_ll, 'word_ul'])
 
         confirmPop = GridLayout(cols=1, padding=10)
         twoCols1 = GridLayout(cols=2)
         twoCols2 = GridLayout(cols=2)
 
         label1 = Label(text='You are about to modify the following translation:')
-        lbWordLearn = Button(text=self.question, background_color=(0, 0, 1, 1))
+        lbWordLearn = Button(text=self.word_ll, background_color=(0, 0, 1, 1))
         lbWordInput = Button(text=self.input.text, background_color=(0, 0, 1, 1))
         twoCols1.add_widget(lbWordLearn)
         twoCols1.add_widget(lbWordInput)
@@ -84,7 +84,7 @@ class CorrectionDialog(Button):
 
     def writeLip(self,instance):
         print('Now overwriting LIPSTICK with corrected word')
-        print(self.lipstick.loc[self.question])
+        print(self.lipstick.loc[self.word_ll])
         self.lipstick.to_csv(self.lippath, index=False)
         self.app.on_close()
 
