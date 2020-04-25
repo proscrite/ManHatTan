@@ -8,8 +8,8 @@ from update_lipstick import *
 from duolingo_hlr import *
 from kivy_multipleAnswer import *
 
-if __name__ == "__main__":
-    lipstick_path = sys.argv[1]
+def marte_main(lipstick_path):
+
     #lipstick_path = '/Users/pabloherrero/Documents/ManHatTan/LIPSTICK/Die_Verwandlung.lip'
     lipstick = pd.read_csv(lipstick_path)
     lipstick.set_index('word_ll', inplace=True, drop=False)
@@ -28,3 +28,6 @@ if __name__ == "__main__":
 
     perf = MA.run()
     print(perf)
+
+if __name__ == "__main__":
+    marte_main(sys.argv[1])

@@ -68,6 +68,9 @@ class WriteInput(App):
         correction = CorrectionDialog(self.question, self.answer)
         checkPop.add_widget(correction)
 
+        print('self.checkEntry: ', self.checkEntry)
+        print('self.lipstick.loc[self.word_ul, self.checkEntry] = ', self.lipstick.loc[self.word_ul, self.checkEntry])
+        print('equality condition: ', self.lipstick.loc[self.word_ul, self.checkEntry] == self.input.text )
         #self.lipstick.set_index('word_ll', inplace=True, drop=False)
         if self.lipstick.loc[self.word_ul, self.checkEntry] == self.input.text:
             print('Correct answer')
