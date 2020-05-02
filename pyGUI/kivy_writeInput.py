@@ -14,6 +14,8 @@ from functools import partial
 from time import sleep
 from copy import deepcopy
 import sys
+import unicodedata
+
 sys.path.append('../python_scripts/')
 sys.path.append('../ML')
 
@@ -21,6 +23,10 @@ from update_lipstick import *
 from duolingo_hlr import *
 from kivy_multipleAnswer import *
 from add_correctButton import CorrectionDialog
+
+def strip_accents(s):
+    return ''.join(c for c in unicodedata.normalize('NFD', s)
+                  if unicodedata.category(c) != 'Mn')
 
 class WriteInput(App):
 
@@ -68,16 +74,27 @@ class WriteInput(App):
         correction = CorrectionDialog(self.question, self.answer)
         checkPop.add_widget(correction)
 
-        print('self.checkEntry: ', self.checkEntry)
         print('self.lipstick.loc[self.word_ul, self.checkEntry] = ', self.lipstick.loc[self.word_ul, self.checkEntry])
         print('equality condition: ', self.lipstick.loc[self.word_ul, self.checkEntry] == self.input.text )
         #self.lipstick.set_index('word_ll', inplace=True, drop=False)
-        if self.lipstick.loc[self.word_ul, self.checkEntry] == self.input.text:
+        correct_answer = strip_accents((self.lipstick.loc[self.word_ul, self.checkEntry]).lower() )
+        input_answer = strip_accents(self.input.text.lower())
+
+        if correct_answer == input_answer:
             print('Correct answer')
             yes = Button(text='Correct! The translation is \n'+self.answer, size_hint=(2,1),
               background_color=(0, 1, 0, 1))
             checkPop.add_widget(yes)
             self.perf = 1
+
+        elif double_check_input(correct_answer, input_answer)[0]:
+            print('Correct answer')
+            baseAnsw = double_check_input(correct_answer, input_answer)[1]
+            yes = Button(text='Correct! The baseform translation is \n'+baseAnsw, size_hint=(2,1),
+              background_color=(0, 1, 0, 1))
+            checkPop.add_widget(yes)
+            self.perf = 1
+
         else:
             print('Incorrect answer')
             no = Button(text=self.input.text+': Incorrect! The translation is \n'+self.answer, size_hint=(2,1),
@@ -90,6 +107,24 @@ class WriteInput(App):
 
         popChecker = Popup(content=checkPop)
         popChecker.open()
+
+    def double_check_input(answer: str, input_answer: str):
+        """"Use apertium to check lexeme root of the answer"""
+        # First extract the language of the entry
+        if self.checkEntry == 'word_ll':
+            lang = lipstick.loc[self.word_ul, 'learning_language']
+        elif self.checkEntry == 'word_ul':
+            lang = lipstick.loc[self.word_ul, 'ui_language']
+
+        anInput = apertium.analyze(lang, input_answer)
+        baseInput = anInput[0].readings[0][0].baseform
+        anAnsw = apertium.analyze(lang, answer)
+        baseAnsw = anAnsw[0].readings[0][0].baseform
+
+        if baseAnsw == baseInput:
+            return True, baseAnsw
+        else:
+            return False
 
     def on_close(self, *args):
         update_all(self.lipstick, self.lippath, self.word_ul, self.perf)
