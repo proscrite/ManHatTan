@@ -8,6 +8,7 @@ from kivy.uix.popup import Popup
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.textinput import TextInput
+from kivy.core.window import Window
 
 from kivy.clock import Clock
 
@@ -150,7 +151,6 @@ class MultipleAnswer(App):
         if modality == 'dt': correction = CorrectionDialog(question, answer)
         elif modality == 'rt': correction = CorrectionDialog(answer, question)
 
-
         self.giveup.bind(on_release=self.exit)
 
         self.optMenu.add_widget(self.giveup)
@@ -159,12 +159,23 @@ class MultipleAnswer(App):
         self.grid.add_widget(self.optMenu)
 
     def load_answers(self, answers: dict):
+        self.listOp = []
         for el in answers:
             op = EachOption(el, answers[el])
             self.grid.add_widget(op)
+            self.listOp.append(op)
+        Window.bind(on_key_down=self._on_keyboard_handler)
+
+
+    def _on_keyboard_handler(self, instance, keyboard, keycode, *args):
+        if keycode in range(30, 33):
+            print("Keyboard pressed! {}".format(keycode))
+            print('Firing option %i' %(keycode-29))
+            self.listOp[keycode - 30].on_release()
+        else:
+            print("Keyboard pressed! {}".format(keycode))
 
     def exit(self, instance):
-
         print("break: ", daemon.BREAK)
         print('Exiting')
         daemon.BREAK = False

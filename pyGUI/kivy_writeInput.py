@@ -8,12 +8,15 @@ from kivy.uix.popup import Popup
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.textinput import TextInput
+from kivy.core.window import Window
+
 from kivy.clock import Clock
 
 from functools import partial
 from time import sleep
 from copy import deepcopy
 import sys
+import apertium
 import unicodedata
 
 sys.path.append('../python_scripts/')
@@ -27,6 +30,11 @@ from add_correctButton import CorrectionDialog
 def strip_accents(s):
     return ''.join(c for c in unicodedata.normalize('NFD', s)
                   if unicodedata.category(c) != 'Mn')
+
+class FTextInput(TextInput):
+    def on_parent(self, widget, parent):
+        self.focus = True
+        self.multiline = False
 
 class WriteInput(App):
 
@@ -58,9 +66,12 @@ class WriteInput(App):
         self.grid.add_widget(lb)
         self.grid.add_widget(self.giveup)
 
-        self.input = TextInput(hint_text='Write here', size_hint=(2,1)) # Add hint button?
-
         input_callback = partial(self.checkAnswer)
+        self.text_input_focus = False
+        #self.input = TextInput(hint_text='Write here', multiline=False,
+         # on_text_validate=input_callback, focus=self.text_input_focus, size_hint=(2,1)) # Add hint button?
+        self.input = FTextInput(hint_text='Write here', multiline=False,
+          on_text_validate=input_callback)
 
         enter = Button(text='Enter', on_release=input_callback, size_hint=(0.5,1))
         self.grid.add_widget(self.input)
@@ -87,9 +98,9 @@ class WriteInput(App):
             checkPop.add_widget(yes)
             self.perf = 1
 
-        elif double_check_input(correct_answer, input_answer)[0]:
+        elif self.double_check_input(correct_answer, input_answer)[0]:
             print('Correct answer')
-            baseAnsw = double_check_input(correct_answer, input_answer)[1]
+            baseAnsw = self.double_check_input(correct_answer, input_answer)[1]
             yes = Button(text='Correct! The baseform translation is \n'+baseAnsw, size_hint=(2,1),
               background_color=(0, 1, 0, 1))
             checkPop.add_widget(yes)
@@ -104,17 +115,29 @@ class WriteInput(App):
 
         carryon = Button(text='Continue', on_release=self.on_close, size_hint=(0.5,1), background_color=(1,1,0,1))
         checkPop.add_widget(carryon)
+########### Try to add keybindings ####
 
         popChecker = Popup(content=checkPop)
         popChecker.open()
+        Window.bind(on_key_down=self._on_keyboard_handler)
 
-    def double_check_input(answer: str, input_answer: str):
+
+##### Attempt of keyboard_handler ####
+    def _on_keyboard_handler(self, instance, keyboard, keycode, *args):
+        if keycode == 40:
+            print("Keyboard pressed! {}".format(keycode))
+            self.on_close()
+        else:
+            print("Keyboard pressed! {}".format(keycode))
+
+
+    def double_check_input(self, answer: str, input_answer: str):
         """"Use apertium to check lexeme root of the answer"""
         # First extract the language of the entry
         if self.checkEntry == 'word_ll':
-            lang = lipstick.loc[self.word_ul, 'learning_language']
+            lang = self.lipstick.loc[self.word_ul, 'learning_language']
         elif self.checkEntry == 'word_ul':
-            lang = lipstick.loc[self.word_ul, 'ui_language']
+            lang = self.lipstick.loc[self.word_ul, 'ui_language']
 
         anInput = apertium.analyze(lang, input_answer)
         baseInput = anInput[0].readings[0][0].baseform
@@ -124,7 +147,7 @@ class WriteInput(App):
         if baseAnsw == baseInput:
             return True, baseAnsw
         else:
-            return False
+            return False, None
 
     def on_close(self, *args):
         update_all(self.lipstick, self.lippath, self.word_ul, self.perf)

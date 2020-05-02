@@ -5,7 +5,7 @@ import datetime
 import os
 from copy import deepcopy
 
-def set_lip(gota : pd.DataFrame, flag_lexeme = True):
+def set_lip(gota : pd.DataFrame, flag_lexeme = False):
     """Provisional simple initialization of lipstick from GOTA.
         Attrs:
         ------
@@ -58,6 +58,8 @@ def set_lip(gota : pd.DataFrame, flag_lexeme = True):
     lipstick['history_correct'] = ptruth
     lipstick['session_seen'] = ptruth
     lipstick['session_correct'] = ptruth
+    lipstick['p_pred'] = ptruth
+
 
     return lipstick
     # lipstick['history_seen'] = gota['seen_hist']   # Will change this in gotas     # legacy: to retrieve performance when using GOTA as DB
