@@ -19,6 +19,7 @@ sys.path.append('../ML')
 from update_lipstick import *
 from duolingo_hlr import *
 from add_correctButton import *
+import rnd_exercise_scheduler as daemon
 
 def set_question(lipstick_path : str, size_head : int = 10):
     """Read lipstick head (least practiced words) and select a random question and translation
@@ -149,6 +150,7 @@ class MultipleAnswer(App):
         if modality == 'dt': correction = CorrectionDialog(question, answer)
         elif modality == 'rt': correction = CorrectionDialog(answer, question)
 
+
         self.giveup.bind(on_release=self.exit)
 
         self.optMenu.add_widget(self.giveup)
@@ -162,7 +164,11 @@ class MultipleAnswer(App):
             self.grid.add_widget(op)
 
     def exit(self, instance):
-        print("break")
+
+        print("break: ", daemon.BREAK)
+        print('Exiting')
+        daemon.BREAK = False
+        print('Break changed to: ', daemon.BREAK)
         App.stop(self)
 
     def on_close(self, *args):

@@ -5,7 +5,7 @@ import datetime
 import os
 from copy import deepcopy
 
-def set_lip(gota : pd.DataFrame):
+def set_lip(gota : pd.DataFrame, flag_lexeme = True):
     """Provisional simple initialization of lipstick from GOTA.
         Attrs:
         ------
@@ -15,9 +15,9 @@ def set_lip(gota : pd.DataFrame):
         user_id : user name
         learning_language: target language
         ui_language: user reference language
-        word_ll: word in learning (target) language, lexeme in the future?
-        word_ul: word in user (reference) language
-        lexeme_string: lexeme tag with grammatical/syntactical information, not implemented yet
+        lexeme_id: word in target language, lexeme in the future?
+        word_id: word in reference language
+        lexeme_string: lexeme tag with grammatical/syntactical information
         history_seen: times the word has been practiced from initialization
         history_correct: times the translation has been correctly recalled from initialization
         session_seen: practice times in last session (not implemented)
@@ -38,6 +38,14 @@ def set_lip(gota : pd.DataFrame):
     ptruth = pd.Series(np.zeros_like(timest))  # Initialize on 0, also for seen and correct attrs.
     lipstick = pd.DataFrame({'p_recall':ptruth})
 
+    if flag_lexeme:
+        lexeme = []
+        for wd in lipstick.word_ll:
+            tagSplit = str(apertium.tag(lear_lang, wd)[0]).split('/')
+            lexeme.append(tagSplit[0] + '/' + tagSplit[1])
+    else:
+        lexeme = 'lernt/lernen<vblex><pri><p3><sg>'
+
     lipstick['timestamp'] = timest
     lipstick['delta'] = delta
     lipstick['user_id'] = 'pablo'  # Will be customizable later
@@ -45,12 +53,12 @@ def set_lip(gota : pd.DataFrame):
     lipstick['ui_language'] = ui_lang
     lipstick['word_ll'] = gota[lear_lang]
     lipstick['word_ul'] = gota[ui_lang]
-    lipstick['lexeme_string'] = 'lernt/lernen<vblex><pri><p3><sg>'  # Just to complete the column for now
+    lipstick['lexeme_string'] = lexeme
     lipstick['history_seen'] = ptruth
     lipstick['history_correct'] = ptruth
     lipstick['session_seen'] = ptruth
     lipstick['session_correct'] = ptruth
-    lipstick['p_pred'] = ptruth
+
     return lipstick
     # lipstick['history_seen'] = gota['seen_hist']   # Will change this in gotas     # legacy: to retrieve performance when using GOTA as DB
     # lipstick['history_correct'] = gota['right_hist'].apply(lambda r : int(r))
