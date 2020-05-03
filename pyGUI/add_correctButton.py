@@ -19,6 +19,8 @@ sys.path.append('../ML')
 from update_lipstick import *
 from duolingo_hlr import *
 from kivy_multipleAnswer import *
+from kivy_writeInput import FTextInput
+
 
 class CorrectionDialog(Button):
     def __init__(self, word_ll, word_ul):
@@ -34,8 +36,9 @@ class CorrectionDialog(Button):
     def on_press(self, *args):
         layoutPop = GridLayout(cols=1, padding = 10)
         label = Label(text='Enter corrected translation for: '+self.word_ll)
-        self.input = TextInput(hint_text=self.word_ul)
 
+        self.input = FTextInput(hint_text=self.word_ul, multiline=False,
+            on_text_validate=input_callback)
         enter = Button(text='Enter')
 
         enter_callback = partial(self.updateCorrectedWord)

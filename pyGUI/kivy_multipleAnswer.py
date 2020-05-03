@@ -172,8 +172,8 @@ class MultipleAnswer(App):
             print("Keyboard pressed! {}".format(keycode))
             print('Firing option %i' %(keycode-29))
             self.listOp[keycode - 30].on_release()
-        else:
-            print("Keyboard pressed! {}".format(keycode))
+        #else:
+        #    print("Keyboard pressed! {}".format(keycode))
 
     def exit(self, instance):
         print("break: ", daemon.BREAK)
