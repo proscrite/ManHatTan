@@ -16,10 +16,11 @@ from time import sleep
 import sys
 sys.path.append('../python_scripts/')
 sys.path.append('../ML')
+sys.path.append('.')
 
 from update_lipstick import *
 from duolingo_hlr import *
-from add_correctButton import *
+
 import rnd_exercise_scheduler as daemon
 
 def set_question(lipstick_path : str, size_head : int = 10):
@@ -105,6 +106,13 @@ def update_all(lipstick : pd.DataFrame, lipstick_path : str, word : str, perform
     print(lipstick.loc[word])
     lipstick.to_csv(lipstick_path, index=False)
     train_model(lipstick, lipstick_path)
+
+class FTextInput(TextInput):
+    def on_parent(self, widget, parent):
+        self.focus = True
+        self.multiline = False
+
+from add_correctButton import CorrectionDialog
 
 class EachOption(Button):
 

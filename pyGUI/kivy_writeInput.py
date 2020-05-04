@@ -24,17 +24,13 @@ sys.path.append('../ML')
 
 from update_lipstick import *
 from duolingo_hlr import *
-from kivy_multipleAnswer import *
 from add_correctButton import CorrectionDialog
+from kivy_multipleAnswer import *
 
 def strip_accents(s):
     return ''.join(c for c in unicodedata.normalize('NFD', s)
                   if unicodedata.category(c) != 'Mn')
 
-class FTextInput(TextInput):
-    def on_parent(self, widget, parent):
-        self.focus = True
-        self.multiline = False
 
 class WriteInput(App):
 
