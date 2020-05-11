@@ -67,23 +67,43 @@ def set_lip(gota : pd.DataFrame, flag_lexeme = False):
     # lipstick['session_seen'] = gota['seen_hist']   # Will change this in gotas
     # lipstick['session_correct'] = gota['right_hist'].apply(lambda r : int(r))
 
+def check_lip_exists(gota_path: str, lippath: str):
+    gota_bname = os.path.splitext(os.path.split(gota_path)[1])[0]
+    lip_bname = os.path.splitext(os.path.split(lippath)[1])[0]
+    return gota_bname == lip_bname
 
-def write_lip(gota_path : str, lipstick : pd.DataFrame):
+def add_new_gota_terms(gota: pd.DataFrame, lipstick: pd.DataFrame):
+    """Include updated terms from GOTA respecting the practiced ones already present"""
+    newLipstick = set_lip(gota)
+
+    for i,wd in zip(newLipstick.index, newLipstick.word_ll):
+        if wd not in lipstick.word_ll.values:
+            print(newLipstick.loc[i, 'word_ul'])
+            newEntries.append(i)
+            lipstick = lipstick.append(newLipstick.iloc[i])
+    return lipstick
+
+def make_lippath(gota_path : str):
     """Take basename from GOTA and write LIPSTICK file"""
     pathname = os.path.splitext(os.path.abspath(gota_path))[0]
     path, filename = os.path.split(pathname)
     dirPath, _ = os.path.split(path)
     fpath = os.path.join(dirPath, 'LIPSTICK', filename+'.lip')
-    lipstick.to_csv(fpath, index=False)
-
-    print('Created LIPSTICK file %s' %fpath)
     return fpath
 
 def init_lipstick_main(gota_path : str):
 
     gota = pd.read_csv(gota_path, index_col=0)
     lipstick = set_lip(gota)
-    lippath = write_lip(gota_path, lipstick)
+
+    lippath = make_lippath(gota_path)
+
+    if check_lip_exists(gota_path, lippath):
+        print('LIPSTICK already exists, updating with newly found entries')
+        lipstick = add_new_gota_terms(gota, lipstick)
+
+    lipstick.to_csv(lippath, index=False)
+    print('Created LIPSTICK file %s' %lippath)
 
     return lippath
 

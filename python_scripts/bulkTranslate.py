@@ -46,10 +46,10 @@ def detect_src(self, N : int = 0):
     maximum = max(ret, key=ret.get)
     return maximum, ret#[maximum]
 
-def load_blue_words(cadera_path : str, src_lang : str) -> pd.Series:
+def load_blue_words(cadera_path : str, src_lang : str, word_color: str = 'blue') -> pd.Series:
     """Load blue column pd.Series from CADERA and name it src_lang language"""
     df = pd.read_csv(cadera_path, index_col=0)
-    src = df.blue.dropna()
+    src = df[word_color].dropna()
     src.name = src_lang
 
     return src
@@ -127,11 +127,12 @@ def check_language(lang : str, meta_lang : str):
         print(langKeys)
         exit
 
-def bulkTranslate_main(cadera_path : str, dest_lang : str, src_lang : str):
+def bulkTranslate_main(cadera_path : str, word_color: str, dest_lang : str, src_lang : str):
     check_language(dest_lang, 'dest')
     check_language(src_lang, 'src')
+    print('Correct language format')
 
-    src = load_blue_words(cadera_path, src_lang)
+    src = load_blue_words(cadera_path, src_lang, word_color)
     src = format_src(src)    # Remove non-alphanumeric characters
     src = test_long_sentence(src)   # Seek & destroy entries longer than 3 words
 
@@ -149,5 +150,5 @@ if __name__ == "__main__":
     dest_lang = sys.argv[2]
     src_lang = sys.argv[3]
 
-    bulkTranslate_main(cadera_path, dest_lang, src_lan)
+    bulkTranslate_main(cadera_path, dest_lang, src_lang)
     #transl.detect_fails()
