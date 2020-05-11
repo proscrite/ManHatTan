@@ -35,7 +35,9 @@ from collections import OrderedDict
 import numpy as np
 import pandas as pd
 from googletrans import Translator
-
+import sys
+sys.path.append('../python_scripts/')
+from add_dbEntry import AddNewEntry
 import datetime
 from datetime import date
 
@@ -256,9 +258,7 @@ class TableData(RecycleView):
             is_even = i % 2 == 0
             row_vals = ord_dict.values()
             cols = ord_dict.keys()
-            #is_editable = cols in editable_cols
-            #print('cols: ', cols)
-            #print('row_vals: ', row_vals, '\n ord_dict: ', ord_dict, ' \nis_editable = ', is_editable)
+
             for key, text in zip(cols, row_vals):
                 is_editable = key in editable_cols
                 self.data.append({'text': text, 'is_even': is_even, 'is_editable': is_editable})
@@ -294,7 +294,7 @@ class DataframePanel(BoxLayout):
 
     def populate_data(self, df):
         self.df_orig = df
-        self.original_columns = self.df_orig.columns[:]
+        self.original_columns = self.df_orig.columns[:2]
         self.current_columns = self.df_orig.columns[:]
         self._disabled = []
         self.sort_key = None
@@ -381,7 +381,7 @@ class DfguiWidget(TabbedPanel):
         super(DfguiWidget, self).__init__(**kwargs)
         self.df = df
         self.panel1.populate_data(df)
-        self.panel2.populate_columns(df.columns[:])
+        self.panel2.populate_columns(df.columns)
         #self.app = App.get_running_app()
 
     # This should be changed so that the table isn't rebuilt
@@ -405,8 +405,17 @@ class ManageDB(App):
 
     def build(self):
         mainGrid = GridLayout(cols=2)
-        mainGrid.add_widget(DfguiWidget(self.lipstick))
 
+        mainGrid.add_widget(DfguiWidget(self.lipstick, size_hint_x=0.9, width=100))
+
+        opGrid = GridLayout(cols=1, size_hint_x=0.1, width=10)
+        backButton = Button(text='Back', size_hint_x=None, height=20, background_color=(0, 0,1, 1))
+        addEntry = AddNewEntry(size_hint_x=None, height=20, background_color=(0,1,0, 1))
+        delEntry = Button(text='Delete \nentry', size_hint_x=None, height=20, background_color=(1, 0,0, 1))
+
+        for b in [backButton, addEntry, delEntry]:
+            opGrid.add_widget(b)
+        mainGrid.add_widget(opGrid)
         return mainGrid
 
 
