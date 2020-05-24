@@ -33,13 +33,16 @@ import matplotlib.pyplot as plt
 
 from collections import OrderedDict
 import numpy as np
+import datetime
+from datetime import date
 import pandas as pd
+from copy import deepcopy
 from googletrans import Translator
 import sys
 sys.path.append('../python_scripts/')
 from add_dbEntry import AddNewEntry
-import datetime
-from datetime import date
+from rm_dbEntry import RemoveEntry
+
 
 Builder.load_string("""
 <HeaderCell>
@@ -196,6 +199,7 @@ class EditableLabel(Label):
                 self.remove_widget(self.textinput)
 
             return
+        self.unedited_entry = deepcopy(instance.text)
         self.textinput = t = LabelEditor(
             text = self.text[0],
             pos = self.pos,
@@ -208,6 +212,11 @@ class EditableLabel(Label):
     def on_text_validate(self, instance):
         self.text = instance.text
         self.edit = False
+        orig_entry = self.unedited_entry
+        print('unedited_entry = ', orig_entry, ', ', len(orig_entry))
+        print('edited_entry =', instance.text)
+        App.get_running_app().modify_lip(entry_before=orig_entry, edited_entry=instance.text)
+
 
     def on_text_focus(self, instance, focus):
         if focus is False:
@@ -409,7 +418,8 @@ class ManageDB(App):
         mainGrid.add_widget(DfguiWidget(self.lipstick, size_hint_x=0.9, width=100))
 
         opGrid = GridLayout(cols=1, size_hint_x=0.1, width=10)
-        backButton = Button(text='Back', size_hint_x=None, height=20, background_color=(0, 0,1, 1))
+
+        backButton = Button(text='Back', on_release=self.saveNexit, size_hint_x=None, height=20, background_color=(0, 0,1, 1))
         addEntry = AddNewEntry(size_hint_x=None, height=20, background_color=(0,1,0, 1))
         delEntry = Button(text='Delete \nentry', size_hint_x=None, height=20, background_color=(1, 0,0, 1))
 
@@ -418,14 +428,29 @@ class ManageDB(App):
         mainGrid.add_widget(opGrid)
         return mainGrid
 
+    def modify_lip(self, entry_before: str, edited_entry: str):
+        print('Modifying lipstick term:', entry_before )
+        if entry_before in self.lipstick.word_ll.values:
+            self.lipstick.set_index('word_ll', inplace=True, drop=False)
+            self.lipstick.loc[entry_before, 'word_ll'] = edited_entry
+        elif entry_before in self.lipstick.word_ul.values:
+            self.lipstick.set_index('word_ul', inplace=True, drop=False)
+            self.lipstick.loc[entry_before, 'word_ul'] = edited_entry
+        else:
+            print('Error: edited entry is not word_ll or word_ll...')
+
+    def saveNexit(self, instance):
+        self.lipstick.to_csv(self.lippath, index=False)
+        App.stop(self)
+
 
 def manageDB_main(lippath):
     MDB = ManageDB(lippath)
-
     MDB.run()
 
 if __name__ == '__main__':
 
-  lippath = '~/Documents/ManHatTan/LIPSTICK/Die_Verwandlung.lip'
+  #lippath = '~/Documents/ManHatTan/LIPSTICK/Die_Verwandlung.lip'
+  lippath = sys.argv[1]
   # For testing
   manageDB_main(lippath)

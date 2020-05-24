@@ -31,6 +31,7 @@ def classify_words_fillcolor(words: str) -> pd.DataFrame:
     gold = []
     blue = []
     orange = []
+    green = []
 
     for word in words:
         for rPr in word.findall(tag_rPr):
@@ -43,10 +44,12 @@ def classify_words_fillcolor(words: str) -> pd.DataFrame:
                     orange.append(word.find(tag_t).text.lower())
                 elif hi.attrib[tag_val] == '93e3ed':
                     blue.append(word.find(tag_t).text.lower())
+                elif hi.attrib[tag_val] == 'c5e1a5':
+                    green.append(word.find(tag_t).text.lower())
 
-    print('Found %i colorfilled words' %(len(gold) + len(orange) + len(blue)))
-    cadera = pd.DataFrame([gold, blue, orange]).T
-    cadera.columns = ['gold', 'blue', 'orange']
+    print('Found %i colorfilled words' %(len(gold) + len(orange) + len(blue) + len(green) ))
+    cadera = pd.DataFrame([gold, blue, orange, green]).T
+    cadera.columns = ['gold', 'blue', 'orange', 'green']
 
     return cadera
 

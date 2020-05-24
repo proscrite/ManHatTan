@@ -101,7 +101,7 @@ class AddNewEntry(Button):
     def writeLip(self,instance):
         print('Now overwriting LIPSTICK with corrected word')
 
-        #self.lipstick.to_csv(self.lippath, index=False)
+        self.lipstick.to_csv(self.lippath, index=False)
         self.popConfirm.dismiss()
         self.popCorrect.dismiss()
 
@@ -113,7 +113,7 @@ if __name__ == "__main__":
 
     MA = AddNewEntry(lipstick, lipstick_path)
     MA.load_question(qu)
-    MA.load_options(qu, answ, modality='rt  ')
+    MA.load_options(qu, answ, modality='rt')
     MA.load_answers(shufOpts)
 
     perf = MA.run()

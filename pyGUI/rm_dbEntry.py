@@ -463,9 +463,17 @@ class RemoveEntry(App):
         super().run()
         return self.word_color
 
+def reset():
+    if not EventLoop.event_listeners:
+        window.Window = window.core_select_lib('window', window.window_impl, True)
+        Cache.print_usage()
+        for cat in Cache._categories:
+            Cache._objects[cat] = {}
+
 
 def remove_entry_main(lippath):
-    #stopTouchApp()
+    reset()
+    stopTouchApp()
     RE = RemoveEntry(lippath)
     word_rm = RE.run()
     print('Filter color =', word_rm)
@@ -473,7 +481,8 @@ def remove_entry_main(lippath):
 
 if __name__ == '__main__':
 
-    lippath = '~/Documents/ManHatTan/LIPSTICK/Il_castello_dei_destini_incrociati.lip'
+    #lippath = '~/Documents/ManHatTan/LIPSTICK/Il_castello_dei_destini_incrociati.lip'
+    lippath = sys.argv[1]
     remove_entry_main(lippath)
 
     #word_color = DFA.retrieve_word_col()
