@@ -8,6 +8,8 @@ from kivy.uix.popup import Popup
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.textinput import TextInput
+from kivy.uix.screenmanager import Screen
+
 from kivy.clock import Clock
 
 from functools import partial
@@ -22,22 +24,21 @@ from duolingo_hlr import *
 from kivy_multipleAnswer import FTextInput
 
 
-class AddNewEntry(Button):
+class AddNewEntry(Screen):
     def __init__(self, **kwargs):
-        self.text : str = 'New \nentry'
         #self.background_color = (0.6, 0, 1, 1)
         self.word_ul : str
         self.word_ll : str
         self.app= App.get_running_app()
         self.lipstick = self.app.lipstick
         self.lippath = self.app.lippath
-        super(Button, self).__init__(**kwargs)
+        super(Screen, self).__init__()
+        self.children[0].add_widget(self.build())
 
-    def on_press(self, *args):
-        layoutPop = GridLayout(cols=1, size_hint_y=None)
+    def build(self, *args):
+        print('entering add_dbEntry build...')
+        self.layoutPop = GridLayout(cols=1, size_hint_y=None)
         grid2 = GridLayout(cols=2, size_hint_y=None)
-
-        label = Label(text='Enter new entry: ')
 
         enter_callback = partial(self._add_entry)
 
@@ -49,14 +50,16 @@ class AddNewEntry(Button):
 
         enter.bind(on_press=enter_callback)
 
-        #layoutPop.add_widget(label)
         grid2.add_widget(self.input_ll)
         grid2.add_widget(self.input_ul)
-        layoutPop.add_widget(grid2)
+        self.layoutPop.add_widget(grid2)
 
-        layoutPop.add_widget(enter)
+        self.layoutPop.add_widget(enter)
+        return self.layoutPop
 
-        self.popCorrect = Popup(content=layoutPop, title='Enter new entry')
+    def on_press(self, *args):
+        """Deprecated, for use as popup only"""
+        self.popCorrect = Popup(content=self.layoutPop, title='Enter new entry')
         self.popCorrect.open()
 
     def _add_entry(self, instance):
@@ -101,7 +104,7 @@ class AddNewEntry(Button):
     def writeLip(self,instance):
         print('Now overwriting LIPSTICK with corrected word')
 
-        self.lipstick.to_csv(self.lippath, index=False)
+        #self.lipstick.to_csv(self.lippath, index=False)
         self.popConfirm.dismiss()
         self.popCorrect.dismiss()
 
@@ -113,7 +116,7 @@ if __name__ == "__main__":
 
     MA = AddNewEntry(lipstick, lipstick_path)
     MA.load_question(qu)
-    MA.load_options(qu, answ, modality='rt')
+    MA.load_options(qu, answ, modality='rt  ')
     MA.load_answers(shufOpts)
 
     perf = MA.run()
