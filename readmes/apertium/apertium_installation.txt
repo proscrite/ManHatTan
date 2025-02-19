@@ -1,0 +1,12 @@
+#### INSTALLING APERTIUM HOW-TO #####
+## MacOS ##
+brew install gperftools help2man pcre icu4c perl518 gawk autoconf automake pkg-config cmake wget apple-gcc42
+curl https://apertium.projectjj.com/osx/install-nightly.sh | sudo bash
+
+pip install apertium
+
+curl https://apertium.projectjj.com/osx/install-nightly-data.sh
+# Manually download if curl doesn't work
+
+chmod +x install-nightly-data.sh
+./install-nightly-data.sh apertium-eng apertium-eng-deu
