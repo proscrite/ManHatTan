@@ -1,2 +1,15 @@
-data/.DS_Store
+.DS_Store
 .ipynb_checkpoints/*.ipynb
+*.cder
+*.got
+*.lip
+*.html
+*.docx
+*.pdf
+*.sh~
+/dump_folder/*
+gui/Graphics/*
+gui/__pycache__/*.pyc
+*.pyc
+scripts/applescripts/*
+*scpt
