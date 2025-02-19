@@ -13,3 +13,4 @@ gui/__pycache__/*.pyc
 *.pyc
 scripts/applescripts/*
 *scpt
+**/.ipynb_checkpoints/*-checkpoint.ipynb
