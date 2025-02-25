@@ -1,18 +1,31 @@
 from kivy.app import App
 from kivy.uix.image import Image
 from kivy.graphics.texture import Texture
+from kivy.core.image import Image as CoreImage
 
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.graphics import Color, RoundedRectangle
 from kivy.uix.gridlayout import GridLayout
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.floatlayout import FloatLayout
 from kivy.core.window import Window
 from kivy.clock import Clock
+import logging
+from kivy.logger import Logger as kvLogger
+kvLogger.setLevel(logging.WARNING)
+logging.getLogger('matplotlib').setLevel(logging.WARNING)
 
+import threading
+import time
+import matplotlib.pyplot as plt
+import matplotlib.transforms as mtransforms
+import matplotlib.patches as mpatch
+from matplotlib.gridspec import GridSpec
+from matplotlib.patches import FancyBboxPatch
+
+from io import BytesIO
 from skimage.io import imread
-from skimage import color, img_as_ubyte
-from skimage.transform import resize
-
 
 from time import sleep
 from bidi.algorithm import get_display
@@ -26,6 +39,7 @@ sys.path.append(ROOT_PATH+'/scripts/ML_duolingo')
 from duolingo_hlr import *
 from update_lipstick import *
 from add_correctButton import CorrectionDialog
+from gui.plot_pkmn_panel import *
 
 import rnd_exercise_scheduler as daemon
 
@@ -86,86 +100,18 @@ def shuffle_dic(opts : dict):
     shufOpt = OrderedDict(b)
     return  shufOpt
 
-def train_model(lipstick : pd.DataFrame, lipstick_path : str):
-    trainset, testset = read_data(lipstick_path, method='hlr', omit_lexemes=False)
-
-    trainset += testset # Ignore the separation for the update
-
-    model = SpacedRepetitionModel(method='hlr', omit_h_term=False, )
-    model.train(trainset)
-
-    print('HLR Model updated, sorting by recall probability')
-
-    prob = pd.Series({i.index: model.predict(i)[0] for i in trainset})
-    lipstick.loc['p_pred'] = prob
-
-    lipstick.sort_values('p_recall', inplace=True)
-    lipstick.to_csv(lipstick_path, index=False)
-
-def update_all(lipstick : pd.DataFrame, lipstick_path : str, word : str, perform, mode = ['mdt', 'mrt', 'wdt', 'wrt']):
-    """Call all update functions and train hlr model"""
-
-    print('Calling update_all in kivy_multiAnswer')
-    update_performance(lipstick, word, perform, mode=mode)
-    update_timedelta(lipstick, word)
-
-    print('Performance and timedelta updated')
-    print(lipstick.loc[word])
-    lipstick.to_csv(lipstick_path, index=False)
-    sleep(1)
-    print('Done writing lipstick:', lipstick_path)
-    train_model(lipstick, lipstick_path)
-
-def show_pkm(nid):
-    # nid = 94
-    nid = np.random.randint(900)
-    print('NID: ', nid)
-    impath = PATH_ANIM+str(nid).zfill(3)+'.png'
-    anim = imread(impath)
-    nframe = 3
-    frame = anim[:, anim.shape[0] * nframe: anim.shape[0] * (nframe+1) , :]
-
-    return frame
-
-def image_to_texture(frame):
-    """
-    Convert a NumPy array (frame) to a Kivy Texture using skimage.
-    """
-    # Ensure the frame is in RGBA format
-    if frame.shape[2] == 3:  # If the image has 3 channels (RGB)
-        alpha_channel = np.ones((frame.shape[0], frame.shape[1], 1), dtype=np.uint8) * 255  # Fully opaque
-        frame_rgba = np.concatenate((frame, alpha_channel), axis=-1)
-    elif frame.shape[2] == 4:  # If the image has an alpha channel
-        frame_rgb = frame[:, :, :3]  # Keep only RGB channels
-        alpha_channel = np.ones((frame_rgb.shape[0], frame_rgb.shape[1], 1), dtype=np.uint8) * 255  # Fully opaque
-        frame_rgba = np.concatenate((frame_rgb, alpha_channel), axis=-1)
-        if (alpha_channel < 255).any():
-            print("The image contains transparency.")
-        else:
-            print("The alpha channel exists but does not contain transparency.")
-
-    else:
-        print('Shape: ', frame.shape[2])
-
-    upscaled_image = resize(frame_rgba, (400, 400, 4), anti_aliasing=True)
-
-    # Convert image to 8-bit unsigned integers
-    frame_ubyte = img_as_ubyte(upscaled_image)
-
-    # Create a texture and upload data
-    texture = Texture.create(size=(frame_ubyte.shape[1], frame_ubyte.shape[0]))
-    texture.blit_buffer(frame_ubyte.tobytes(), colorfmt='rgba', bufferfmt='ubyte')
-    texture.flip_vertical()
-    return texture
 
 class EachOption(Button):
     def __init__(self, text, val, rtl_flag=False):
-        super().__init__()
+        super().__init__(size_hint=(1, 0.8))
+        self.app = App.get_running_app()
 
         # Remove the default button background
         self.background_normal = ''  # Disable default background
         self.background_down = ''  # Disable pressed background
         self.background_color = (0, 0, 0, 0)  # Fully transparent
+        # self.size_hint=(1, 0.8),
+        self.pos_hint={"x": 0, "y": 0}
 
         # Add a persistent color instruction to canvas.before
         with self.canvas.before:
@@ -185,22 +131,21 @@ class EachOption(Button):
         self.text = text_displ
         self.val = val
         self.iw : str = text # Store variable for processing
+        self.word_ul = self.app.word_ul
         self.font_name = FONT_HEB  # Replace with your font path
         self.font_size = 40
         self.bold = True
-        self.app = App.get_running_app()
+        self.app_start_time = self.app.start_time
+
 
     def update_rect(self, *args):
         """Update the size and position of the rounded rectangle."""
         self.bg.size = self.size
         self.bg.pos = self.pos
 
-    def on_release(self, *args):
-        """Custom behavior on button release."""
-        self.disabled = True  # Disable the button after clicking
-        self.color = (0, 0, 0, 1)  # Set text color to black
-
-        # Update the color of the persistent color instruction
+    
+    def update_color(self):
+        """Update the color of the button immediately."""
         with self.canvas.before:
             if self.val:
                 self.color_instruction.rgba = (0, 1, 0, 0.3)  # Green
@@ -210,43 +155,71 @@ class EachOption(Button):
                 self.color_instruction.rgba = (1, 0, 0, 0.3)  # Red
                 self.text = "Incorrect! %s" % self.text
                 self.perf = 0
+        self.canvas.ask_update()  # Refresh canvas immediately
 
-        # Refresh the canvas
-        self.canvas.ask_update()
+    def on_release(self, *args):
+        """Custom behavior on button release."""
+        self.disabled = True  # Disable the button after clicking
 
-        print('Performance:', self.perf)
-        print('Mode: ', 'm'+self.app.modality)
-        update_all(self.app.lipstick, self.app.lippath, self.iw, self.perf, mode='m'+self.app.modality)
+        # Instantly update the color
+        self.update_color()
+        elapsed_time = time.time() - self.app_start_time
+        self.speed = 1/elapsed_time
+        print('Mode:', 'm' + self.app.modality)
+
+        # Run in a background thread
+        threading.Thread(
+            target=self.background_update_all,
+            daemon=True
+        ).start()
+
+        # Close the app after triggering the background update
         self.app.on_close()
-        return self.perf
+
+    def background_update_all(self):
+        """Run update_all() in the background to avoid blocking the UI."""
+        update_all(
+            self.app.lipstick,
+            self.app.lippath,
+            self.word_ul,
+            self.perf,
+            self.speed,
+            mode='m' + self.app.modality
+        )
 
 class MultipleAnswer(App):
 
-    def __init__(self, lipstick : pd.DataFrame, lippath : str, modality : str):
+    def __init__(self, lippath : str, modality : str):
+        # super().__init__()
         App.__init__(self)
-        self.lipstick = lipstick
+        self.start_time = time.time()
         self.lippath = lippath
         self.modality = modality
-        #self.box = BoxLayout(orientation = 'vertical') # Used this to nest grid into box
-        self.grid = GridLayout(rows=2, padding=60, spacing=40,)# row_force_default=True, row_default_height=200)
-        self.upperPanel = GridLayout(cols=3, padding=60, spacing=40, row_force_default=True, row_default_height=200)
+        self.lipstick = self.load_lipstick()
+        self.rtl_flag = (self.lipstick.learning_language.iloc[0] == 'iw')
+        self.word_ll, self.word_ul, self.iqu, self.nid = set_question(self.lippath, self.rtl_flag, size_head=6)
+        if self.modality == 'dt': 
+            self.question, self.answer = self.word_ll, self.word_ul
+            self.checkEntry = 'word_ul'
+        elif self.modality == 'rt':
+            self.question, self.answer = self.word_ul, self.word_ll
+            self.checkEntry = 'word_ll'
 
-    def load_question(self, question : str, rtl_flag = False):
-        if rtl_flag: question = get_display(question)
+        self.box = BoxLayout(orientation = 'vertical') # Used this to nest grid into box
+        self.upper_panel = GridLayout(cols=3, size_hint_y=0.8)
 
-        lb = Label(text='Translate: %s'%question, size_hint=(1,1), font_name=FONT_HEB, font_size=40)
-        #span.add_widget(lb)
-        self.grid.add_widget(lb)
 
-        frame = show_pkm(nid=4)
-        texture = image_to_texture(frame, )
-        kivy_image = Image(texture=texture)#, size_hint=(0.9, 0.9))
-        # kivy_image.size_hint = (1, 1) 
-        self.upperPanel.add_widget(kivy_image)
+    def load_lipstick(self):
+        if self.modality == 'rt': index = 'word_ll'
+        elif self.modality == 'dt': index = 'word_ul'
 
+        lipstick = pd.read_csv(self.lippath)
+        lipstick.set_index(index, inplace=True, drop=False)
+        return lipstick
 
     def load_options(self, question : str, answer : str, modality = ['dt', 'rt']):
-        self.optMenu = GridLayout(cols=2, padding=20, spacing=10)
+        # options_panel = GridLayout(cols=1, rows=2, size_hint_x=0.1)
+        self.optMenu = GridLayout(cols=1, rows=2, size_hint_x=0.25, padding=20, spacing=20)
         self.giveup = Button(text='Exit', background_color=(0.6, 0.5, 0.5, 1))
         if modality == 'dt': correction = CorrectionDialog(question, answer)
         elif modality == 'rt': correction = CorrectionDialog(answer, question)
@@ -256,24 +229,61 @@ class MultipleAnswer(App):
         self.optMenu.add_widget(self.giveup)
         self.optMenu.add_widget(correction)
 
-        self.upperPanel.add_widget(self.optMenu)
-        self.grid.add_widget(self.upperPanel)
+        self.upper_panel.add_widget(self.optMenu)
+        # self.grid.add_widget(self.upperPanel)
+        self.box.add_widget(self.upper_panel)
 
-    def load_answers(self, answers: dict, rtl_flag = False):
+    def load_answers(self, answers: dict):
         self.listOp = []
-        self.AnswerPanel = GridLayout(cols=2, padding=20, spacing=10)#, row_force_default=True, row_default_height=400)
+        self.AnswerPanel = GridLayout(cols=2, rows=2, padding=40, spacing=20)
         
-        for el in answers:
-            op = EachOption(el, answers[el], rtl_flag)
-            self.AnswerPanel.add_widget(op)
+        hints = ['A', 'B', 'C', 'D']
+        for h, el in zip(hints, answers):
+            answer_button_layout = FloatLayout()
+            small_label = Label(text=h, size_hint=(0.2, 0.2), pos_hint={"x": 0, "y": 0.8})
+            answer_button_layout.add_widget(small_label)
+
+            op = EachOption(el, answers[el], self.rtl_flag, )
+            answer_button_layout.add_widget(op)
             self.listOp.append(op)
+
+            self.AnswerPanel.add_widget(answer_button_layout)
         Window.bind(on_key_down=self._on_keyboard_handler)
-        self.grid.add_widget(self.AnswerPanel)
-        # self.AnswerPanel.size_hint_x = 1
-        # self.AnswerPanel.size_hint_y = None
-        # self.AnswerPanel.height = 100  # Optional fixed height for AnswerPanel
+        self.box.add_widget(self.AnswerPanel)
 
+    def plot_combat_stats(self, entry_stats, ax = None):
+        
+        positions = [(0.125, 0.75), (0.25, 0.75), (0.375, 0.75), (0.175, 0.4), (0.325, 0.4)]
+        fig = plt.figure(figsize=(12, 4))
+        fig.patch.set_facecolor("black")
+        gs = GridSpec(3, 4, width_ratios=[0.3, 0.3, 0.3, 0.9], height_ratios=[1, 1, 1])
 
+        colors = ['gold', 'maroon', 'magenta', 'navy', 'darkorange']
+        
+        for i, ((x, y), (k, v) )in enumerate(zip(positions, entry_stats.items()) ):
+            print(k, v)
+            ax = fig.add_axes([x - 0.1, y - 0.1, 0.3, 0.3])  # [x, y, width, height]
+            ax.pie([v, 10-v], wedgeprops=dict(width=0.5), startangle=270, colors=[colors[i], '0.9'])
+            ax.set_xlabel(k, fontsize=16)
+            ax.xaxis.label.set_color('yellow')
+
+        health_ax = fig.add_subplot(gs[2, :3])  # Spans the second row, columns 2-3
+        health_ax.set_xlim(0, 1)
+        # health_ax.set_ylim(0, 1)
+        draw_health_bar(entry_stats, health_ax)
+
+        axim = fig.add_subplot(gs[:, 3])         # Spans all rows, last column
+        impath = PATH_ANIM+str(self.nid).zfill(3)+'.png'
+        self.anim = imread(impath)
+        
+        img = self.anim[:, self.anim.shape[0] * self.nframe: self.anim.shape[0] * (self.nframe+1) , :]        
+        self.img_display = axim.imshow(img)  # Store reference to imshow
+        axim.set(xlabel=f'Translate: {self.question}',)
+        axim.xaxis.label.set_color('yellow')
+        axim.xaxis.label.set_fontsize(26)
+
+        return fig
+     
     def _on_keyboard_handler(self, instance, keyboard, keycode, *args):
         if keycode in range(30, 33):
             print("Keyboard pressed! {}".format(keycode))
@@ -307,35 +317,56 @@ class MultipleAnswer(App):
         App.stop(self)
 
     def build(self):
-        #self.box.add_widget(self.grid)
-        return self.grid
+
+        opts = rnd_options(self.lippath, iquest=self.iqu, modality=self.modality)
+        opts[self.answer] = True
+        print('opts', opts)
+        shufOpts = shuffle_dic(opts)   # Shuffle order to show the buttons
+        
+        self.load_options(self.question, self.answer, modality=self.modality)
+        self.load_answers(shufOpts)
+
+        if self.rtl_flag:
+            self.question = get_display(self.question)
+
+        self.nframe = 0
+
+        # Until here lip.index is word_ul for madte and word_ll for madte
+        self.lipstick.set_index('n_id', inplace=True, drop=False)
+
+        print(self.lipstick.loc[self.nid])
+        entry_stats = load_pkmn_stats(self.lipstick, self.nid)
+        print(entry_stats)
+        self.fig = self.plot_combat_stats(entry_stats)
+        self.canvas = FigureCanvasKivyAgg(self.fig)
+
+        self.upper_panel.add_widget(self.canvas)
+        # self.lipstick.set_index(self.checkEntry, inplace=True, drop=False)
+        
+        Clock.schedule_interval(self.update, 1 / 30)  # 30 FPS
+        return self.box
+
+    def update(self, dt):
+        """Update function for animation"""
+        self.nframe = (self.nframe + 1) % (self.anim.shape[1] // self.anim.shape[0])  # Loop through frames
+
+        new_img = self.anim[:, self.anim.shape[0] * self.nframe: self.anim.shape[0] * (self.nframe+1), :]
+        self.img_display.set_data(new_img)  # Update image data
+
+        self.canvas.draw()  # Redraw the canvas
 
     def run(self):
         super().run()
-        return daemon.BREAK
-
+        # return daemon.BREAK
+    
 if __name__ == "__main__":
+    """Only for testing purposes. Manually assign modality"""
+
     lipstick_path = sys.argv[1]
-    #lipstick_path = '/Users/pabloherrero/Documents/ManHatTan/LIPSTICK/Die_Verwandlung.lip'
-    lipstick = pd.read_csv(lipstick_path)
-    lipstick.set_index('word_ll', inplace=True, drop=False)
+    
+    modality = 'rt'
 
-    qu, answ, iqu = set_question(lipstick_path, size_head=10)
-    #print(lipstick.loc[qu])
-
-    opts = rnd_options(lipstick_path, iquest=iqu, modality='rt')
-    opts[answ] = True
-    shufOpts = shuffle_dic(opts)
-
-    MA = MultipleAnswer(lipstick, lipstick_path, modality='rt')
-
-    rtl = False
-    if lipstick.learning_language.iloc[0] == 'iw':
-        rtl = True
-
-    MA.load_question(qu, rtl)
-    MA.load_options(qu, answ, modality='dt')
-    MA.load_answers(shufOpts, rtl)
+    MA = MultipleAnswer(lipstick_path, modality=modality)
 
     perf = MA.run()
     print(perf)
