@@ -1,5 +1,7 @@
 from kivy.app import App
 from kivy.uix.image import Image
+from kivy.graphics.texture import Texture
+
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.graphics import Color, RoundedRectangle
@@ -7,11 +9,17 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.core.window import Window
 from kivy.clock import Clock
 
+from skimage.io import imread
+from skimage import color, img_as_ubyte
+from skimage.transform import resize
+
+
 from time import sleep
 from bidi.algorithm import get_display
 import sys
 ROOT_PATH = '/Users/pabloherrero/Documents/ManHatTan/'
 FONT_HEB = ROOT_PATH+'/data/fonts/NotoSansHebrew.ttf'
+PATH_ANIM = '/Users/pabloherrero/Documents/ManHatTan/gui/Graphics/Battlers/'
 
 sys.path.append(ROOT_PATH+'/scripts/python_scripts/')
 sys.path.append(ROOT_PATH+'/scripts/ML_duolingo')
@@ -108,6 +116,48 @@ def update_all(lipstick : pd.DataFrame, lipstick_path : str, word : str, perform
     print('Done writing lipstick:', lipstick_path)
     train_model(lipstick, lipstick_path)
 
+def show_pkm(nid):
+    # nid = 94
+    nid = np.random.randint(900)
+    print('NID: ', nid)
+    impath = PATH_ANIM+str(nid).zfill(3)+'.png'
+    anim = imread(impath)
+    nframe = 3
+    frame = anim[:, anim.shape[0] * nframe: anim.shape[0] * (nframe+1) , :]
+
+    return frame
+
+def image_to_texture(frame):
+    """
+    Convert a NumPy array (frame) to a Kivy Texture using skimage.
+    """
+    # Ensure the frame is in RGBA format
+    if frame.shape[2] == 3:  # If the image has 3 channels (RGB)
+        alpha_channel = np.ones((frame.shape[0], frame.shape[1], 1), dtype=np.uint8) * 255  # Fully opaque
+        frame_rgba = np.concatenate((frame, alpha_channel), axis=-1)
+    elif frame.shape[2] == 4:  # If the image has an alpha channel
+        frame_rgb = frame[:, :, :3]  # Keep only RGB channels
+        alpha_channel = np.ones((frame_rgb.shape[0], frame_rgb.shape[1], 1), dtype=np.uint8) * 255  # Fully opaque
+        frame_rgba = np.concatenate((frame_rgb, alpha_channel), axis=-1)
+        if (alpha_channel < 255).any():
+            print("The image contains transparency.")
+        else:
+            print("The alpha channel exists but does not contain transparency.")
+
+    else:
+        print('Shape: ', frame.shape[2])
+
+    upscaled_image = resize(frame_rgba, (400, 400, 4), anti_aliasing=True)
+
+    # Convert image to 8-bit unsigned integers
+    frame_ubyte = img_as_ubyte(upscaled_image)
+
+    # Create a texture and upload data
+    texture = Texture.create(size=(frame_ubyte.shape[1], frame_ubyte.shape[0]))
+    texture.blit_buffer(frame_ubyte.tobytes(), colorfmt='rgba', bufferfmt='ubyte')
+    texture.flip_vertical()
+    return texture
+
 class EachOption(Button):
     def __init__(self, text, val, rtl_flag=False):
         super().__init__()
@@ -178,7 +228,8 @@ class MultipleAnswer(App):
         self.lippath = lippath
         self.modality = modality
         #self.box = BoxLayout(orientation = 'vertical') # Used this to nest grid into box
-        self.grid = GridLayout(cols=2, padding=60, spacing=40)
+        self.grid = GridLayout(rows=2, padding=60, spacing=40,)# row_force_default=True, row_default_height=200)
+        self.upperPanel = GridLayout(cols=3, padding=60, spacing=40, row_force_default=True, row_default_height=200)
 
     def load_question(self, question : str, rtl_flag = False):
         if rtl_flag: question = get_display(question)
@@ -186,6 +237,13 @@ class MultipleAnswer(App):
         lb = Label(text='Translate: %s'%question, size_hint=(1,1), font_name=FONT_HEB, font_size=40)
         #span.add_widget(lb)
         self.grid.add_widget(lb)
+
+        frame = show_pkm(nid=4)
+        texture = image_to_texture(frame, )
+        kivy_image = Image(texture=texture)#, size_hint=(0.9, 0.9))
+        # kivy_image.size_hint = (1, 1) 
+        self.upperPanel.add_widget(kivy_image)
+
 
     def load_options(self, question : str, answer : str, modality = ['dt', 'rt']):
         self.optMenu = GridLayout(cols=2, padding=20, spacing=10)
@@ -198,16 +256,22 @@ class MultipleAnswer(App):
         self.optMenu.add_widget(self.giveup)
         self.optMenu.add_widget(correction)
 
-        self.grid.add_widget(self.optMenu)
+        self.upperPanel.add_widget(self.optMenu)
+        self.grid.add_widget(self.upperPanel)
 
     def load_answers(self, answers: dict, rtl_flag = False):
         self.listOp = []
+        self.AnswerPanel = GridLayout(cols=2, padding=20, spacing=10)#, row_force_default=True, row_default_height=400)
         
         for el in answers:
             op = EachOption(el, answers[el], rtl_flag)
-            self.grid.add_widget(op)
+            self.AnswerPanel.add_widget(op)
             self.listOp.append(op)
         Window.bind(on_key_down=self._on_keyboard_handler)
+        self.grid.add_widget(self.AnswerPanel)
+        # self.AnswerPanel.size_hint_x = 1
+        # self.AnswerPanel.size_hint_y = None
+        # self.AnswerPanel.height = 100  # Optional fixed height for AnswerPanel
 
 
     def _on_keyboard_handler(self, instance, keyboard, keycode, *args):
@@ -251,28 +315,26 @@ class MultipleAnswer(App):
         return daemon.BREAK
 
 if __name__ == "__main__":
-
-    """For testing purposes only: defaults as MARTE"""
     lipstick_path = sys.argv[1]
     #lipstick_path = '/Users/pabloherrero/Documents/ManHatTan/LIPSTICK/Die_Verwandlung.lip'
     lipstick = pd.read_csv(lipstick_path)
     lipstick.set_index('word_ll', inplace=True, drop=False)
 
-    answ, qu, iqu = set_question(lipstick_path, size_head=10)
+    qu, answ, iqu = set_question(lipstick_path, size_head=10)
     #print(lipstick.loc[qu])
 
     opts = rnd_options(lipstick_path, iquest=iqu, modality='rt')
     opts[answ] = True
     shufOpts = shuffle_dic(opts)
 
-    MA = MultipleAnswer(lipstick, lipstick_path)
+    MA = MultipleAnswer(lipstick, lipstick_path, modality='rt')
 
     rtl = False
     if lipstick.learning_language.iloc[0] == 'iw':
         rtl = True
 
     MA.load_question(qu, rtl)
-    MA.load_options(qu, answ)
+    MA.load_options(qu, answ, modality='dt')
     MA.load_answers(shufOpts, rtl)
 
     perf = MA.run()
