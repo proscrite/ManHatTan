@@ -8,7 +8,9 @@ from kivy.uix.popup import Popup
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.textinput import TextInput
+
 from kivy.core.window import Window
+from bidi.algorithm import get_display
 
 from kivy.clock import Clock
 
@@ -19,22 +21,24 @@ import sys
 import apertium
 import unicodedata
 
-sys.path.append('../python_scripts/')
-sys.path.append('../ML')
+ROOT_PATH = '/Users/pabloherrero/Documents/ManHatTan/'
+FONT_HEB = ROOT_PATH+'/data/fonts/NotoSansHebrew.ttf'
+
+sys.path.append(ROOT_PATH+'/scripts/python_scripts/')
+sys.path.append(ROOT_PATH+'/scripts/ML_duolingo')
 
 from update_lipstick import *
 from duolingo_hlr import *
-from kivy_multipleAnswer import *
 from add_correctButton import CorrectionDialog
+from kivy_multipleAnswer import set_question, update_all
+from formats.format_text_input import FTextInput, RTLTextInput
 
 def strip_accents(s):
-    return ''.join(c for c in unicodedata.normalize('NFD', s)
+    print('Input string: ', s)
+    stripped = ''.join(c for c in unicodedata.normalize('NFD', s)
                   if unicodedata.category(c) != 'Mn')
-
-class FTextInput(TextInput):
-    def on_parent(self, widget, parent):
-        self.focus = True
-        self.multiline = False
+    print('Accent-stripped string: ', stripped)
+    return stripped
 
 class WriteInput(App):
 
@@ -46,7 +50,11 @@ class WriteInput(App):
         self.modality = modality
         self.word_ll: str = word_ll
         self.word_ul: str = word_ul
-        self.grid = GridLayout(cols=2)
+        self.rtl_flag = False
+        if self.lipstick.learning_language.iloc[0] == 'iw':
+            self.rtl_flag = True
+
+        self.grid = GridLayout(cols=2, padding=80, spacing=40)
 
     def load_question(self):
         if self.modality == 'dt':
@@ -60,8 +68,18 @@ class WriteInput(App):
         else:
             print('Error: modality is not "dt" or "rt"')
 
-        lb = Label(text='Translate: %s'%self.question, size_hint=(2,1), )
-        self.giveup = Button(text='Exit', on_release=self.exit, size_hint=(0.5,1),
+        if self.rtl_flag: 
+            self.question_displ = get_display(self.question)
+            self.answer_displ = get_display(self.answer)
+
+        else: 
+            self.question_displ = self.question
+            self.answer_displ = self.answer
+
+        print(f'self.rtl_flag = {self.rtl_flag}')
+        print(f'self.question = {self.question}, self.question_displ = {self.question_displ}')
+        lb = Label(text='Translate: %s'%self.question_displ, font_size=40, font_name = FONT_HEB, size_hint=(2,1), )
+        self.giveup = Button(text='Exit', on_release=self.exit, size_hint=(0.5,1), font_size=40,
             background_color=(0.6, 0.5, 0.5, 1))
         self.grid.add_widget(lb)
         self.grid.add_widget(self.giveup)
@@ -70,59 +88,79 @@ class WriteInput(App):
         self.text_input_focus = False
         #self.input = TextInput(hint_text='Write here', multiline=False,
          # on_text_validate=input_callback, focus=self.text_input_focus, size_hint=(2,1)) # Add hint button?
-        self.input = FTextInput(hint_text='Write here', multiline=False,
-          on_text_validate=input_callback)
+        
+        if self.rtl_flag:
+            self.input = RTLTextInput(hint_text='Write here', multiline=False, font_name = FONT_HEB,
+                                       on_text_validate=input_callback, font_size=40, background_color=(0.9,0.9,0.9,1),
+                                       pos_hint={"center_x": 0.5, "center_y": 0.5}, center_y=0.5, halign="center",)
+        else:
+            self.input = FTextInput(hint_text='Write here', multiline=False, font_name = FONT_HEB, 
+                                    on_text_validate=input_callback, font_size=40, background_color=(0.9,0.9,0.9,1),
+                                    pos_hint={"center_x": 0.5, "center_y": 0.5}, center_y=0.5, halign="center",)
+        
 
         enter = Button(text='Enter', on_release=input_callback, size_hint=(0.5,1))
         self.grid.add_widget(self.input)
         self.grid.add_widget(enter)
 
     def checkAnswer(self, instance):
+
         print('Checking answer: ', self.input.text)
         checkPop = GridLayout(cols=2, padding=10)
-        lb2 = Label(text='Translate: %s'%self.question, size_hint=(2,1), )
+        print(self.question_displ)
+        lb2 = Label(text='Translate: %s'%self.question_displ, font_name=FONT_HEB, font_size = 40, size_hint=(2,1), )
         checkPop.add_widget(lb2) # Keep same label as in previous screen
-        correction = CorrectionDialog(self.question, self.answer)
+        """TEST:
+        if self.modality == 'dt': correction = CorrectionDialog(self.question, self.answer)
+        elif self.modality == 'rt': correction = CorrectionDialog(self.answer, self.question)"""
+        correction = CorrectionDialog(self.question_displ, self.answer)
         checkPop.add_widget(correction)
 
+        if self.rtl_flag: 
+            self.input.text_displ = get_display(self.input.text)
+            input_answer = self.input.text_displ
+            correct_answer = self.lipstick.loc[self.word_ul, self.checkEntry]
+        else:
+            self.input.text_displ = self.input.text
+            input_answer = strip_accents(self.input.text.lower())
+            correct_answer = strip_accents((self.lipstick.loc[self.word_ul, self.checkEntry]).lower() )
         print('self.lipstick.loc[self.word_ul, self.checkEntry] = ', self.lipstick.loc[self.word_ul, self.checkEntry])
-        print('equality condition: ', self.lipstick.loc[self.word_ul, self.checkEntry] == self.input.text )
+        print('equality condition: ', self.lipstick.loc[self.word_ul, self.checkEntry] == self.input.text_displ )
         #self.lipstick.set_index('word_ll', inplace=True, drop=False)
-        correct_answer = strip_accents((self.lipstick.loc[self.word_ul, self.checkEntry]).lower() )
-        input_answer = strip_accents(self.input.text.lower())
+
 
         if correct_answer == input_answer:
             print('Correct answer')
-            yes = Button(text='Correct! The translation is \n'+self.answer, size_hint=(2,1),
+            yes = Button(text='Correct! The translation is \n'+self.answer_displ, font_size=40, font_name=FONT_HEB, size_hint=(2,1),
               background_color=(0, 1, 0, 1))
             checkPop.add_widget(yes)
             self.perf = 1
+            print('ENTERED CORRECT ANSWER CONDITION')
 
-        elif self.double_check_input(correct_answer, input_answer)[0]:
-            print('Correct answer')
-            baseAnsw = self.double_check_input(correct_answer, input_answer)[1]
-            yes = Button(text='Correct! The baseform translation is \n'+baseAnsw, size_hint=(2,1),
-              background_color=(0, 1, 0, 1))
-            checkPop.add_widget(yes)
-            self.perf = 1
+        # elif self.double_check_input(correct_answer, input_answer)[0]:
+        #     print('Correct answer')
+        #     baseAnsw = self.double_check_input(correct_answer, input_answer)[1]
+        #     yes = Button(text='Correct! The baseform translation is \n'+baseAnsw, font_name=FONT_HEB, font_size=40, size_hint=(2,1),
+        #       background_color=(0, 1, 0, 1))
+        #     checkPop.add_widget(yes)
+        #     self.perf = 1
 
         else:
             print('Incorrect answer')
-            no = Button(text=self.input.text+': Incorrect! The translation is \n'+self.answer, size_hint=(2,1),
+            no = Button(text=self.input.text+': Incorrect! The translation is \n'+self.answer_displ, font_name=FONT_HEB, font_size=40, size_hint=(2,1),
               background_color=(1, 0, 0, 1))
             checkPop.add_widget(no)
             self.perf = 0
 
         carryon = Button(text='Continue', on_release=self.on_close, size_hint=(0.5,1), background_color=(1,1,0,1))
         checkPop.add_widget(carryon)
-########### Try to add keybindings ####
 
         popChecker = Popup(content=checkPop)
         popChecker.open()
         Window.bind(on_key_down=self._on_keyboard_handler)
 
 
-##### Attempt of keyboard_handler ####
+    ##### Attempt of keyboard_handler #####
     def _on_keyboard_handler(self, instance, keyboard, keycode, *args):
         if keycode == 40:
             print("Keyboard pressed! {}".format(keycode))
@@ -150,7 +188,8 @@ class WriteInput(App):
             return False, None
 
     def on_close(self, *args):
-        update_all(self.lipstick, self.lippath, self.word_ul, self.perf)
+        print('Mode: ', 'w'+self.modality)
+        update_all(self.lipstick, self.lippath, self.word_ul, self.perf, mode='w'+self.modality)
         App.stop(self)
 
     def exit(self, instance):
