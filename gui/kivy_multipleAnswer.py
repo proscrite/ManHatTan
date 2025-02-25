@@ -1,25 +1,23 @@
 from kivy.app import App
 from kivy.uix.image import Image
-from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.button import Button
 from kivy.uix.label import Label
-from kivy.uix.widget import Widget
-from kivy.uix.popup import Popup
+from kivy.graphics import Color, RoundedRectangle
 from kivy.uix.gridlayout import GridLayout
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.textinput import TextInput
 from kivy.core.window import Window
-
 from kivy.clock import Clock
 
 from time import sleep
+from bidi.algorithm import get_display
 import sys
-sys.path.append('../python_scripts/')
-sys.path.append('../ML')
-sys.path.append('.')
+ROOT_PATH = '/Users/pabloherrero/Documents/ManHatTan/'
+FONT_HEB = ROOT_PATH+'/data/fonts/NotoSansHebrew.ttf'
 
-from update_lipstick import *
+sys.path.append(ROOT_PATH+'/scripts/python_scripts/')
+sys.path.append(ROOT_PATH+'/scripts/ML_duolingo')
 from duolingo_hlr import *
+from update_lipstick import *
+from add_correctButton import CorrectionDialog
 
 import rnd_exercise_scheduler as daemon
 
@@ -91,70 +89,106 @@ def train_model(lipstick : pd.DataFrame, lipstick_path : str):
     print('HLR Model updated, sorting by recall probability')
 
     prob = pd.Series({i.index: model.predict(i)[0] for i in trainset})
-    lipstick.p_pred.update(prob)
+    lipstick.loc['p_pred'] = prob
 
     lipstick.sort_values('p_recall', inplace=True)
     lipstick.to_csv(lipstick_path, index=False)
 
-def update_all(lipstick : pd.DataFrame, lipstick_path : str, word : str, perform):
+def update_all(lipstick : pd.DataFrame, lipstick_path : str, word : str, perform, mode = ['mdt', 'mrt', 'wdt', 'wrt']):
     """Call all update functions and train hlr model"""
 
-    update_performance(lipstick, word, perform)
+    print('Calling update_all in kivy_multiAnswer')
+    update_performance(lipstick, word, perform, mode=mode)
     update_timedelta(lipstick, word)
 
     print('Performance and timedelta updated')
     print(lipstick.loc[word])
     lipstick.to_csv(lipstick_path, index=False)
+    sleep(1)
+    print('Done writing lipstick:', lipstick_path)
     train_model(lipstick, lipstick_path)
 
-class FTextInput(TextInput):
-    def on_parent(self, widget, parent):
-        self.focus = True
-        self.multiline = False
-
-from add_correctButton import CorrectionDialog
-
 class EachOption(Button):
-
-    def __init__(self, text, val):
-        self.text : str = text
-        self.val : bool = val
-        self.perf : bool
-        self.iw : str = text # Store variable for processing
-        self.app= App.get_running_app()
+    def __init__(self, text, val, rtl_flag=False):
         super().__init__()
 
-    def on_release(self, *args):
-        self.disable = True
-        if self.val:
-            self.text = "Correct!"
-            self.background_color = (0, 1,0, 1)
-            self.perf = 1
+        # Remove the default button background
+        self.background_normal = ''  # Disable default background
+        self.background_down = ''  # Disable pressed background
+        self.background_color = (0, 0, 0, 0)  # Fully transparent
+
+        # Add a persistent color instruction to canvas.before
+        with self.canvas.before:
+            self.color_instruction = Color(0.4, 0.2, 0, 1)  # Default color (brownish)
+            self.bg = RoundedRectangle(size=self.size, pos=self.pos, radius=[20])
+
+        # Bind size and position changes
+        self.bind(pos=self.update_rect, size=self.update_rect)
+
+        # Handle RTL text if needed
+        if rtl_flag:
+            text_displ = get_display(text)
         else:
-            self.text = "Incorrect!"
-            self.background_color = (1, 0,0, 1)
-            self.perf = 0
-        print('Performance: ', self.perf)
-        update_all(self.app.lipstick, self.app.lippath, self.iw, self.perf)
+            text_displ = text
+
+        # Set properties
+        self.text = text_displ
+        self.val = val
+        self.iw : str = text # Store variable for processing
+        self.font_name = FONT_HEB  # Replace with your font path
+        self.font_size = 40
+        self.bold = True
+        self.app = App.get_running_app()
+
+    def update_rect(self, *args):
+        """Update the size and position of the rounded rectangle."""
+        self.bg.size = self.size
+        self.bg.pos = self.pos
+
+    def on_release(self, *args):
+        """Custom behavior on button release."""
+        self.disabled = True  # Disable the button after clicking
+        self.color = (0, 0, 0, 1)  # Set text color to black
+
+        # Update the color of the persistent color instruction
+        with self.canvas.before:
+            if self.val:
+                self.color_instruction.rgba = (0, 1, 0, 0.3)  # Green
+                self.text = "Correct! %s" % self.text
+                self.perf = 1
+            else:
+                self.color_instruction.rgba = (1, 0, 0, 0.3)  # Red
+                self.text = "Incorrect! %s" % self.text
+                self.perf = 0
+
+        # Refresh the canvas
+        self.canvas.ask_update()
+
+        print('Performance:', self.perf)
+        print('Mode: ', 'm'+self.app.modality)
+        update_all(self.app.lipstick, self.app.lippath, self.iw, self.perf, mode='m'+self.app.modality)
         self.app.on_close()
         return self.perf
 
 class MultipleAnswer(App):
 
-    def __init__(self, lipstick : pd.DataFrame, lippath : str):
+    def __init__(self, lipstick : pd.DataFrame, lippath : str, modality : str):
         App.__init__(self)
         self.lipstick = lipstick
         self.lippath = lippath
+        self.modality = modality
         #self.box = BoxLayout(orientation = 'vertical') # Used this to nest grid into box
-        self.grid = GridLayout(cols=2)
+        self.grid = GridLayout(cols=2, padding=60, spacing=40)
 
-    def load_question(self, question : str):
-        lb = Label(text='Translate: %s'%question, size_hint=(1,1), )
+    def load_question(self, question : str, rtl_flag = False):
+        if rtl_flag: question = get_display(question)
+
+        lb = Label(text='Translate: %s'%question, size_hint=(1,1), font_name=FONT_HEB, font_size=40)
         #span.add_widget(lb)
         self.grid.add_widget(lb)
 
-    def load_options(self, question : str, answer : str, modality : str):
-        self.optMenu = GridLayout(cols=2)
+    def load_options(self, question : str, answer : str, modality = ['dt', 'rt']):
+        self.optMenu = GridLayout(cols=2, padding=20, spacing=10)
         self.giveup = Button(text='Exit', background_color=(0.6, 0.5, 0.5, 1))
         if modality == 'dt': correction = CorrectionDialog(question, answer)
         elif modality == 'rt': correction = CorrectionDialog(answer, question)
@@ -166,10 +200,11 @@ class MultipleAnswer(App):
 
         self.grid.add_widget(self.optMenu)
 
-    def load_answers(self, answers: dict):
+    def load_answers(self, answers: dict, rtl_flag = False):
         self.listOp = []
+        
         for el in answers:
-            op = EachOption(el, answers[el])
+            op = EachOption(el, answers[el], rtl_flag)
             self.grid.add_widget(op)
             self.listOp.append(op)
         Window.bind(on_key_down=self._on_keyboard_handler)
@@ -180,6 +215,14 @@ class MultipleAnswer(App):
             print("Keyboard pressed! {}".format(keycode))
             print('Firing option %i' %(keycode-29))
             self.listOp[keycode - 30].on_release()
+        if keycode == 4:  # 'a' key
+            self.listOp[0].on_release()
+        elif keycode == 5:  # 'b' key
+            self.listOp[1].on_release()
+        elif keycode == 6:  # 'c' key
+            self.listOp[2].on_release()
+        elif keycode == 7:  # 'd' key
+            self.listOp[3].on_release()
         #else:
         #    print("Keyboard pressed! {}".format(keycode))
 
@@ -203,23 +246,34 @@ class MultipleAnswer(App):
         #self.box.add_widget(self.grid)
         return self.grid
 
+    def run(self):
+        super().run()
+        return daemon.BREAK
+
 if __name__ == "__main__":
+
+    """For testing purposes only: defaults as MARTE"""
     lipstick_path = sys.argv[1]
     #lipstick_path = '/Users/pabloherrero/Documents/ManHatTan/LIPSTICK/Die_Verwandlung.lip'
     lipstick = pd.read_csv(lipstick_path)
-    lipstick.set_index('word_ul', inplace=True, drop=False)
+    lipstick.set_index('word_ll', inplace=True, drop=False)
 
-    qu, answ, iqu = set_question(lipstick_path, size_head=10)
+    answ, qu, iqu = set_question(lipstick_path, size_head=10)
     #print(lipstick.loc[qu])
 
-    opts = rnd_options(lipstick_path, iquest=iqu)
+    opts = rnd_options(lipstick_path, iquest=iqu, modality='rt')
     opts[answ] = True
     shufOpts = shuffle_dic(opts)
 
     MA = MultipleAnswer(lipstick, lipstick_path)
-    MA.load_question(qu)
+
+    rtl = False
+    if lipstick.learning_language.iloc[0] == 'iw':
+        rtl = True
+
+    MA.load_question(qu, rtl)
     MA.load_options(qu, answ)
-    MA.load_answers(shufOpts)
+    MA.load_answers(shufOpts, rtl)
 
     perf = MA.run()
     print(perf)
