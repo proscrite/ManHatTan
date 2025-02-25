@@ -1,6 +1,7 @@
 from kivy.app import App
 from kivy.uix.image import Image
 from kivy.graphics.texture import Texture
+from kivy.core.image import Image as CoreImage
 
 from kivy.uix.button import Button
 from kivy.uix.label import Label
@@ -38,6 +39,7 @@ sys.path.append(ROOT_PATH+'/scripts/ML_duolingo')
 from duolingo_hlr import *
 from update_lipstick import *
 from add_correctButton import CorrectionDialog
+from gui.plot_pkmn_panel import *
 
 import rnd_exercise_scheduler as daemon
 
@@ -133,7 +135,8 @@ class EachOption(Button):
         self.font_name = FONT_HEB  # Replace with your font path
         self.font_size = 40
         self.bold = True
-        self.app = App.get_running_app()
+        self.app_start_time = self.app.start_time
+
 
     def update_rect(self, *args):
         """Update the size and position of the rounded rectangle."""
@@ -186,9 +189,10 @@ class EachOption(Button):
 
 class MultipleAnswer(App):
 
-    def __init__(self, lipstick : pd.DataFrame, lippath : str, modality : str):
+    def __init__(self, lippath : str, modality : str):
+        # super().__init__()
         App.__init__(self)
-        self.lipstick = lipstick
+        self.start_time = time.time()
         self.lippath = lippath
         self.modality = modality
         self.lipstick = self.load_lipstick()
@@ -362,15 +366,7 @@ if __name__ == "__main__":
     
     modality = 'rt'
 
-    MA = MultipleAnswer(lipstick, lipstick_path, modality='rt')
-
-    rtl = False
-    if lipstick.learning_language.iloc[0] == 'iw':
-        rtl = True
-
-    MA.load_question(qu, rtl)
-    MA.load_options(qu, answ, modality='dt')
-    MA.load_answers(shufOpts, rtl)
+    MA = MultipleAnswer(lipstick_path, modality=modality)
 
     perf = MA.run()
     print(perf)

@@ -64,6 +64,7 @@ class WriteInput(App):
         self.lippath = lippath
         self.modality = modality
 
+        self.start_time = time.time()
         self.lipstick = self.load_lipstick()
         self.rtl_flag = (self.lipstick.learning_language.iloc[0] == 'iw')
 
