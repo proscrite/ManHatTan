@@ -3,9 +3,10 @@ import numpy as np
 import sys
 import datetime
 import os
+from random import shuffle
 from copy import deepcopy
 
-def set_lip(gota : pd.DataFrame, flag_lexeme = True):
+def set_lip(gota : pd.DataFrame, flag_lexeme = False):
     """Provisional simple initialization of lipstick from GOTA.
         Attrs:
         ------
@@ -22,7 +23,14 @@ def set_lip(gota : pd.DataFrame, flag_lexeme = True):
         history_correct: times the translation has been correctly recalled from initialization
         session_seen: practice times in last session (not implemented)
         session_correct: correctly recalled times in last session (not implemented)
-
+        mdt_history: times the word has been practiced in mdt mode
+        mdt_correct: times the word has been correctly recalled in mdt mode (attack attribute)
+        mrt_history: times the word has been practiced in mrt mode
+        mrt_correct: times the word has been correctly recalled in mrt mode (defense attribute)
+        wdt_history: times the word has been practiced in wdt mode
+        wdt_correct: times the word has been correctly recalled in wdt mode (special attack attribute)
+        wrt_history: times the word has been practiced in wrt mode
+        wrt_correct: times the word has been correctly recalled in wrt mode (special defense attribute)
         Additional attrs:
         ------
         p_pred: predicted probability from hlr model (not in initialization)
@@ -46,7 +54,13 @@ def set_lip(gota : pd.DataFrame, flag_lexeme = True):
     else:
         lexeme = 'lernt/lernen<vblex><pri><p3><sg>'
 
-    lipstick['timestamp'] = timest
+    pathnid = '/Users/pabloherrero/Documents/ManHatTan/gui/Graphics/index_stage_0.csv'
+    lenlip = len(lipstick)
+    stage0_nids = pd.read_csv(pathnid, index_col=None).T.values[0][:lenlip]
+    shuffle(stage0_nids)
+
+    lipstick['n_id'] = stage0_nids
+    lipstick['timestamp'] = timest.astype('int')
     lipstick['delta'] = delta
     lipstick['user_id'] = 'pablo'  # Will be customizable later
     lipstick['learning_language'] = lear_lang
@@ -54,10 +68,19 @@ def set_lip(gota : pd.DataFrame, flag_lexeme = True):
     lipstick['word_ll'] = gota[lear_lang]
     lipstick['word_ul'] = gota[ui_lang]
     lipstick['lexeme_string'] = lexeme
-    lipstick['history_seen'] = ptruth
-    lipstick['history_correct'] = ptruth
-    lipstick['session_seen'] = ptruth
-    lipstick['session_correct'] = ptruth
+    lipstick['history_seen'] = 0
+    lipstick['history_correct'] = 0
+    lipstick['session_seen'] = 0
+    lipstick['session_correct'] = 0
+    lipstick['p_pred'] = ptruth
+    lipstick['mdt_history'] = 0
+    lipstick['mdt_correct'] = 0
+    lipstick['mrt_history'] = 0
+    lipstick['mrt_correct'] = 0
+    lipstick['wdt_history'] = 0
+    lipstick['wdt_correct'] = 0
+    lipstick['wrt_history'] = 0
+    lipstick['wrt_correct'] = 0
 
     return lipstick
     # lipstick['history_seen'] = gota['seen_hist']   # Will change this in gotas     # legacy: to retrieve performance when using GOTA as DB
