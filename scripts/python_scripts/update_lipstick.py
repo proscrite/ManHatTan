@@ -9,6 +9,15 @@ sys.path.append('../../gui')
 sys.path.append('../ML')
 from duolingo_hlr import *
 
+
+def update_speed(lipstick: pd.DataFrame, iw: str, new_speed: float):
+    avg_v = lipstick.loc[iw, 'speed'].copy()
+    ntest = lipstick.loc[iw, ['mdt_history', 'mrt_history', 'wdt_history', 'wrt_history']].sum()
+    sumentries = ntest*avg_v
+    new_avg = (sumentries + new_speed) / (ntest+1)
+    lipstick.at[iw, 'speed'] = round(new_avg, 4) 
+    return lipstick
+ 
 def update_performance(lipstick : pd.DataFrame, iw : str, perf : float, mode = ['mdt', 'mrt', 'wdt', 'wrt']):
     """Update times the entry iw was practiced and the performance
         iw is the index column of lipstick, can be word_ul, word_ll, or a number"""
