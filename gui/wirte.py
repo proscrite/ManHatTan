@@ -1,24 +1,33 @@
 ### WIRTE: Write Input Reverse Translation Exercise ###
 from time import sleep
 import sys
-sys.path.append('../python_scripts/')
-sys.path.append('../ML')
 
-from update_lipstick import *
+ROOT_PATH = '/Users/pabloherrero/Documents/ManHatTan/'
+sys.path.append(ROOT_PATH+'/scripts/python_scripts/')
+sys.path.append(ROOT_PATH+'/scripts/ML_duolingo')
+
+from bidi.algorithm import get_display
 from duolingo_hlr import *
-from kivy_writeInput import *
+from update_lipstick import *
+from kivy_multipleAnswer import *
+import rnd_exercise_scheduler as daemon
 
-if __name__ == "__main__":
-    lipstick_path = sys.argv[1]
-    #lipstick_path = '/Users/pabloherrero/Documents/ManHatTan/LIPSTICK/Die_Verwandlung.lip'
-    lipstick = pd.read_csv(lipstick_path)
-    lipstick.set_index('word_ul', inplace=True, drop=False)
+from gui.kivy_writeInput import *
 
-    word_ll, word_ul, iqu = set_question(lipstick_path, size_head=10)
+def wirte_main(lipstick_path, *largs):
+    print('Welcome to WIRTE: Written Input Reverse Translation Exercise')
+    if lipstick_path is None:
+        if len(sys.argv) > 1:
+            lipstick_path = sys.argv[1]
+        else:
+            print("Error: Missing lipstick_path argument.")
+            sys.exit(1)
 
-    WI = WriteInput(lipstick, lipstick_path,
-      word_ll=word_ll, word_ul=word_ul, modality='rt')
-    WI.load_question()
+    modality = 'rt'
+    WI = WriteInput(lipstick_path, modality='rt')
 
     perf = WI.run()
     print(perf)
+
+if __name__ == "__main__":
+    wirte_main(sys.argv[1])
