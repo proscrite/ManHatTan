@@ -26,11 +26,18 @@ ROOT_PATH = '/Users/pabloherrero/Documents/ManHatTan/'
 FONT_HEB = ROOT_PATH + '/data/fonts/NotoSansHebrew.ttf'
 PATH_ANIM = ROOT_PATH + '/gui/Graphics/Battlers/'
 
+sys.path.append(ROOT_PATH+'/scripts/python_scripts/')
+from update_lipstick import update_all
+
 class MultipleAnswerScreen(BaseExerciseScreen):
     def __init__(self, lipstick_path, modality='rt', **kwargs):
         super(MultipleAnswerScreen, self).__init__(lipstick_path, modality, **kwargs)
-        from kivy.app import App
-        App.get_running_app().lipstick = self.lipstick
+        self.app = App.get_running_app()
+        self.app.lipstick = self.lipstick
+        self.app_start_time = time.time()
+
+        self.word_ll, self.word_ul, self.iqu, self.nid = set_question(self.lippath, self.rtl_flag, size_head=6)
+
         self.build_ui()
     
     def build_ui(self):
@@ -92,5 +99,18 @@ class MultipleAnswerScreen(BaseExerciseScreen):
             self.listOp[3].on_release()
     
     def go_back(self, instance):
+        self.app.flag_refresh = True
         self.manager.transition = SlideTransition(direction="right")
         self.manager.current = "main_menu"
+
+    def on_close(self, perf):
+        elapsed_time = time.time() - self.app_start_time
+        self.speed = 1 / elapsed_time
+        # Run update_all in background so as not to block the UI
+        # threading.Thread(target=self.background_update_all, daemon=True).start()
+        # For this unified app, simply navigate back to the main menu
+        # App.get_running_app().root.current = "main_menu"
+
+    # def background_update_all(self):
+        update_all(self.app.lipstick, self.app.lippath, self.app.word_ul, perf, self.speed, mode='m' + self.app.modality)
+        self.go_back(None)
