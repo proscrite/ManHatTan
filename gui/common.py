@@ -145,7 +145,7 @@ def plot_combat_stats(entry_stats, nframe, nid, question_displ):
     # Dummy health bar (customize as needed)
     ax_health = fig.add_subplot(gs[2, :3])
     ax_health.set_xlim(0, 1)
-    ax_health.set_title("Health Bar", color='yellow')
+    draw_health_bar(entry_stats, ax_health)
     
     # Animated image: load sprite sheet and display current frame
     ax_im = fig.add_subplot(gs[:, 3])
