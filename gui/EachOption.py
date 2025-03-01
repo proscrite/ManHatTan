@@ -10,10 +10,14 @@ from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import Screen, ScreenManager
 from kivy.core.window import Window
 
+
 from bidi.algorithm import get_display
 ROOT_PATH = '/Users/pabloherrero/Documents/ManHatTan/'
 FONT_HEB = ROOT_PATH + '/data/fonts/NotoSansHebrew.ttf'
 PATH_ANIM = ROOT_PATH + '/gui/Graphics/Battlers/'
+
+sys.path.append(ROOT_PATH+'/scripts/python_scripts/')
+from update_lipstick import update_all
 
 # --- EachOption class for multiple choice answers ---
 class EachOption(Button):
@@ -35,7 +39,6 @@ class EachOption(Button):
         self.font_name = FONT_HEB
         self.font_size = 40
         self.bold = True
-        self.app_start_time = time.time()
 
     def update_rect(self, *args):
         self.bg.size = self.size
@@ -54,14 +57,8 @@ class EachOption(Button):
         self.canvas.ask_update()
 
     def on_release(self, *args):
+        if self.app.root.current != "multiple_answer":
+            return
         self.disabled = True
         self.update_color()
-        elapsed_time = time.time() - self.app_start_time
-        self.speed = 1 / elapsed_time
-        # Run update_all in background so as not to block the UI
-        threading.Thread(target=self.background_update_all, daemon=True).start()
-        # For this unified app, simply navigate back to the main menu
-        App.get_running_app().root.current = "main_menu"
-
-    def background_update_all(self):
-        update_all(self.app.lipstick, self.app.lippath, self.app.word_ul, self.perf, self.speed, mode='m' + self.app.modality)
+        self.parent.parent.parent.parent.on_close(self.perf)
