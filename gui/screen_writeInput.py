@@ -16,7 +16,10 @@ from bidi.algorithm import get_display
 
 # Import common functionality and constants
 from common import *
-# from update_lipstick import update_all
+sys.path.append(ROOT_PATH+'/scripts/python_scripts/')
+from update_lipstick import update_all
+
+from formats.format_text_input import FTextInput, RTLTextInput
 from screen_BaseExercise import BaseExerciseScreen
 from add_correctButton import CorrectionDialog
 
@@ -29,7 +32,9 @@ class WriteInputScreen(BaseExerciseScreen):
     def __init__(self, lipstick_path, modality='dt', **kwargs):
         super(WriteInputScreen, self).__init__(lipstick_path, modality, **kwargs)
         self.build_ui()
-    
+        self.app = App.get_running_app()
+
+
     def build_ui(self):
         # Create a horizontal layout that splits the animated panel and the input/options
         self.box = BoxLayout(orientation='horizontal')
@@ -41,9 +46,17 @@ class WriteInputScreen(BaseExerciseScreen):
         # Add common animated panel from the base class
         self.InputPanel.add_widget(self.animated_container)
         
+        input_callback = partial(self.checkAnswer)
         # Add text input
-        self.input = TextInput(hint_text='Write here', multiline=False,
-                               font_size=40)
+        if self.rtl_flag:
+            self.input = RTLTextInput(hint_text='Write here', multiline=False, font_name = FONT_HEB,
+                                       on_text_validate=input_callback, font_size=40, background_color=(0.9,0.9,0.9,1),
+                                       pos_hint={"center_x": 0.5, "center_y": 0.5}, center_y=0.5, halign="center",)
+        else:
+            self.input = FTextInput(hint_text='Write here', multiline=False, font_name = FONT_HEB, 
+                                    on_text_validate=input_callback, font_size=40, background_color=(0.9,0.9,0.9,1),
+                                    pos_hint={"center_x": 0.5, "center_y": 0.5}, center_y=0.5, halign="center",)
+        
         self.InputPanel.add_widget(self.input)
         
         # Create buttons for the options menu
@@ -70,14 +83,25 @@ class WriteInputScreen(BaseExerciseScreen):
             self.checkAnswer(None)
     
     def checkAnswer(self, instance):
+        # Dismiss an existing popup if it exists.
+        if hasattr(self, 'answer_popup') and self.answer_popup:
+            self.answer_popup.dismiss()
+            self.answer_popup = None
+
         elapsed_time = time.time() - self.start_time
         self.speed = 1 / elapsed_time
-        
+
+        # Create a fresh layout for the popup.
         layout = GridLayout(cols=2, padding=10)
-        label = Button(text='Translate: ' + self.question_displ,
-                       font_size=40, size_hint=(2, 1))
+        label = Button(text='Exercise: ' + self.question_displ, font_name=FONT_HEB, 
+                    font_size=40, bold=True, size_hint=(2, 1))
         layout.add_widget(label)
+
+        # Always create a new CorrectionDialog instance.
         correction = CorrectionDialog(self.question_displ, self.answer)
+        # If by any chance correction already has a parent, remove it.
+        if correction.parent:
+            correction.parent.remove_widget(correction)
         layout.add_widget(correction)
         
         if self.rtl_flag:
@@ -102,15 +126,18 @@ class WriteInputScreen(BaseExerciseScreen):
                           size_hint=(0.5, 1), background_color=(1, 1, 0, 1))
         layout.add_widget(cont_btn)
         
-        popup = Popup(content=layout)
-        popup.open()
-    
-    def on_close(self, *args):
-        from update_lipstick import update_all
-        update_all(self.lipstick, self.lippath, self.word_ul, self.perf,
-                   self.speed, mode='w' + self.modality)
-        self.go_back(None)
+        self.answer_popup = Popup(content=layout)
+        self.answer_popup.open()
     
     def go_back(self, instance):
+        self.app.flag_refresh = True
         self.manager.transition = SlideTransition(direction="right")
         self.manager.current = "main_menu"
+    
+    def on_close(self, *args):
+        update_all(self.lipstick, self.lippath, self.word_ul, self.perf,
+                   self.speed, mode='w' + self.modality)
+        if hasattr(self, 'answer_popup'):
+            self.answer_popup.dismiss()
+        self.go_back(None)
+    
