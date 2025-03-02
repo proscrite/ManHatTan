@@ -1,5 +1,5 @@
 # base_exercise_screen.py
-from kivy.uix.screenmanager import Screen
+from kivy.uix.screenmanager import Screen, SlideTransition
 import time
 from common import *
 from bidi.algorithm import get_display
@@ -53,3 +53,17 @@ class BaseExerciseScreen(Screen):
         new_img = self.anim[:, frame_width * self.nframe: frame_width * (self.nframe+1), :]
         self.img_display.set_data(new_img)
         self.fig_canvas.draw()
+    
+    def go_back(self, current_name, *args):
+     # Get the ScreenManager
+        sm = self.manager
+        # Save the name of this screen so we can re-add it under the same name
+        new_screen = type(self)(self.lippath, modality=self.modality, name=current_name)
+        # Remove the old screen and add the new one.
+        sm.remove_widget(self)
+        sm.add_widget(new_screen)
+        
+        # Call set_question for new question and go back to main menu
+        self.app.flag_refresh = True
+        sm.transition = SlideTransition(direction="right")
+        sm.current = "main_menu"

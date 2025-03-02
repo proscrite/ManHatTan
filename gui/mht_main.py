@@ -13,6 +13,7 @@ from kivy.uix.button import Button
 
 # Import dependencies from your modules (adjust the paths if necessary)
 
+from common import set_question, load_lipstick
 from screen_multipleAnswer import MultipleAnswerScreen
 from screen_writeInput import WriteInputScreen
 from add_correctButton import CorrectionDialog
@@ -28,6 +29,7 @@ LIPSTICK_PATH = ROOT_PATH + '/data/processed/LIPSTICK/hebrew_db_team.lip'
 class MainMenuScreen(Screen):
     def __init__(self, lipstick_path, **kwargs):
         super(MainMenuScreen, self).__init__(**kwargs)
+        self.lipstick_path = lipstick_path
         layout = BoxLayout(orientation='vertical', padding=20, spacing=20)
         btn_write = Button(text="Write Input Exercise", font_size=40)
         btn_multi = Button(text="Multiple Answer Exercise", font_size=40)
@@ -36,7 +38,6 @@ class MainMenuScreen(Screen):
         layout.add_widget(btn_write)
         layout.add_widget(btn_multi)
         self.add_widget(layout)
-        self.lipstick_path = lipstick_path
     
     def go_to_write(self, instance):
         self.manager.transition = SlideTransition(direction="left")
@@ -47,12 +48,20 @@ class MainMenuScreen(Screen):
         self.manager.current = "multiple_answer"
 
 class ManHatTan(App):
-    # def __init__(self, lippath : str = LIPSTICK_PATH):
+    def __init__(self, lippath : str = LIPSTICK_PATH, modality : str = 'dt'):
+        self.flag_refresh = True
+        App.__init__(self)
 
     def build(self):
         self.lippath = LIPSTICK_PATH
-        sm = ScreenManager()
+        self.modality = 'dt'
+        self.lipstick = load_lipstick(self.lippath, self.modality)
+        self.rtl_flag = (self.lipstick.learning_language.iloc[0] == 'iw')
+        if self.flag_refresh:
+            self.word_ll, self.word_ul, self.iqu, self.nid = set_question(self.lippath, self.rtl_flag, size_head=6)
+            self.flag_refresh = False
         
+        sm = ScreenManager()
         sm.add_widget(MainMenuScreen(self.lippath, name="main_menu"))
         sm.add_widget(WriteInputScreen(self.lippath, modality='dt', name="write_input"))
         sm.add_widget(MultipleAnswerScreen(self.lippath, modality='rt', name="multiple_answer"))

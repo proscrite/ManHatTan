@@ -1,6 +1,6 @@
 # --- Multiple Answer Screen (refactored from kivy_multipleAnswer.py) --- #
 from kivy.app import App
-from kivy.uix.screenmanager import Screen, SlideTransition
+from kivy.uix.screenmanager import Screen
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.floatlayout import FloatLayout
@@ -97,11 +97,7 @@ class MultipleAnswerScreen(BaseExerciseScreen):
             self.listOp[2].on_release()
         elif keycode == 7:
             self.listOp[3].on_release()
-    
-    def go_back(self, instance):
-        self.app.flag_refresh = True
-        self.manager.transition = SlideTransition(direction="right")
-        self.manager.current = "main_menu"
+
 
     def on_close(self, perf):
         elapsed_time = time.time() - self.app_start_time
@@ -112,5 +108,7 @@ class MultipleAnswerScreen(BaseExerciseScreen):
         # App.get_running_app().root.current = "main_menu"
 
     # def background_update_all(self):
-        update_all(self.app.lipstick, self.app.lippath, self.app.word_ul, perf, self.speed, mode='m' + self.app.modality)
-        self.go_back(None)
+        update_all(self.app.lipstick, self.app.lippath, self.app.word_ul, perf, self.speed, mode='m' + self.app.modality)        
+        
+        current_name = self.name
+        self.go_back(current_name)
