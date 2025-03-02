@@ -1,6 +1,6 @@
 # --- Write Input Screen (refactored from kivy_writeInput.py) --- #
 from kivy.app import App
-from kivy.uix.screenmanager import Screen, SlideTransition
+from kivy.uix.screenmanager import Screen
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.textinput import TextInput
@@ -129,15 +129,14 @@ class WriteInputScreen(BaseExerciseScreen):
         self.answer_popup = Popup(content=layout)
         self.answer_popup.open()
     
-    def go_back(self, instance):
-        self.app.flag_refresh = True
-        self.manager.transition = SlideTransition(direction="right")
-        self.manager.current = "main_menu"
-    
     def on_close(self, *args):
         update_all(self.lipstick, self.lippath, self.word_ul, self.perf,
                    self.speed, mode='w' + self.modality)
         if hasattr(self, 'answer_popup'):
             self.answer_popup.dismiss()
-        self.go_back(None)
-    
+        
+        current_name = self.name
+        self.go_back(current_name)
+        # self.go_back(None)
+        
+        
