@@ -3,8 +3,39 @@ import numpy as np
 import sys
 import datetime
 import os
+import stanza
 from random import shuffle
 from copy import deepcopy
+
+def get_lexemes(lip):
+    """Get lexemes from a LIPSTICK DataFrame"""
+
+    lang = lip.learning_language.iloc[0]
+    if lang == 'iw':
+        lang = 'he'
+    nlp = stanza.Pipeline(lang=lang, processors='tokenize,pos,lemma,depparse')
+    # nlp = stanza.Pipeline(lang=lang, processors='tokenize,mwt,pos,lemma,depparse')
+    tokens_list = list(lip['word_ll'].values)
+
+    lexemes = []
+    for token in tokens_list:
+        doc = nlp(token)
+        for sent in doc.sentences:
+            lexeme_string = ''
+            # print(len(sent.words))
+            for word in sent.words:
+                lexeme_string += word.text 
+                if word.lemma:
+                    lexeme_string += '/' + word.lemma 
+                if word.upos:
+                    lexeme_string += '<' + word.upos + '>'
+                if word.feats:
+                    feats = word.feats.split('|')
+                    lexeme_string += ''.join(feat.split('=')[1] +'|' for feat in feats)
+                if word.deprel != 'root':
+                    lexeme_string +=  ',' + word.deprel
+            lexemes.append(lexeme_string)
+    return lexemes
 
 def set_lip(gota : pd.DataFrame, flag_lexeme = False):
     """Provisional simple initialization of lipstick from GOTA.
@@ -48,10 +79,12 @@ def set_lip(gota : pd.DataFrame, flag_lexeme = False):
     lipstick = pd.DataFrame({'p_recall':ptruth})
 
     if flag_lexeme:
-        lexeme = []
-        for wd in lipstick.word_ll:
-            tagSplit = str(apertium.tag(lear_lang, wd)[0]).split('/')
-            lexeme.append(tagSplit[0] + '/' + tagSplit[1])
+        lexemes = get_lexemes(lipstick)
+        lipstick['lexeme_string'] = lexemes
+        # lexeme = []
+        # for wd in lipstick.word_ll:
+        #     tagSplit = str(apertium.tag(lear_lang, wd)[0]).split('/')
+        #     lexeme.append(tagSplit[0] + '/' + tagSplit[1])
     else:
         lexeme = 'lernt/lernen<vblex><pri><p3><sg>'
 
