@@ -1,71 +1,75 @@
+"""
+ManHatTan_main.py
+---------------
+This file combines the functionality of the two separate Kivy apps (kivy_writeInput.py and kivy_multipleAnswer.py)
+into one application with multiple screens. One screen handles free text input (“Write Input”) and the other provides
+multiple choice options (“Multiple Answer”). A main menu lets the user choose which exercise to run.
+"""
+
 from kivy.app import App
-from kivy.lang import Builder
-from kivy.uix.image import Image
-from kivy.uix.behaviors import ButtonBehavior
-from kivy.uix.button import Button
-from kivy.uix.label import Label
-from kivy.uix.widget import Widget
-from kivy.uix.popup import Popup
-from kivy.uix.gridlayout import GridLayout
+from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.textinput import TextInput
-from kivy.core.window import Window
-from kivy.uix.dropdown import DropDown
-from kivy.uix.spinner import Spinner
+from kivy.uix.button import Button
 
-from kivy_multipleAnswer import FTextInput
-from kivy_select_book import BookButton
+# Import dependencies from your modules (adjust the paths if necessary)
 
-from glob import glob
-import os
+from common import set_question, load_lipstick
+from screen_multipleAnswer import MultipleAnswerScreen
+from screen_writeInput import WriteInputScreen
+from add_correctButton import CorrectionDialog
+from duolingo_hlr import *            # your module
+from update_lipstick import update_all
+from bidi.algorithm import get_display
 
-Builder.load_string("""
-<ColDropDown>:
-    #on_parent: self.dismiss()
-    #on_select: btn.text = '{}'.format(args[1])
-""")
+# Define common constants (adjust as needed)
+ROOT_PATH = '/Users/pabloherrero/Documents/ManHatTan/'
+LIPSTICK_PATH = ROOT_PATH + '/data/processed/LIPSTICK/hebrew_db_team.lip'
+# mht_main.py
 
-class ManhattanMain(App):
-    def __init__(self, rootdir: str):
+class MainMenuScreen(Screen):
+    def __init__(self, lipstick_path, **kwargs):
+        super(MainMenuScreen, self).__init__(**kwargs)
+        self.lipstick_path = lipstick_path
+        layout = BoxLayout(orientation='vertical', padding=20, spacing=20)
+        btn_write = Button(text="Write Input Exercise", font_size=40)
+        btn_multi = Button(text="Multiple Answer Exercise", font_size=40)
+        btn_write.bind(on_release=self.go_to_write)
+        btn_multi.bind(on_release=self.go_to_multi)
+        layout.add_widget(btn_write)
+        layout.add_widget(btn_multi)
+        self.add_widget(layout)
+    
+    def go_to_write(self, instance):
+        self.manager.transition = SlideTransition(direction="left")
+        self.manager.current = "write_input"
+    
+    def go_to_multi(self, instance):
+        self.manager.transition = SlideTransition(direction="left")
+        self.manager.current = "multiple_answer"
+
+class ManHatTan(App):
+    def __init__(self, lippath : str = LIPSTICK_PATH, modality : str = 'dt'):
+        self.flag_refresh = True
         App.__init__(self)
-        self.grid = GridLayout(cols=2)
-        self.currentBook: str
-        self.rootdir = rootdir
-
-    def load_books(self):
-        books_full = glob(self.rootdir)
-        books = {}
-        for b in books_full:
-            dirpath, filename = os.path.split(b)
-            filename = os.path.splitext(filename)[0]
-            books[filename] = b
-        books['Add new book'] = self.rootdir
-        return books
 
     def build(self):
-        books = self.load_books()
-        practiceNow = Button(text='Practice Now!', background_color=(0, 1, 0,1), font_size= "20dp")
-        manageWords = Button(text='Manage entries', background_color=(0, 0.2, 0.8,1), font_size= "15dp")
-        self.selectBook  = Spinner(text='Current book:',
-                               values= books,
-                               size_hint=(1, None),
-                               height="100sp",
-                               pos_hint={'center_x': .5, 'center_y': .5})
-        remainderSett = Button(text='Remainder settings', background_color=(0.1, 0.1, 0.1, 1), font_size="15dp")
+        self.lippath = LIPSTICK_PATH
+        self.modality = 'dt'
+        self.lipstick = load_lipstick(self.lippath, self.modality)
+        self.rtl_flag = (self.lipstick.learning_language.iloc[0] == 'iw')
+        if self.flag_refresh:
+            self.word_ll, self.word_ul, self.iqu, self.nid = set_question(self.lippath, self.rtl_flag, size_head=6)
+            self.flag_refresh = False
+        
+        sm = ScreenManager()
+        sm.add_widget(MainMenuScreen(self.lippath, name="main_menu"))
+        sm.add_widget(WriteInputScreen(self.lippath, modality='dt', name="write_input"))
+        sm.add_widget(MultipleAnswerScreen(self.lippath, modality='rt', name="multiple_answer"))
+        sm.current = "main_menu"
+        return sm
 
-        box1 = BoxLayout()
-        box1.add_widget(practiceNow)
-
-        grid2 = GridLayout(cols=1)
-        for wg in [self.selectBook, manageWords, remainderSett]:
-            grid2.add_widget(wg)
-
-        self.grid.add_widget(box1)
-        self.grid.add_widget(grid2)
-        return self.grid
-
+    def run(self):
+        super().run()
 
 if __name__ == '__main__':
-    rootdir = '/Users/pabloherrero/Documents/ManHatTan/LIPSTICK/*'
-    MM = ManhattanMain(rootdir)
-    MM.run()
+    ManHatTan().run()
