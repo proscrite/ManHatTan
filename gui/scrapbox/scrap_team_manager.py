@@ -14,7 +14,7 @@ from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy_garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
 
-
+import spacy
 import logging
 logging.getLogger('matplotlib').setLevel(logging.WARNING)
 logging.basicConfig(level=logging.WARNING)
@@ -47,10 +47,10 @@ from common import *
 PATH_ANIM = '/Users/pabloherrero/Documents/ManHatTan/gui/Graphics/Battlers/'
 
 class MiniFigureCell(BoxLayout):
-    def __init__(self, team_lip, nid, **kwargs):
+    def __init__(self, team_lip, nid, screen_ref, **kwargs):
         super().__init__(orientation='horizontal', **kwargs)
         self.team_lip = team_lip
-        self.app = App.get_running_app()
+        self.screen_ref = screen_ref
 
         # Build the figure; store the figure in this cell
         self.fig = self.plot_team(nid=nid)
@@ -58,7 +58,7 @@ class MiniFigureCell(BoxLayout):
         # Create canvas widget for this figure
         self.canvas_widget = FigureCanvasKivyAgg(self.fig)
         # Append this canvas and related objects to the app's lists so they can be updated
-        self.app.canvas_widgets.append(self.canvas_widget)
+        self.screen_ref.canvas_widgets.append(self.canvas_widget)
 
         # Left button (with Hebrew support if needed)
         word_ll = self.team_lip.loc[nid, 'word_ll']
@@ -70,6 +70,7 @@ class MiniFigureCell(BoxLayout):
                              font_size=46,
                              background_color=(1, 1, 1, 0.3),
                              size_hint=(0.4, 1))
+        left_button.bind(on_release=self.screen_ref.trigger_similar_words)
         self.add_widget(left_button)
         self.add_widget(self.canvas_widget)
 
@@ -93,16 +94,16 @@ class MiniFigureCell(BoxLayout):
         impath = PATH_ANIM + str(nid).zfill(3) + '.png'
         anim = imread(impath)
         # Append the animation to the app's list
-        self.app.anim_list.append(anim)
+        self.screen_ref.anim_list.append(anim)
         
         # Use only the first frame for initialization
         # (Here we assume that the sprite is a strip with square frames)
         first_frame = anim[:, :anim.shape[0], :]
         # imshow returns the image object we later update
         im_obj = ax_main.imshow(first_frame, aspect="auto")
-        self.app.img_display.append(im_obj)
+        self.screen_ref.img_display.append(im_obj)
         # Initialize frame counter for this cell
-        self.app.nframes_list.append(0)
+        self.screen_ref.nframes_list.append(0)
 
         # Create additional axes for a health bar, etc.
         axbar = fig.add_subplot(gs[2, :3])
@@ -122,7 +123,9 @@ class MiniFigureCell(BoxLayout):
         axbar.axis("off")
         return fig
 
-class MyApp(App):
+
+# class MyApp(App):
+class TeamScreen(Screen):
     def __init__(self, lip_path, **kwargs):
         super().__init__(**kwargs)
         # Read team data and set index for easy access
@@ -136,15 +139,15 @@ class MyApp(App):
         self.anim_list = []     # Each is an animation image (sprite strip)
         self.nframes_list = []  # Current frame indices for each animation
 
-    def build(self):
         # Create a grid for all cells; adjust rows/cols as desired.
-        main_grid = GridLayout(rows=3, cols=2)
+        self.main_grid = GridLayout(rows=3, cols=2)
+        self.add_widget(self.main_grid)
         for nid in self.nids:
-            cell = MiniFigureCell(self.team_lip, nid)
-            main_grid.add_widget(cell)
+            cell = MiniFigureCell(self.team_lip, nid, self)
+            self.main_grid.add_widget(cell)
         # Schedule the update loop. You can schedule it here (or in on_start)
+    # def on_enter(): 
         Clock.schedule_interval(self.update, 1 / 30)
-        return main_grid
 
     def update(self, dt):
         # Update the animation frames for each cell.
@@ -169,11 +172,101 @@ class MyApp(App):
             # Update the image object of the corresponding cell:
             self.img_display[i].set_data(new_img)
 
-            # Optionally, update any other elements here
-
             # Force redraw of each cell's canvas widget:
             self.canvas_widgets[i].draw()
+    
+    def trigger_similar_words(self, instance):
+    
+        # if there’s already a SimilarWordsScreen, remove it:
+        if self.manager.has_screen('similar_words'):
+            self.manager.remove_widget(self.manager.get_screen('similar_words'))
 
+        # create & add the new screen
+        sws = SimilarWordsScreen(
+            name= 'similar_words',
+            selected_word = instance.text,  
+        )
+        self.manager.add_widget(sws)
+        self.manager.transition = SlideTransition(direction="left")
+        self.manager.current = 'similar_words'
+
+
+def filter_sofits(word):
+    # Filter out final letters (sofit) from the word
+    # and replace them with their regular counterparts for comparison and filtering
+    from hebrew import FINAL_MINOR_LETTER_MAPPINGS as sofit_dict
+    final_letter = word[-1]
+    if final_letter in sofit_dict.keys():
+        filtered_word = word[:-1] + sofit_dict[final_letter]
+        return filtered_word
+    else:
+        return word
+    
+def filter_contained(words, reference_word):
+    # Filter out words that contain the reference word
+    filtered_words = []
+    for w in words:
+        wf = filter_sofits(w)
+        if reference_word in wf:
+            print('Contained in original: ', w)
+            continue
+        filtered_words.append(w)
+    return filtered_words
+
+def calculate_similar_words(selected_word, nlp):
+    # Process the selected word with the NLP model
+    print('Calculating similar words')
+    selected_word = get_display(selected_word)
+    selected_filtered = filter_sofits(selected_word)
+    word_id = nlp.vocab.strings[selected_word]
+    word_vec = nlp.vocab.vectors[word_id]
+    most_similar_words = nlp.vocab.vectors.most_similar(np.asarray([word_vec]), n=25)
+    words = [nlp.vocab.strings[w] for w in most_similar_words[0][0]]
+    
+    filtered_words1 = filter_contained(words, selected_filtered)
+    filtered_words = filtered_words1[:6]
+    filtered_words = [get_display(w) for w in filtered_words]
+    print('Calculated similar words:', filtered_words)
+    return filtered_words
+
+
+class SimilarWordsScreen(Screen):
+    def __init__(self, selected_word, **kwargs):
+        super().__init__(**kwargs)
+        self.sel_word = selected_word
+        self.main_grid = GridLayout(cols=1, size_hint = (1, 1))
+        self.button_grid = GridLayout(cols = 2, size_hint = (1, 2))
+
+        vec_path = '/Users/pabloherrero/Documents/ManHatTan/notebooks/he_vectors'
+        self.nlp = spacy.load(vec_path)
+        self._init_similar_words()
+
+        back_btn = Button(text="Back to Menu", on_release=self.go_back,
+                          size_hint=(0.5, 1))
+        self.main_grid.add_widget(self.button_grid)
+        self.main_grid.add_widget(back_btn)
+
+        self.add_widget(self.main_grid)
+    
+    def _init_similar_words(self):
+        new_words = calculate_similar_words(self.sel_word, self.nlp)
+        for w in new_words:
+            label = Button(text = w, font_name=FONT_HEB, font_size=40,)
+                          
+            self.button_grid.add_widget(label)
+
+    def go_back(self, *args):
+        sm = self.manager
+        sm.transition = SlideTransition(direction="right")
+        sm.current = "team"
+
+class MyApp(App):
+    def build(self):
+        sm = ScreenManager()
+        team_screen = TeamScreen(name='team', lip_path='/Users/pabloherrero/Documents/ManHatTan/data/processed/LIPSTICK/hebrew_db_team.lip')
+        sm.add_widget(team_screen)
+
+        return sm
 if __name__ == '__main__':
     lipstick_path = '/Users/pabloherrero/Documents/ManHatTan/data/processed/LIPSTICK/hebrew_db_team.lip'
-    MyApp(lipstick_path).run()
+    MyApp().run()
