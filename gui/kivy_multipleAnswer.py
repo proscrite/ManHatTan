@@ -39,11 +39,11 @@ sys.path.append(ROOT_PATH+'/scripts/ML_duolingo')
 from duolingo_hlr import *
 from update_lipstick import *
 from add_correctButton import CorrectionDialog
-from gui.plot_pkmn_panel import *
+from plot_pkmn_panel import *
 
-import rnd_exercise_scheduler as daemon
+# import rnd_exercise_scheduler as daemon
 
-def set_question(lipstick_path : str, size_head : int = 10):
+def set_question(lipstick_path : str, rtl_flag = False, size_head : int = 10):
     """Read lipstick head (least practiced words) and select a random question and translation
         size_head : number of options to shuffle from
         return:
@@ -54,9 +54,20 @@ def set_question(lipstick_path : str, size_head : int = 10):
     lips_head = pd.read_csv(lipstick_path, nrows = size_head)
 
     rndi = np.random.randint(0, size_head)
-    qentry = lips_head.iloc[rndi]
+    qentry = lips_head.loc[rndi]
+    # print(qentry)
+
+    while qentry.rebag:
+        print('You have practiced this word enough')
+        print(qentry)
+        rndi = np.random.randint(0, size_head)
+        qentry = lips_head.iloc[rndi]
+        
+    nid = qentry.n_id
     word_ll, word_ul = qentry.word_ll, qentry.word_ul
-    return word_ll, word_ul, rndi
+
+    print(f'word_ll = {word_ll}, word_ul = {word_ul}, iqu = {rndi}, nid = {nid}')
+    return word_ll, word_ul, rndi, nid
 
 def rnd_options(lipstick_path : str, iquest : int, modality : str, n_options : int = 3, size_head : int = 0):
     """Pick at random n_options to set as false answers from lipstick head

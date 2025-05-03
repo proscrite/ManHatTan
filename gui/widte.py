@@ -9,7 +9,7 @@ sys.path.append(ROOT_PATH+'/scripts/ML_duolingo')
 from bidi.algorithm import get_display
 from duolingo_hlr import *
 from update_lipstick import *
-from gui.kivy_writeInput import *
+from kivy_writeInput import *
 
 def widte_main(lipstick_path, *largs):
     print('Welcome to WIDTE: Written Input Direct Translation Exercise')

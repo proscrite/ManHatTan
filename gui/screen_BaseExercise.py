@@ -57,6 +57,8 @@ class BaseExerciseScreen(Screen):
     def go_back(self, current_name, *args):
      # Get the ScreenManager
         sm = self.manager
+        # if current_name == None:
+        #     current_name = sm.current
         # Save the name of this screen so we can re-add it under the same name
         new_screen = type(self)(self.lippath, modality=self.modality, name=current_name)
         # Remove the old screen and add the new one.

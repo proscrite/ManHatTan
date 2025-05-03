@@ -10,7 +10,7 @@ from kivy.graphics.texture import Texture
 from skimage.io import imread
 from skimage import color, img_as_ubyte
 from skimage.transform import resize
-from kivy_MA_v2 import show_pkm, image_to_texture
+from gui.kivy_multipleAnswer import show_pkm, image_to_texture
 
 class MainLayout(BoxLayout):
     def __init__(self, **kwargs):
