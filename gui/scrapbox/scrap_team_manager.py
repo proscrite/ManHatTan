@@ -1,88 +1,179 @@
-import matplotlib.pyplot as plt
-from matplotlib.gridspec import GridSpec
+import os
+# os.environ['KIVY_NO_CONSOLELOG'] = '1'
+os.environ["KIVY_NO_FILELOG"] = "1"
+
 from kivy.app import App
+from kivy.clock import Clock
+from kivy.core.window import Window
+from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
+from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.gridlayout import GridLayout
+from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy_garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
+
+
+import logging
+logging.getLogger('matplotlib').setLevel(logging.WARNING)
+logging.basicConfig(level=logging.WARNING)
+from kivy.logger import Logger as kvLogger
+kvLogger.setLevel(logging.WARNING)
+from kivy.config import Config
+Config.set("kivy", "log_level", "warning")
+
+from bidi.algorithm import get_display
+
+import sys
+import matplotlib.pyplot as plt
+import matplotlib
+from matplotlib.gridspec import GridSpec
+from matplotlib.patches import FancyBboxPatch
+
+# Use only one backend!
+matplotlib.use("module://kivy.garden.matplotlib.backend_kivy")
+# matplotlib.use("Agg")
+from skimage.io import imread
+
 import numpy as np
+import pandas as pd
+
+ROOT_PATH = '/Users/pabloherrero/Documents/ManHatTan/'
+sys.path.append(ROOT_PATH + '/scripts/python_scripts/')
+from common import *
+# from plot_pkmn_panel import *  # Provides load_pkmn_stats and draw_rounded_bar
+
+PATH_ANIM = '/Users/pabloherrero/Documents/ManHatTan/gui/Graphics/Battlers/'
 
 class MiniFigureCell(BoxLayout):
-    def __init__(self, pk, **kwargs):
-        # Arrange the cell as a horizontal box:
-        # [Left Button | Matplotlib Figure (with gridspec) | Right Button]
+    def __init__(self, team_lip, nid, **kwargs):
         super().__init__(orientation='horizontal', **kwargs)
-        
-        # Left button with partial transparency
-        left_button = Button(text=pk["word_ll"],
-                             background_color=(1, 1, 1, 0.3),  # white with 0.3 alpha
-                             size_hint=(0.2, 1))
+        self.team_lip = team_lip
+        self.app = App.get_running_app()
+
+        # Build the figure; store the figure in this cell
+        self.fig = self.plot_team(nid=nid)
+
+        # Create canvas widget for this figure
+        self.canvas_widget = FigureCanvasKivyAgg(self.fig)
+        # Append this canvas and related objects to the app's lists so they can be updated
+        self.app.canvas_widgets.append(self.canvas_widget)
+
+        # Left button (with Hebrew support if needed)
+        word_ll = self.team_lip.loc[nid, 'word_ll']
+        if self.team_lip.loc[nid, 'learning_language'] == 'iw':
+            word_ll = get_display(word_ll)
+        left_button = Button(text=word_ll,
+                             opacity=1.0,
+                             font_name=FONT_HEB,
+                             font_size=46,
+                             background_color=(1, 1, 1, 0.3),
+                             size_hint=(0.4, 1))
         self.add_widget(left_button)
-        
-        # Create the mini-figure using GridSpec
-        # We create a figure manually rather than using plt.subplots()
-        fig = plt.figure(figsize=(3, 2))
-        # Create a gridspec with 3 rows and 4 columns
-        gs = GridSpec(3, 4, figure=fig,
-                      width_ratios=[0.3, 0.3, 0.3, 0.9],
-                      height_ratios=[1, 1, 1])
-        
-        # Create a main axes that spans the top two rows over all columns
+        self.add_widget(self.canvas_widget)
+
+    def plot_team(self, nid):
+        """ Plot the team of Pokémon using the provided LIP data."""
+        fig = plt.figure(figsize=(2, 3))
+        fig.patch.set_facecolor("black")
+        gs = GridSpec(4, 2,
+                      width_ratios=[1, 1],
+                      height_ratios=[4, 0.1, 1, 0.15],
+                      top=0.95, bottom=0.05, hspace=0.6)
+
+        # Get the stats using your helper function
+        entry_stats = load_pkmn_stats(self.team_lip, nid)
+
+        # Main axes for the animation (first two rows)
         ax_main = fig.add_subplot(gs[:2, :])
-        # Draw your main plot (for example, a line plot)
-        x = np.linspace(0, 10, 100)
-        ax_main.plot(x, np.sin(x), color="cyan")
-        ax_main.set_title(pk["name"], color="white")
         ax_main.set_facecolor('black')
-        # Hide ticks if desired
-        ax_main.set_xticks([])
-        ax_main.set_yticks([])
         
-        # Add additional subplots as needed (example: a health bar below)
-        # We place this health bar in the bottom row, spanning first three columns
-        ax_health = fig.add_subplot(gs[2, :3])
-        ax_health.set_xlim(0, 1)
-        # Here you can customize the “health bar” (example: a horizontal bar)
-        # For demonstration, we just fill part of the background
-        ax_health.barh(0, pk.get("health", 0.5), color='lime', height=0.5)
-        ax_health.set_yticks([])
-        ax_health.set_xticks([])
-        ax_health.set_facecolor('gray')
+        # Load the animation sprite
+        impath = PATH_ANIM + str(nid).zfill(3) + '.png'
+        anim = imread(impath)
+        # Append the animation to the app's list
+        self.app.anim_list.append(anim)
         
-        # Set the figure background to match if necessary
-        fig.patch.set_facecolor('black')
-        
-        # Wrap the figure in a Kivy widget
-        canvas = FigureCanvasKivyAgg(fig)
-        canvas.size_hint = (0.6, 1)  # Adjust size as needed
-        self.add_widget(canvas)
-        
-        # Right button (for example, showing HP or another stat)
-        # right_button = Button(text=f"HP: {pk.get('hp', 'N/A')}/100",
-        #                       background_color=(1, 1, 1, 0.3),
-        #                       size_hint=(0.2, 1))
-        # self.add_widget(right_button)
+        # Use only the first frame for initialization
+        # (Here we assume that the sprite is a strip with square frames)
+        first_frame = anim[:, :anim.shape[0], :]
+        # imshow returns the image object we later update
+        im_obj = ax_main.imshow(first_frame, aspect="auto")
+        self.app.img_display.append(im_obj)
+        # Initialize frame counter for this cell
+        self.app.nframes_list.append(0)
+
+        # Create additional axes for a health bar, etc.
+        axbar = fig.add_subplot(gs[2, :3])
+        axbar.set_facecolor("black")
+        hp = entry_stats['hp']
+        level = entry_stats['level']
+        draw_rounded_bar(axbar, width=0.8, color='lightgray',
+                         y_offset=0.2, bar_height=0.3)
+        draw_rounded_bar(axbar, width=hp * 0.8, color='green',
+                         y_offset=0.2, bar_height=0.3)
+        axbar.text(0.5, 0.8, f'Level: {level}/100', size=16,
+                   ha='center', color='yellow', transform=axbar.transAxes)
+        axbar.text(0.5, -0.5, f'HP = {int(hp * 100)}/100', size=16,
+                   ha='center', color='yellow', transform=axbar.transAxes)
+        axbar.set_xlim(0, 1)
+        axbar.set_ylim(0, 1)
+        axbar.axis("off")
+        return fig
 
 class MyApp(App):
+    def __init__(self, lip_path, **kwargs):
+        super().__init__(**kwargs)
+        # Read team data and set index for easy access
+        self.team_lip = pd.read_csv(lip_path)
+        self.team_lip = self.team_lip.set_index('n_id', drop=False)
+        self.nids = np.array(self.team_lip.n_id[:6].values)
+
+        # Prepare lists to store update-critical objects from each MiniFigureCell:
+        self.canvas_widgets = []
+        self.img_display = []   # Each is a matplotlib image object returned by imshow
+        self.anim_list = []     # Each is an animation image (sprite strip)
+        self.nframes_list = []  # Current frame indices for each animation
+
     def build(self):
-        # Main grid: 2 rows x 3 columns (or as needed)
-        main_grid = GridLayout(rows=2, cols=3)
-        
-        # Example Pokémon/stats data for each cell
-        pokemons = [
-            {"name": "Aipom",    "word_ll": "Scholarship", "hp": 15, "health": 0.7},
-            {"name": "Krabby",   "word_ll": "Intention",   "hp": 14, "health": 0.6},
-            {"name": "Oshawott", "word_ll": "Towel",       "hp": 16, "health": 0.8},
-            {"name": "Ralts",    "word_ll": "To Arrive",   "hp": 16, "health": 0.65},
-            {"name": "Chimchar", "word_ll": "Grade",       "hp": 16, "health": 0.9},
-            {"name": "Joltik",   "word_ll": "Screen",      "hp": 10, "health": 0.5}
-        ]
-        
-        for pk in pokemons:
-            cell = MiniFigureCell(pk)
+        # Create a grid for all cells; adjust rows/cols as desired.
+        main_grid = GridLayout(rows=3, cols=2)
+        for nid in self.nids:
+            cell = MiniFigureCell(self.team_lip, nid)
             main_grid.add_widget(cell)
-        
+        # Schedule the update loop. You can schedule it here (or in on_start)
+        Clock.schedule_interval(self.update, 1 / 30)
         return main_grid
 
+    def update(self, dt):
+        # Update the animation frames for each cell.
+        # Loop over each cell's stored image and animation references.
+        for i in range(len(self.nids)):
+            # Ensure that indices exist in all our lists
+            if i >= len(self.img_display) or i >= len(self.anim_list):
+                continue
+
+            anim = self.anim_list[i]
+            frame_height = anim.shape[0]
+            # Calculate how many frames there are assuming frames are arranged horizontally:
+            total_frames = anim.shape[1] // frame_height
+
+            self.nframes_list[i] = (self.nframes_list[i] + 1) % total_frames
+
+            # Determine the slice for the new frame:
+            start = frame_height * self.nframes_list[i]
+            end = frame_height * (self.nframes_list[i] + 1)
+            new_img = anim[:, start:end, :]
+
+            # Update the image object of the corresponding cell:
+            self.img_display[i].set_data(new_img)
+
+            # Optionally, update any other elements here
+
+            # Force redraw of each cell's canvas widget:
+            self.canvas_widgets[i].draw()
+
 if __name__ == '__main__':
-    MyApp().run()
+    lipstick_path = '/Users/pabloherrero/Documents/ManHatTan/data/processed/LIPSTICK/hebrew_db_team.lip'
+    MyApp(lipstick_path).run()
