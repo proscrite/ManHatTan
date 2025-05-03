@@ -20,7 +20,7 @@ from common import *
 from add_correctButton import CorrectionDialog
 from EachOption import EachOption
 from screen_BaseExercise import BaseExerciseScreen
-from plot_pkmn_panel import FigureCanvasKivyAgg
+from common import FigureCanvasKivyAgg
 
 ROOT_PATH = '/Users/pabloherrero/Documents/ManHatTan/'
 FONT_HEB = ROOT_PATH + '/data/fonts/NotoSansHebrew.ttf'

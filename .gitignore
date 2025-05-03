@@ -16,3 +16,9 @@ scripts/applescripts/*
 **/.ipynb_checkpoints/*-checkpoint.ipynb
 **/learning_traces.13m.csv
 scripts/ML_duolingo/*
+gui/icons/*.png
+*.bin
+notebooks/he_vectors/*
+notebooks/he_vectors/vectors.txt
+notebooks/he_vectors/vocab/vectors
+notebooks/he_vectors/vocab/key2row

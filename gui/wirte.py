@@ -10,9 +10,9 @@ from bidi.algorithm import get_display
 from duolingo_hlr import *
 from update_lipstick import *
 from kivy_multipleAnswer import *
-import rnd_exercise_scheduler as daemon
+# import rnd_exercise_scheduler as daemon
 
-from gui.kivy_writeInput import *
+from kivy_writeInput import *
 
 def wirte_main(lipstick_path, *largs):
     print('Welcome to WIRTE: Written Input Reverse Translation Exercise')

@@ -12,9 +12,9 @@ from kivy.core.window import Window
 from kivy.clock import Clock
 
 from add_correctButton import CorrectionDialog
-from gui.kivy_multipleAnswer import set_question, update_all
+from kivy_multipleAnswer import set_question, update_all
 from formats.format_text_input import FTextInput, RTLTextInput
-from gui.plot_pkmn_panel import *
+from plot_pkmn_panel import *
 
 import threading
 import time
