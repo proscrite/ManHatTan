@@ -8,6 +8,8 @@ from kivy.core.window import Window
 from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy_garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
@@ -54,15 +56,15 @@ class ShowTeamScreen(Screen):
         self.img_display = []
         self.anim_list = []
         self.nframes_list = []
-        self.nids = None
-        self.fig = None
 
         self.nids = np.array(self.team_lip.n_id[:6].values)
         print(self.nids)
         self.fig = self.plot_team(lipstick=self.team_lip, nids=self.nids)
 
         # Create a BoxLayout to hold the Matplotlib figure
-        self.box = BoxLayout(orientation="vertical", spacing = 10, padding = 10)
+        # self.box = BoxLayout(orientation="vertical", spacing = 10, padding = 10)
+        self.box = FloatLayout()
+        self.buttons_layout = BoxLayout(orientation='horizontal', size_hint=(1, 0.2), pos_hint={'top': 1})
 
         # Optionally add a header or control buttons
         header = BoxLayout(size_hint=(1, 0.1))
@@ -81,13 +83,33 @@ class ShowTeamScreen(Screen):
         # Embed the Matplotlib figure using FigureCanvasKivyAgg
         self.canvas_widget = FigureCanvasKivyAgg(self.fig)
         self.canvas_widget.size_hint_x = 0.5
-        self.canvas_widget.bind(width=lambda instance, width: setattr(instance, 'height', width * 0.5))
+        self.canvas_widget.bind(width=lambda instance, width: setattr(instance, 'height', width * 0.4))
         anchor = AnchorLayout(anchor_x='center', anchor_y='bottom', size_hint_y=1)
         
         anchor.add_widget(self.canvas_widget)
         self.box.add_widget(anchor)
-        # self.box.add_widget(self.canvas_widget)
+        self.get_name_buttons(self.team_lip, self.nids, self.box)
+        
         self.add_widget(self.box)
+
+    def get_name_buttons(self, lipstick, nids, box):
+        buttons_grid = GridLayout(cols=2, size_hint_y=1, spacing = [0.1, 0.1])
+
+        for i, nid in enumerate(nids):
+            word_ll = lipstick.loc[nid, 'word_ul']
+            # if lipstick.loc[nid, 'learning_language'] == 'iw':
+            #     word_ll = get_display(word_ll)
+            print(word_ll)
+            button_name = Button(text=word_ll,
+                                 size_hint=(0.1, 0.05), font_name = FONT_HEB, font_size = 46, 
+                                 pos_hint={'x': i/6.0, 'y': i/12.0},
+                                 background_color=(0.1, 1., 0.1, 1),
+                                 opacity=0.2
+            )
+            button_name.bind(on_release=self.go_back)
+            buttons_grid.add_widget(button_name)
+        box.add_widget(buttons_grid)
+        
 
     def plot_team(self, lipstick, nids):
         self.fig = plt.figure(figsize=(3, 20))
@@ -116,11 +138,9 @@ class ShowTeamScreen(Screen):
             self.img_display.append(im_obj)
             self.nframes_list.append(0)
             # ax.set(title=word_ll)
-            # ax.title.set_color('yellow')
-            # ax.title.set_fontsize(26)
-            button_name = Button(text=word_ll, size_hint=(1, 0.2), background_color=(0.1, 0.1, 0.1, 1))
-            button_name.bind(on_release=lambda x, nid=nid: self.go_back)
-            
+            ax.title.set_color('yellow')
+            ax.title.set_fontsize(26)
+
             # Create a bar chart below the image
             hp = entry_stats['hp']
             level = entry_stats['level']
