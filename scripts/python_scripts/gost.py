@@ -42,6 +42,7 @@ def gost2gota(gost: pd.DataFrame, langs: dict, ll: str, ul:str):
 
 def remove_nikud(gost):
     gost['iw'] = gost['iw'].apply(lambda x: Hebrew(x).no_niqqud())
+    gost['iw'] = gost['iw'].apply(lambda x: str(x))
     return gost
 
 def gost_main(gost_path: str, ll: str, ul:str):
@@ -57,8 +58,9 @@ def gost_main(gost_path: str, ll: str, ul:str):
     if ll == 'iw':
         gosta = remove_nikud(gosta)
 
+    # print('GOST after remove nikud:', gosta.head(5) )
     ## Refactor: this is basically init_lipstick
-    new_lip = set_lip(gosta)
+    new_lip = set_lip(gosta, flag_lexeme=True)
     lippath = make_lippath(gost_path)
 
     if check_lip_exists(gost_path, lippath):
