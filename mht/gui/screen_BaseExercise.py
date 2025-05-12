@@ -1,7 +1,7 @@
 # base_exercise_screen.py
 from kivy.uix.screenmanager import Screen, SlideTransition
 import time
-from common import *
+from mht.gui.common import *
 from bidi.algorithm import get_display
 
 ROOT_PATH = '/Users/pabloherrero/Documents/ManHatTan/mht'

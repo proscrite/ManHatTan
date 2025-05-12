@@ -40,9 +40,8 @@ import numpy as np
 import pandas as pd
 
 ROOT_PATH = '/Users/pabloherrero/Documents/ManHatTan/mht/'
-sys.path.append(ROOT_PATH + '/scripts/python_scripts/')
-from common import *
-from plot_pkmn_panel import load_pkmn_stats, draw_rounded_bar, draw_health_bar
+from mht.gui.common import *
+from mht.gui.plot_pkmn_panel import load_pkmn_stats, draw_rounded_bar, draw_health_bar
 
 PATH_ANIM = '/Users/pabloherrero/Documents/ManHatTan/mht/gui/Graphics/Battlers/'
 

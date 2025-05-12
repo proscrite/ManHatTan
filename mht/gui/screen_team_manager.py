@@ -43,14 +43,11 @@ import numpy as np
 import pandas as pd
 
 ROOT_PATH = '/Users/pabloherrero/Documents/ManHatTan/mht/'
-sys.path.append(ROOT_PATH + '/scripts/python_scripts/')
-sys.path.append(ROOT_PATH + '/gui/')
+from mht.gui.common import *
+from mht.scripts.python_scripts.bulkTranslate import bulk_translate
 
-# from ..scripts.python_scripts.bulkTranslate import bulk_translate
 # from gui.screen_multipleAnswer import MultipleAnswerScreen
 
-from common import *
-# from plot_pkmn_panel import *  # Provides load_pkmn_stats and draw_rounded_bar
 
 PATH_ANIM = ROOT_PATH + '/gui/Graphics/Battlers/'
 
