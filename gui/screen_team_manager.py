@@ -25,6 +25,7 @@ Config.set("kivy", "log_level", "warning")
 
 from bidi.algorithm import get_display
 
+from random import sample
 import sys
 import matplotlib.pyplot as plt
 import matplotlib
@@ -35,23 +36,30 @@ from matplotlib.patches import FancyBboxPatch
 matplotlib.use("module://kivy.garden.matplotlib.backend_kivy")
 # matplotlib.use("Agg")
 from skimage.io import imread
-
+import asyncio
+from googletrans import Translator
+from googletrans import LANGUAGES
 import numpy as np
 import pandas as pd
 
 ROOT_PATH = '/Users/pabloherrero/Documents/ManHatTan/'
 sys.path.append(ROOT_PATH + '/scripts/python_scripts/')
+sys.path.append(ROOT_PATH + '/gui/')
+
+# from ..scripts.python_scripts.bulkTranslate import bulk_translate
+# from gui.screen_multipleAnswer import MultipleAnswerScreen
+
 from common import *
 # from plot_pkmn_panel import *  # Provides load_pkmn_stats and draw_rounded_bar
 
 PATH_ANIM = '/Users/pabloherrero/Documents/ManHatTan/gui/Graphics/Battlers/'
 
 class MiniFigureCell(BoxLayout):
-    def __init__(self, team_lip, nid, screen_ref, **kwargs):
+    def __init__(self, team_lip, nid, screen_ref, button_active = True, **kwargs):
         super().__init__(orientation='horizontal', **kwargs)
         self.team_lip = team_lip
         self.screen_ref = screen_ref
-
+        self.button_active = button_active
         # Build the figure; store the figure in this cell
         self.fig = self.plot_team(nid=nid)
 
@@ -69,7 +77,8 @@ class MiniFigureCell(BoxLayout):
                              font_name=FONT_HEB,
                              font_size=46,
                              background_color=(1, 1, 1, 0.3),
-                             size_hint=(0.4, 1))
+                             size_hint=(0.4, 1),
+                             disabled = not self.button_active)
         left_button.bind(on_release=self.screen_ref.trigger_similar_words)
         self.add_widget(left_button)
         self.add_widget(self.canvas_widget)
@@ -126,14 +135,14 @@ class MiniFigureCell(BoxLayout):
 
 # class MyApp(App):
 class TeamScreen(Screen):
-    def __init__(self, lip_path, **kwargs):
+    def __init__(self, lip_path, buttons_active: bool = False, **kwargs):
         super().__init__(**kwargs)
         # Read team data and set index for easy access
         self.team_lip = pd.read_csv(lip_path)
         self.team_lip = self.team_lip.set_index('n_id', drop=False)
         self.nids = np.array(self.team_lip.n_id[:6].values)
+        self.buttons_active = buttons_active
 
-        # Prepare lists to store update-critical objects from each MiniFigureCell:
         self.canvas_widgets = []
         self.img_display = []   # Each is a matplotlib image object returned by imshow
         self.anim_list = []     # Each is an animation image (sprite strip)
@@ -143,7 +152,7 @@ class TeamScreen(Screen):
         self.main_grid = GridLayout(rows=3, cols=2)
         self.add_widget(self.main_grid)
         for nid in self.nids:
-            cell = MiniFigureCell(self.team_lip, nid, self)
+            cell = MiniFigureCell(self.team_lip, nid, self, buttons_active)
             self.main_grid.add_widget(cell)
         # Schedule the update loop. You can schedule it here (or in on_start)
     # def on_enter(): 
@@ -185,55 +194,19 @@ class TeamScreen(Screen):
         sws = SimilarWordsScreen(
             name= 'similar_words',
             selected_word = instance.text,  
+            lipstick= self.team_lip
         )
         self.manager.add_widget(sws)
         self.manager.transition = SlideTransition(direction="left")
         self.manager.current = 'similar_words'
 
 
-def filter_sofits(word):
-    # Filter out final letters (sofit) from the word
-    # and replace them with their regular counterparts for comparison and filtering
-    from hebrew import FINAL_MINOR_LETTER_MAPPINGS as sofit_dict
-    final_letter = word[-1]
-    if final_letter in sofit_dict.keys():
-        filtered_word = word[:-1] + sofit_dict[final_letter]
-        return filtered_word
-    else:
-        return word
-    
-def filter_contained(words, reference_word):
-    # Filter out words that contain the reference word
-    filtered_words = []
-    for w in words:
-        wf = filter_sofits(w)
-        if reference_word in wf:
-            print('Contained in original: ', w)
-            continue
-        filtered_words.append(w)
-    return filtered_words
-
-def calculate_similar_words(selected_word, nlp):
-    # Process the selected word with the NLP model
-    print('Calculating similar words')
-    selected_word = get_display(selected_word)
-    selected_filtered = filter_sofits(selected_word)
-    word_id = nlp.vocab.strings[selected_word]
-    word_vec = nlp.vocab.vectors[word_id]
-    most_similar_words = nlp.vocab.vectors.most_similar(np.asarray([word_vec]), n=25)
-    words = [nlp.vocab.strings[w] for w in most_similar_words[0][0]]
-    
-    filtered_words1 = filter_contained(words, selected_filtered)
-    filtered_words = filtered_words1[:6]
-    filtered_words = [get_display(w) for w in filtered_words]
-    print('Calculated similar words:', filtered_words)
-    return filtered_words
-
 
 class SimilarWordsScreen(Screen):
-    def __init__(self, selected_word, **kwargs):
+    def __init__(self, selected_word, lipstick, **kwargs):
         super().__init__(**kwargs)
         self.sel_word = selected_word
+        self.team_lip = lipstick
         self.main_grid = GridLayout(cols=1, size_hint = (1, 1))
         self.button_grid = GridLayout(cols = 2, size_hint = (1, 2))
 
@@ -250,6 +223,10 @@ class SimilarWordsScreen(Screen):
     
     def _init_similar_words(self):
         new_words = calculate_similar_words(self.sel_word, self.nlp)
+        sample_words = sample(new_words, 4)
+        source_series = pd.Series(sample_words)
+        dest_series = bulk_translate(source_series, dest_lang = self.team_lip.ui_language)
+        
         for w in new_words:
             label = Button(text = w, font_name=FONT_HEB, font_size=40,)
                           

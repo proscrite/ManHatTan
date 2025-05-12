@@ -42,7 +42,7 @@ import pandas as pd
 ROOT_PATH = '/Users/pabloherrero/Documents/ManHatTan/'
 sys.path.append(ROOT_PATH + '/scripts/python_scripts/')
 from common import *
-# from plot_pkmn_panel import *  # Provides load_pkmn_stats and draw_rounded_bar
+from plot_pkmn_panel import load_pkmn_stats, draw_rounded_bar, draw_health_bar
 
 PATH_ANIM = '/Users/pabloherrero/Documents/ManHatTan/gui/Graphics/Battlers/'
 
@@ -107,7 +107,7 @@ class ShowTeamScreen(Screen):
                                  opacity=0.2
             )
             button_name.bind(on_release=self.go_back)
-            buttons_grid.add_widget(button_name)
+            # buttons_grid.add_widget(button_name)
         box.add_widget(buttons_grid)
         
 
