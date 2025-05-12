@@ -8,17 +8,15 @@
 *.pdf
 *.sh~
 /dump_folder/*
-gui/Graphics/*
-gui/__pycache__/*.pyc
+mht/gui/Graphics/*
+mht/gui/__pycache__/*.pyc
 *.pyc
 scripts/applescripts/*
 *scpt
 **/.ipynb_checkpoints/*-checkpoint.ipynb
 **/learning_traces.13m.csv
 scripts/ML_duolingo/*
-gui/icons/*.png
+mht/gui/icons/*.png
 *.bin
-notebooks/he_vectors/*
-notebooks/he_vectors/vectors.txt
-notebooks/he_vectors/vocab/vectors
-notebooks/he_vectors/vocab/key2row
+mht/data/processed/he_vectors/*
+mht/data/processed/he_vectors/** */

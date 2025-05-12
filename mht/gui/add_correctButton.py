@@ -15,12 +15,12 @@ from bidi.algorithm import get_display
 from functools import partial
 from time import sleep
 import sys
-ROOT_PATH = '/Users/pabloherrero/Documents/ManHatTan/'
+ROOT_PATH = '/Users/pabloherrero/Documents/ManHatTan/mht'
 sys.path.append(ROOT_PATH+'/scripts/python_scripts/')
 sys.path.append(ROOT_PATH+'/scripts/ML_duolingo')
 FONT_HEB = ROOT_PATH+'/data/fonts/NotoSansHebrew.ttf'
 
-from duolingo_hlr import *
+# from duolingo_hlr import *
 from update_lipstick import *
 from formats.format_text_input import FTextInput, RTLTextInput
 

@@ -22,7 +22,7 @@ from EachOption import EachOption
 from screen_BaseExercise import BaseExerciseScreen
 from common import FigureCanvasKivyAgg
 
-ROOT_PATH = '/Users/pabloherrero/Documents/ManHatTan/'
+ROOT_PATH = '/Users/pabloherrero/Documents/ManHatTan/mht'
 FONT_HEB = ROOT_PATH + '/data/fonts/NotoSansHebrew.ttf'
 PATH_ANIM = ROOT_PATH + '/gui/Graphics/Battlers/'
 

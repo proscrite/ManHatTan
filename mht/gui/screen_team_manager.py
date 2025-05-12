@@ -42,7 +42,7 @@ from googletrans import LANGUAGES
 import numpy as np
 import pandas as pd
 
-ROOT_PATH = '/Users/pabloherrero/Documents/ManHatTan/'
+ROOT_PATH = '/Users/pabloherrero/Documents/ManHatTan/mht/'
 sys.path.append(ROOT_PATH + '/scripts/python_scripts/')
 sys.path.append(ROOT_PATH + '/gui/')
 
@@ -52,7 +52,7 @@ sys.path.append(ROOT_PATH + '/gui/')
 from common import *
 # from plot_pkmn_panel import *  # Provides load_pkmn_stats and draw_rounded_bar
 
-PATH_ANIM = '/Users/pabloherrero/Documents/ManHatTan/gui/Graphics/Battlers/'
+PATH_ANIM = ROOT_PATH + '/gui/Graphics/Battlers/'
 
 class MiniFigureCell(BoxLayout):
     def __init__(self, team_lip, nid, screen_ref, button_active = True, **kwargs):
@@ -135,7 +135,7 @@ class MiniFigureCell(BoxLayout):
 
 # class MyApp(App):
 class TeamScreen(Screen):
-    def __init__(self, lip_path, buttons_active: bool = False, **kwargs):
+    def __init__(self, lip_path, buttons_active: bool = True, **kwargs):
         super().__init__(**kwargs)
         # Read team data and set index for easy access
         self.team_lip = pd.read_csv(lip_path)
@@ -210,7 +210,7 @@ class SimilarWordsScreen(Screen):
         self.main_grid = GridLayout(cols=1, size_hint = (1, 1))
         self.button_grid = GridLayout(cols = 2, size_hint = (1, 2))
 
-        vec_path = '/Users/pabloherrero/Documents/ManHatTan/notebooks/he_vectors'
+        vec_path = '/Users/pabloherrero/Documents/ManHatTan/mht/data/processed/he_vectors'
         self.nlp = spacy.load(vec_path)
         self._init_similar_words()
 
@@ -225,7 +225,7 @@ class SimilarWordsScreen(Screen):
         new_words = calculate_similar_words(self.sel_word, self.nlp)
         sample_words = sample(new_words, 4)
         source_series = pd.Series(sample_words)
-        dest_series = bulk_translate(source_series, dest_lang = self.team_lip.ui_language)
+        # dest_series = bulk_translate(source_series, dest_lang = self.team_lip.ui_language)
         
         for w in new_words:
             label = Button(text = w, font_name=FONT_HEB, font_size=40,)
@@ -240,7 +240,7 @@ class SimilarWordsScreen(Screen):
 class MyApp(App):
     def build(self):
         sm = ScreenManager()
-        team_screen = TeamScreen(name='team', lip_path='/Users/pabloherrero/Documents/ManHatTan/data/processed/LIPSTICK/hebrew_db_team.lip')
+        team_screen = TeamScreen(name='team', lip_path='/Users/pabloherrero/Documents/ManHatTan/mht/data/processed/LIPSTICK/hebrew_db_team.lip')
         sm.add_widget(team_screen)
 
         return sm
