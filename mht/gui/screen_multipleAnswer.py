@@ -16,7 +16,7 @@ from skimage.io import imread
 from bidi.algorithm import get_display
 
 from common import *
-# from update_lipstick import update_all
+
 from add_correctButton import CorrectionDialog
 from EachOption import EachOption
 from screen_BaseExercise import BaseExerciseScreen
@@ -35,8 +35,9 @@ class MultipleAnswerScreen(BaseExerciseScreen):
         self.app = App.get_running_app()
         self.app.lipstick = self.lipstick
         self.app_start_time = time.time()
+        self.teamlippath = TEAM_LIP_PATH
 
-        self.word_ll, self.word_ul, self.iqu, self.nid = set_question(self.lippath, self.rtl_flag, size_head=6)
+        self.word_ll, self.word_ul, self.iqu, self.nid = set_question(self.teamlippath, self.rtl_flag, size_head=6)
 
         self.build_ui()
     
@@ -61,7 +62,8 @@ class MultipleAnswerScreen(BaseExerciseScreen):
         self.upper_panel.add_widget(self.animated_container)
         
         # Answer buttons (center column)
-        options = rnd_options(self.lippath, iquest=self.iqu, modality=self.modality)
+        # options = rnd_options(self.lippath, iquest=self.iqu, modality=self.modality)
+        options = sample_similar_options(self.lippath, self.iqu, self.modality)
         options[self.answer] = True
         shufOpts = shuffle_dic(options)
         self.load_answers(shufOpts)
@@ -108,7 +110,7 @@ class MultipleAnswerScreen(BaseExerciseScreen):
         # App.get_running_app().root.current = "main_menu"
 
     # def background_update_all(self):
-        update_all(self.app.lipstick, self.app.lippath, self.app.word_ul, perf, self.speed, mode='m' + self.app.modality)        
+        update_all(self.app.lipstick, self.app.teamlippath, self.app.word_ul, perf, self.speed, mode='m' + self.app.modality)        
         
         current_name = self.name
         self.go_back(current_name)

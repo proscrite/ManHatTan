@@ -12,6 +12,7 @@ class BaseExerciseScreen(Screen):
     def __init__(self, lipstick_path, modality, **kwargs):
         super(BaseExerciseScreen, self).__init__(**kwargs)
         self.lippath = lipstick_path
+        # self.teamlippath = lipstick_path.replace('.lip', '_team.lip')
         self.modality = modality
         self.start_time = time.time()
         self.lipstick = load_lipstick(self.lippath, self.modality)

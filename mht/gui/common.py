@@ -6,7 +6,7 @@ from matplotlib.patches import FancyBboxPatch
 from matplotlib.gridspec import GridSpec
 from skimage.io import imread
 from bidi.algorithm import get_display
-
+from random import sample
 from kivy.app import App
 from kivy.uix.image import Image
 from kivy.uix.behaviors import ButtonBehavior
@@ -22,8 +22,7 @@ from kivy.uix.scrollview import ScrollView
 from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.uix.screenmanager import Screen, ScreenManager
-from kivy.garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
-
+from kivy_garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
 
 matplotlib.use("module://kivy.garden.matplotlib.backend_kivy")
 
@@ -34,6 +33,7 @@ ROOT_PATH = '/Users/pabloherrero/Documents/ManHatTan/'
 FONT_HEB = ROOT_PATH + '/data/fonts/NotoSansHebrew.ttf'
 PATH_ANIM = ROOT_PATH + '/gui/Graphics/Battlers/'
 LIPSTICK_PATH = ROOT_PATH + '/data/processed/LIPSTICK/hebrew_db.lip'
+TEAM_LIP_PATH = LIPSTICK_PATH.replace('.lip', '_team.lip')
 
 # --- Utility Functions ---
 def strip_accents(s):
@@ -52,6 +52,53 @@ def load_lipstick(lippath, modality):
     lipstick.set_index(index, inplace=True, drop=False)
     return lipstick
 
+def load_similar_words(pathout, target_word):
+    word_vectors = np.load(pathout)
+    tokens = word_vectors['tokens']
+    vectors = word_vectors['vectors']
+    token_to_vector = {token: vector for token, vector in zip(tokens, vectors)}
+    try:
+        target_vector = token_to_vector[target_word]
+    except IndexError as e:
+        print(e, f' with {target_word}')
+        return
+    similarities = []
+
+    norm = np.dot(target_vector, target_vector)
+    for word in tokens:
+        token = token_to_vector[word]
+        sim = np.dot(target_vector, token) / norm
+        similarities.append((word, sim))
+    similarities.sort(key=lambda x: x[1], reverse=True)
+    # return the top 3 most similar words
+    return [word for word, _ in similarities[1:10]]
+
+def load_similar_words_nlp(lip, target_word, nlp):
+    """Load options for multiple answer  by comparing similarity with a target word."""
+
+    # Define the target word and process it to get its token (make sure it has a vector)
+    target_token = nlp(target_word)[0]
+
+    other_words = lip.word_ll.values.tolist()  # List of words to compare with the target word
+    # Compute similarity for each word in the list
+    similarities = []
+    for word in other_words:
+        token = nlp(word)[0]
+        # Check if both tokens have vectors
+        if target_token.has_vector and token.has_vector:
+            sim = target_token.similarity(token)
+            similarities.append((word, sim))
+        else:
+            similarities.append((word, 0.0))
+
+    # Sort words by similarity in descending order
+    similarities.sort(key=lambda x: x[1], reverse=True)
+
+    # Print the top 10 most similar words
+    for word, score in similarities[:10]:
+        print(f"{word}: {score:.3f}, {lip.loc[word, 'word_ul']}")
+    return similarities[:3]
+
 def set_question(lipstick_path : str, rtl_flag = False, size_head : int = 10):
     """Read lipstick head (least practiced words) and select a random question and translation
         size_head : number of options to shuffle from
@@ -60,6 +107,7 @@ def set_question(lipstick_path : str, rtl_flag = False, size_head : int = 10):
           word_ul : word in user language from random head entry
           rndi : index number from random entry (to avoid option repetition in MA)
     """
+    print(f'In set_question, lipstick_path: {lipstick_path}')
     lips_head = pd.read_csv(lipstick_path, nrows = size_head)
 
     rndi = np.random.randint(0, size_head)
@@ -67,8 +115,8 @@ def set_question(lipstick_path : str, rtl_flag = False, size_head : int = 10):
     # print(qentry)
 
     while qentry.rebag:
-        print('You have practiced this word enough')
-        print(qentry)
+        # print(f'The word {qentry.word_ll} has been practiced enough')
+
         rndi = np.random.randint(0, size_head)
         qentry = lips_head.iloc[rndi]
         
@@ -78,6 +126,27 @@ def set_question(lipstick_path : str, rtl_flag = False, size_head : int = 10):
     print(f'word_ll = {word_ll}, word_ul = {word_ul}, iqu = {rndi}, nid = {nid}')
     return word_ll, word_ul, rndi, nid
 
+def sample_similar_options(lipstick_path : str, iquest : int, modality : str, n_options : int = 3):
+    """ Pick at random n_options to set as false answers from lipstick head"""
+    lipstick_path = '/Users/pabloherrero/Documents/ManHatTan/data/processed/LIPSTICK/hebrew_db.lip'
+    if modality == 'dt': word_lang = 'word_ul'
+    elif modality == 'rt': word_lang = 'word_ll'
+    else: print('Incorrect modality in sample_similar_options function')
+    lip = pd.read_csv(lipstick_path)
+    target_word = lip.iloc[iquest]['word_ll']
+    lip = lip.set_index('word_ll', drop=False)
+    options = {}
+    #### Change this: to be extracted from lipstick_path:
+    vector_path = '/Users/pabloherrero/Documents/ManHatTan/data/processed/vectors_lip/vectors_heb_lip.npz'
+    similar_words = load_similar_words(vector_path, target_word=target_word)
+    # similar_words = [get_display(w) for w in similar_words]
+    rnd_similar_words = sample(similar_words, n_options)
+    for i, rnd_w in enumerate(rnd_similar_words):
+        rndOp = lip.loc[rnd_w][word_lang]
+
+        options[rndOp] = False
+    return options
+
 def rnd_options(lipstick_path : str, iquest : int, modality : str, n_options : int = 3, size_head : int = 0):
     """Pick at random n_options to set as false answers from lipstick head
         (full if size_head == 0)
@@ -85,7 +154,6 @@ def rnd_options(lipstick_path : str, iquest : int, modality : str, n_options : i
             'dt' for Direct Translation (Learning -> User)
             'rt' for Reverse Translation (User -> Learning)
         Return dict options {'word' : False}"""
-    from random import sample
 
     if modality == 'dt': word_lang = 'word_ul'
     elif modality == 'rt': word_lang = 'word_ll'
@@ -96,7 +164,7 @@ def rnd_options(lipstick_path : str, iquest : int, modality : str, n_options : i
         size_head = len(lips_head)
     else:
         lips_head = pd.read_csv(lipstick_path, nrows = size_head)
-
+    
     options = {}
     list_head = list(range(size_head))
     if iquest in list_head:
@@ -119,6 +187,49 @@ def shuffle_dic(opts : dict):
     shuffle(b)
     shufOpt = OrderedDict(b)
     return  shufOpt
+
+# --- Filtering functions ---
+
+def filter_sofits(word):
+    # Filter out final letters (sofit) from the word
+    # and replace them with their regular counterparts for comparison and filtering
+    from hebrew import FINAL_MINOR_LETTER_MAPPINGS as sofit_dict
+    final_letter = word[-1]
+    if final_letter in sofit_dict.keys():
+        filtered_word = word[:-1] + sofit_dict[final_letter]
+        return filtered_word
+    else:
+        return word
+    
+def filter_contained(words, reference_word):
+    # Filter out words that contain the reference word
+    filtered_words = []
+    for w in words:
+        wf = filter_sofits(w)
+        if reference_word in wf:
+            print('Contained in original: ', w)
+            continue
+        filtered_words.append(w)
+    return filtered_words
+
+# --- Similar words functions ---
+
+def calculate_similar_words(selected_word, nlp):
+    # Process the selected word with the NLP model
+    print('Calculating similar words')
+    selected_word = get_display(selected_word)
+    selected_filtered = filter_sofits(selected_word)
+    word_id = nlp.vocab.strings[selected_word]
+    word_vec = nlp.vocab.vectors[word_id]
+    most_similar_words = nlp.vocab.vectors.most_similar(np.asarray([word_vec]), n=25)
+    words = [nlp.vocab.strings[w] for w in most_similar_words[0][0]]
+
+    filtered_words1 = filter_contained(words, selected_filtered)
+    filtered_words = filtered_words1[:6]
+    filtered_words = [get_display(w) for w in filtered_words]
+    print('Calculated similar words:', filtered_words)
+    return filtered_words
+
 
 # --- Pokemon plotting functions ---- 
 def plot_combat_stats(entry_stats, nframe, nid, question_displ):
