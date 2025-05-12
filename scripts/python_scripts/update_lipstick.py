@@ -39,6 +39,39 @@ def update_timedelta(lipstick : pd.DataFrame, iw : str):
     lipstick.delta = lipstick.timestamp - lipstick.timestamp.min()
     return lipstick
 
+
+def update_eligibility(lipstick: pd.DataFrame, iw: str, stop_level : int = 6):
+    """Update stop attribute if the level of the word (history_correct) is a multiple of stop_level (6 by default) """
+    current_level = lipstick.loc[iw, 'history_correct']        # Select current level (total number of successful exercises)
+    residual_level = (current_level + 1) % (stop_level + 1)    # Check whether it is a multiple of stop_level (+1 to avoid zero as multiple)
+
+    flag_update_team = False
+    if residual_level == stop_level:
+        lipstick.at[iw, 'rebag'] = True
+
+    if (lipstick['rebag'] == True).all():         # If all entries have been sufficiently practiced: update_team (rebag) with new entries
+        flag_update_team = True
+    return lipstick, flag_update_team
+
+def rebag_team(current_team: pd.DataFrame, team_lip_path: str):
+    """Rebag function: return current_team to main lipstick and sample again for a new team"""
+    
+    main_lip_path = team_lip_path.replace('_team', '')   # Extract main_lip_path from current_team
+    main_lip = pd.read_csv(main_lip_path)                # Read main_lip
+    main_lip.set_index('word_ul', inplace=True, drop=False)
+    team_inds = current_team.index                       # Assign the current_team entries to main_lip and write
+    main_lip.update(current_team)
+    main_lip.to_csv(main_lip_path, index=False)
+
+    # Resample:
+    new_team = main_lip.drop(main_lip[main_lip['rebag'] == True].index).head(6).copy()
+
+    # Call GUI screen: This is not implemented yet. Needs to restructure all in single app with different screens...
+    # TeamManager_main(main_lip_path, team_lip_path) 
+    # Clock.schedule_once(lambda dt: App.get_running_app().reset_team_screen(main_lip_path, team_lip_path))
+    
+    return new_team
+
 def train_model(lipstick : pd.DataFrame, lipstick_path : str):
     trainset, testset = read_data(lipstick_path, method='hlr', omit_lexemes=False)
 
@@ -60,6 +93,12 @@ def update_all(lipstick : pd.DataFrame, lipstick_path : str, word : str, perform
     update_performance(lipstick, word, perform, mode=mode)
     update_speed(lipstick, word, speed)
     update_timedelta(lipstick, word)
+    _, flag_update_team = update_eligibility(lipstick, word)
+
+    print('Eligibility flag:', flag_update_team)
+    if flag_update_team:
+        lipstick = rebag_team(lipstick, lipstick_path)
+    
     lipstick.sort_values('p_recall', inplace=True)
     lipstick.set_index('p_recall')
     lipstick.to_csv(lipstick_path, index=False)
