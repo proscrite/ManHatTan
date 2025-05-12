@@ -33,13 +33,14 @@ logging.getLogger('matplotlib').setLevel(logging.WARNING)
 
 # Import dependencies from your modules (adjust the paths if necessary)
 
-from common import set_question, load_lipstick
-from screen_multipleAnswer import MultipleAnswerScreen
-from screen_writeInput import WriteInputScreen
-from team_manager import ShowTeamScreen
-from add_correctButton import CorrectionDialog
-from duolingo_hlr import *
-from update_lipstick import update_all
+from mht.gui.common import set_question, load_lipstick
+from mht.gui.screen_writeInput import WriteInputScreen
+from mht.gui.screen_multipleAnswer import MultipleAnswerScreen
+from mht.gui.team_manager import ShowTeamScreen
+from mht.gui.add_correctButton import CorrectionDialog
+
+from mht.scripts.ML_duolingo.duolingo_hlr import *
+from mht.scripts.python_scripts.update_lipstick import update_all
 from bidi.algorithm import get_display
 
 # Define common constants (adjust as needed)

@@ -15,19 +15,15 @@ from matplotlib.gridspec import GridSpec
 from skimage.io import imread
 from bidi.algorithm import get_display
 
-from common import *
-
-from add_correctButton import CorrectionDialog
-from EachOption import EachOption
-from screen_BaseExercise import BaseExerciseScreen
-from common import FigureCanvasKivyAgg
+from mht.gui.common import *
+from mht.gui.add_correctButton import CorrectionDialog
+from mht.gui.screen_BaseExercise import BaseExerciseScreen
+from mht.gui.EachOption import EachOption
+from mht.scripts.python_scripts.update_lipstick import update_all
 
 ROOT_PATH = '/Users/pabloherrero/Documents/ManHatTan/mht'
 FONT_HEB = ROOT_PATH + '/data/fonts/NotoSansHebrew.ttf'
 PATH_ANIM = ROOT_PATH + '/gui/Graphics/Battlers/'
-
-sys.path.append(ROOT_PATH+'/scripts/python_scripts/')
-from update_lipstick import update_all
 
 class MultipleAnswerScreen(BaseExerciseScreen):
     def __init__(self, lipstick_path, modality='rt', **kwargs):
@@ -35,7 +31,7 @@ class MultipleAnswerScreen(BaseExerciseScreen):
         self.app = App.get_running_app()
         self.app.lipstick = self.lipstick
         self.app_start_time = time.time()
-        self.teamlippath = TEAM_LIP_PATH
+        self.teamlippath = lipstick_path
 
         self.word_ll, self.word_ul, self.iqu, self.nid = set_question(self.teamlippath, self.rtl_flag, size_head=6)
 

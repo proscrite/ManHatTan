@@ -16,8 +16,7 @@ ROOT_PATH = '/Users/pabloherrero/Documents/ManHatTan/mht'
 FONT_HEB = ROOT_PATH + '/data/fonts/NotoSansHebrew.ttf'
 PATH_ANIM = ROOT_PATH + '/gui/Graphics/Battlers/'
 
-sys.path.append(ROOT_PATH+'/scripts/python_scripts/')
-from update_lipstick import update_all
+from mht.scripts.python_scripts.update_lipstick import update_all
 
 # --- EachOption class for multiple choice answers ---
 class EachOption(Button):
