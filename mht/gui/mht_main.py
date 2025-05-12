@@ -44,7 +44,8 @@ from bidi.algorithm import get_display
 
 # Define common constants (adjust as needed)
 ROOT_PATH = '/Users/pabloherrero/Documents/ManHatTan/'
-LIPSTICK_PATH = ROOT_PATH + '/data/processed/LIPSTICK/hebrew_db_team.lip'
+LIPSTICK_PATH = ROOT_PATH + '/data/processed/LIPSTICK/hebrew_db.lip'
+TEAM_LIP_PATH = LIPSTICK_PATH.replace('.lip', '_team.lip')
 # mht_main.py
 
 class MainMenuScreen(Screen):
@@ -121,17 +122,18 @@ class ManHatTan(App):
         App.__init__(self)
 
     def build(self):
+        self.teamlippath = TEAM_LIP_PATH
         self.lippath = LIPSTICK_PATH
-        self.lipstick = load_lipstick(self.lippath, self.modality)
+        self.lipstick = load_lipstick(self.teamlippath, self.modality)
         self.rtl_flag = (self.lipstick.learning_language.iloc[0] == 'iw')
         if self.flag_refresh:
-            self.word_ll, self.word_ul, self.iqu, self.nid = set_question(self.lippath, self.rtl_flag, size_head=6)
+            self.word_ll, self.word_ul, self.iqu, self.nid = set_question(self.teamlippath, self.rtl_flag, size_head=6)
             self.flag_refresh = False
         
         sm = ScreenManager()
-        sm.add_widget(MainMenuScreen(self.lippath, name="main_menu"))
-        sm.add_widget(WriteInputScreen(self.lippath, modality='dt', name="write_input"))
-        sm.add_widget(MultipleAnswerScreen(self.lippath, modality='rt', name="multiple_answer"))
+        sm.add_widget(MainMenuScreen(self.teamlippath, name="main_menu"))
+        sm.add_widget(WriteInputScreen(self.teamlippath, modality='dt', name="write_input"))
+        sm.add_widget(MultipleAnswerScreen(self.teamlippath, modality='rt', name="multiple_answer"))
         sm.add_widget(ShowTeamScreen(name="view_team", team_lip=self.lipstick, end_flag=True) )
 
         sm.current = "main_menu"

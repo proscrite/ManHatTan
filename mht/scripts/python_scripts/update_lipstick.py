@@ -71,7 +71,6 @@ def rebag_team(current_team: pd.DataFrame, team_lip_path: str):
     
     return new_team
 
-
 def train_model(lipstick : pd.DataFrame, lipstick_path : str):
     trainset, testset = read_data(lipstick_path, method='hlr', omit_lexemes=False)
 
@@ -98,7 +97,7 @@ def update_all(lipstick : pd.DataFrame, lipstick_path : str, word : str, perform
     print('Eligibility flag:', flag_update_team)
     if flag_update_team:
         lipstick = rebag_team(lipstick, lipstick_path)
-
+    
     lipstick.sort_values('p_recall', inplace=True)
     lipstick.set_index('p_recall')
     lipstick.to_csv(lipstick_path, index=False)

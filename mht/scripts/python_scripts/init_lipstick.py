@@ -5,6 +5,7 @@ import datetime
 import os
 import stanza
 from random import shuffle
+from bidi.algorithm import get_display
 from copy import deepcopy
 
 def get_lexemes(lip):
@@ -13,29 +14,68 @@ def get_lexemes(lip):
     lang = lip.learning_language.iloc[0]
     if lang == 'iw':
         lang = 'he'
-    nlp = stanza.Pipeline(lang=lang, processors='tokenize,pos,lemma,depparse')
+    nlp = stanza.Pipeline(lang=lang, processors='tokenize,pos,lemma,depparse', tokenize_pretokenized=True)
     # nlp = stanza.Pipeline(lang=lang, processors='tokenize,mwt,pos,lemma,depparse')
     tokens_list = list(lip['word_ll'].values)
-
+    tokens_list = [get_display(t) for t in tokens_list]
+    print('In get_lexemes:', tokens_list[:9])
+    print(f'Type token[0]: {type(tokens_list[0])}')
     lexemes = []
-    for token in tokens_list:
-        doc = nlp(token)
-        for sent in doc.sentences:
-            lexeme_string = ''
-            # print(len(sent.words))
-            for word in sent.words:
-                lexeme_string += word.text 
-                if word.lemma:
-                    lexeme_string += '/' + word.lemma 
-                if word.upos:
-                    lexeme_string += '<' + word.upos + '>'
-                if word.feats:
-                    feats = word.feats.split('|')
-                    lexeme_string += ''.join(feat.split('=')[1] +'|' for feat in feats)
-                if word.deprel != 'root':
-                    lexeme_string +=  ',' + word.deprel
-            lexemes.append(lexeme_string)
+
+    doc = nlp(tokens_list)
+    for sent in doc.sentences:
+        lexeme_string = ''
+        # print(len(sent.words))
+        for word in sent.words:
+            lexeme_string += word.text 
+            if word.lemma:
+                lexeme_string += '/' + word.lemma 
+            if word.upos:
+                lexeme_string += '<' + word.upos + '>'
+            if word.feats:
+                feats = word.feats.split('|')
+                lexeme_string += ''.join(feat.split('=')[1] +'|' for feat in feats)
+            if word.deprel != 'root':
+                lexeme_string +=  ',' + word.deprel
+        lexemes.append(lexeme_string)
     return lexemes
+
+def get_word_vectors(lip, nlp):    # Need to implement this in main workflow
+    """Get word vectors from a LIPSTICK DataFrame
+    Args:
+        lip (pd.DataFrame): LIPSTICK DataFrame
+        nlp (spacy.Pipeline): Spacy NLP pipeline
+    Returns:
+        vect_word (list): List of words with vectors
+        vectors (list): List of vectors corresponding to the words
+    """
+
+    all_entries = lip.word_ll.values.tolist()
+    vect_word = []
+    vectors = []
+    for word in all_entries:
+        token = nlp(word)[0]
+        # Check if both tokens have vectors
+        if token.has_vector:
+            vect_word.append(word)
+            vectors.append(token.vector)
+    return vect_word, vectors
+
+def write_word_vectors(vect_word, vectors, lippath):
+    """Write word vectors to a file
+    Args:
+        vect_word (list): List of words with vectors
+        vectors (list): List of vectors corresponding to the words
+        lippath (str): Path to the LIPSTICK file
+    """
+    # Get the base name of the LIPSTICK file
+    lip_bname = os.path.splitext(os.path.split(lippath)[1])[0]
+    # Create a new file name for the word vectors
+    vec_bname = os.path.join(os.path.dirname(lippath), lip_bname + '_vectors.txt')
+    
+    with open(vec_bname, 'w') as f:
+        np.savez(f, tokens=vect_word, vectors=vectors)
+    print(f"Word vectors written to {vec_bname}")
 
 def set_lip(gota : pd.DataFrame, flag_lexeme = False):
     """Provisional simple initialization of lipstick from GOTA.
@@ -78,16 +118,6 @@ def set_lip(gota : pd.DataFrame, flag_lexeme = False):
     ptruth = pd.Series(np.zeros_like(timest))  # Initialize on 0, also for seen and correct attrs.
     lipstick = pd.DataFrame({'p_recall':ptruth})
 
-    if flag_lexeme:
-        lexemes = get_lexemes(lipstick)
-        lipstick['lexeme_string'] = lexemes
-        # lexeme = []
-        # for wd in lipstick.word_ll:
-        #     tagSplit = str(apertium.tag(lear_lang, wd)[0]).split('/')
-        #     lexeme.append(tagSplit[0] + '/' + tagSplit[1])
-    else:
-        lexeme = 'lernt/lernen<vblex><pri><p3><sg>'
-
     pathnid = '/Users/pabloherrero/Documents/ManHatTan/gui/Graphics/index_stage_0.csv'
     lenlip = len(lipstick)
     stage0_nids = pd.read_csv(pathnid, index_col=None).T.values[0][:lenlip]
@@ -101,7 +131,7 @@ def set_lip(gota : pd.DataFrame, flag_lexeme = False):
     lipstick['ui_language'] = ui_lang
     lipstick['word_ll'] = gota[lear_lang]
     lipstick['word_ul'] = gota[ui_lang]
-    lipstick['lexeme_string'] = lexeme
+    lipstick['lexeme_string'] = None
     lipstick['history_seen'] = 0
     lipstick['history_correct'] = 0
     lipstick['session_seen'] = 0
@@ -116,6 +146,17 @@ def set_lip(gota : pd.DataFrame, flag_lexeme = False):
     lipstick['wrt_history'] = 0
     lipstick['wrt_correct'] = 0
     lipstick['speed'] = 0.
+
+    # print('In set_lip:', lipstick.head(5))
+    if flag_lexeme:
+        lexemes = get_lexemes(lipstick)
+        lipstick['lexeme_string'] = lexemes
+        # lexeme = []
+        # for wd in lipstick.word_ll:
+        #     tagSplit = str(apertium.tag(lear_lang, wd)[0]).split('/')
+        #     lexeme.append(tagSplit[0] + '/' + tagSplit[1])
+    else:
+        lexeme = 'lernt/lernen<vblex><pri><p3><sg>'
 
     return lipstick
     # lipstick['history_seen'] = gota['seen_hist']   # Will change this in gotas     # legacy: to retrieve performance when using GOTA as DB
