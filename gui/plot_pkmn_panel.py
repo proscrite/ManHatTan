@@ -21,9 +21,9 @@ import matplotlib
 from matplotlib.gridspec import GridSpec
 from matplotlib.patches import FancyBboxPatch
 
-matplotlib.use("module://kivy.garden.matplotlib.backend_kivy")
+# matplotlib.use("module://kivy.garden.matplotlib.backend_kivy")
 
-matplotlib.use("Agg")
+# matplotlib.use("Agg")
 import pandas as pd
 import numpy as np
 
@@ -37,7 +37,7 @@ import io
 from skimage import img_as_ubyte
 from skimage.io import imread
 
-
+"""
 # def create_health_bar_figure():
 #     # Create the figure and gridspec
 #     fig = plt.figure(figsize=(12, 6))
@@ -71,7 +71,7 @@ from skimage.io import imread
 #     plt.subplots_adjust(hspace=0.5)
 
 #     return fig
-
+"""
 def draw_rounded_bar(ax, width, color, y_offset=0.25, bar_height=0.5, corner_radius=0.07):
     """
     Draws a health bar with rounded corners.
