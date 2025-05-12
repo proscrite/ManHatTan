@@ -92,11 +92,13 @@ def update_all(lipstick : pd.DataFrame, lipstick_path : str, word : str, perform
     update_performance(lipstick, word, perform, mode=mode)
     update_speed(lipstick, word, speed)
     update_timedelta(lipstick, word)
-    _, flag_update_team = update_eligibility(lipstick, word)
+    # _, flag_update_team = update_eligibility(lipstick, word)
 
-    print('Eligibility flag:', flag_update_team)
-    if flag_update_team:
-        lipstick = rebag_team(lipstick, lipstick_path)
+    # print('Eligibility flag:', flag_update_team)
+    # if flag_update_team:
+        # print('Rebagging team...')
+        # pass
+        # lipstick = rebag_team(lipstick, lipstick_path)
     
     lipstick.sort_values('p_recall', inplace=True)
     lipstick.set_index('p_recall')

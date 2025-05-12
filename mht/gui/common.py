@@ -29,7 +29,7 @@ matplotlib.use("module://kivy.garden.matplotlib.backend_kivy")
 matplotlib.use("Agg")
 
 # --- Constants ---
-ROOT_PATH = '/Users/pabloherrero/Documents/ManHatTan/'
+ROOT_PATH = '/Users/pabloherrero/Documents/ManHatTan/mht'
 FONT_HEB = ROOT_PATH + '/data/fonts/NotoSansHebrew.ttf'
 PATH_ANIM = ROOT_PATH + '/gui/Graphics/Battlers/'
 LIPSTICK_PATH = ROOT_PATH + '/data/processed/LIPSTICK/hebrew_db.lip'
@@ -128,7 +128,7 @@ def set_question(lipstick_path : str, rtl_flag = False, size_head : int = 10):
 
 def sample_similar_options(lipstick_path : str, iquest : int, modality : str, n_options : int = 3):
     """ Pick at random n_options to set as false answers from lipstick head"""
-    lipstick_path = '/Users/pabloherrero/Documents/ManHatTan/data/processed/LIPSTICK/hebrew_db.lip'
+    lipstick_path = '/Users/pabloherrero/Documents/ManHatTan/mht/data/processed/LIPSTICK/hebrew_db.lip'
     if modality == 'dt': word_lang = 'word_ul'
     elif modality == 'rt': word_lang = 'word_ll'
     else: print('Incorrect modality in sample_similar_options function')
@@ -137,7 +137,7 @@ def sample_similar_options(lipstick_path : str, iquest : int, modality : str, n_
     lip = lip.set_index('word_ll', drop=False)
     options = {}
     #### Change this: to be extracted from lipstick_path:
-    vector_path = '/Users/pabloherrero/Documents/ManHatTan/data/processed/vectors_lip/vectors_heb_lip.npz'
+    vector_path = '/Users/pabloherrero/Documents/ManHatTan/mht/data/processed/vectors_lip/vectors_heb_lip.npz'
     similar_words = load_similar_words(vector_path, target_word=target_word)
     # similar_words = [get_display(w) for w in similar_words]
     rnd_similar_words = sample(similar_words, n_options)

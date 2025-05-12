@@ -12,7 +12,7 @@ from kivy.core.window import Window
 
 
 from bidi.algorithm import get_display
-ROOT_PATH = '/Users/pabloherrero/Documents/ManHatTan/'
+ROOT_PATH = '/Users/pabloherrero/Documents/ManHatTan/mht'
 FONT_HEB = ROOT_PATH + '/data/fonts/NotoSansHebrew.ttf'
 PATH_ANIM = ROOT_PATH + '/gui/Graphics/Battlers/'
 

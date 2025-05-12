@@ -38,16 +38,20 @@ from screen_multipleAnswer import MultipleAnswerScreen
 from screen_writeInput import WriteInputScreen
 from team_manager import ShowTeamScreen
 from add_correctButton import CorrectionDialog
-from duolingo_hlr import *            # your module
+from duolingo_hlr import *
 from update_lipstick import update_all
 from bidi.algorithm import get_display
 
 # Define common constants (adjust as needed)
-ROOT_PATH = '/Users/pabloherrero/Documents/ManHatTan/'
+ROOT_PATH = '/Users/pabloherrero/Documents/ManHatTan/mht'
 LIPSTICK_PATH = ROOT_PATH + '/data/processed/LIPSTICK/hebrew_db.lip'
 TEAM_LIP_PATH = LIPSTICK_PATH.replace('.lip', '_team.lip')
-# mht_main.py
 
+font_path = ROOT_PATH + '/data/fonts/NotoSansHebrew.ttf'
+print(f"[DEBUG] Looking for font at: {font_path!r}")
+print(f"[DEBUG] Exists? {os.path.exists(font_path)}")
+
+# mht_main.py
 class MainMenuScreen(Screen):
     def __init__(self, lipstick_path, **kwargs):
         super(MainMenuScreen, self).__init__(**kwargs)

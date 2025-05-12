@@ -39,12 +39,12 @@ from skimage.io import imread
 import numpy as np
 import pandas as pd
 
-ROOT_PATH = '/Users/pabloherrero/Documents/ManHatTan/'
+ROOT_PATH = '/Users/pabloherrero/Documents/ManHatTan/mht/'
 sys.path.append(ROOT_PATH + '/scripts/python_scripts/')
 from common import *
 from plot_pkmn_panel import load_pkmn_stats, draw_rounded_bar, draw_health_bar
 
-PATH_ANIM = '/Users/pabloherrero/Documents/ManHatTan/gui/Graphics/Battlers/'
+PATH_ANIM = '/Users/pabloherrero/Documents/ManHatTan/mht/gui/Graphics/Battlers/'
 
 
 class ShowTeamScreen(Screen):
@@ -240,5 +240,5 @@ if __name__ == "__main__":
         lipstick_path = sys.argv[1]
     else:
         print("Error: Missing lipstick_path argument.")
-        lipstick_path = '/Users/pabloherrero/Documents/ManHatTan/data/processed/LIPSTICK/hebrew_db.lip'
+        lipstick_path = '/Users/pabloherrero/Documents/ManHatTan/mht/data/processed/LIPSTICK/hebrew_db.lip'
     TeamManager_main(lipstick_path)
