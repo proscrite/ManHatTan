@@ -15,13 +15,12 @@ import matplotlib.pyplot as plt
 from bidi.algorithm import get_display
 
 # Import common functionality and constants
-from common import *
-sys.path.append(ROOT_PATH+'/scripts/python_scripts/')
-from update_lipstick import update_all
+from mht.gui.common import *
+from mht.scripts.python_scripts.update_lipstick import update_all
 
-from formats.format_text_input import FTextInput, RTLTextInput
-from screen_BaseExercise import BaseExerciseScreen
-from add_correctButton import CorrectionDialog
+from mht.gui.formats.format_text_input import FTextInput, RTLTextInput
+from mht.gui.screen_BaseExercise import BaseExerciseScreen
+from mht.gui.add_correctButton import CorrectionDialog
 
 ROOT_PATH = '/Users/pabloherrero/Documents/ManHatTan/mht'
 FONT_HEB = ROOT_PATH + '/data/fonts/NotoSansHebrew.ttf'

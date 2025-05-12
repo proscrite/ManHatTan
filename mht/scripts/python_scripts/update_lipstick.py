@@ -5,9 +5,7 @@ import sys
 import re
 import datetime
 
-sys.path.append('../../gui')
-sys.path.append('../ML')
-from duolingo_hlr import *
+from mht.scripts.ML_duolingo.duolingo_hlr import *
 
 
 def update_speed(lipstick: pd.DataFrame, iw: str, new_speed: float):

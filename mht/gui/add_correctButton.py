@@ -16,13 +16,13 @@ from functools import partial
 from time import sleep
 import sys
 ROOT_PATH = '/Users/pabloherrero/Documents/ManHatTan/mht'
-sys.path.append(ROOT_PATH+'/scripts/python_scripts/')
-sys.path.append(ROOT_PATH+'/scripts/ML_duolingo')
+# sys.path.append(ROOT_PATH+'/scripts/python_scripts/')
+# sys.path.append(ROOT_PATH+'/scripts/ML_duolingo')
 FONT_HEB = ROOT_PATH+'/data/fonts/NotoSansHebrew.ttf'
 
 # from duolingo_hlr import *
-from update_lipstick import *
-from formats.format_text_input import FTextInput, RTLTextInput
+from mht.scripts.python_scripts.update_lipstick import *
+from mht.gui.formats.format_text_input import FTextInput, RTLTextInput
 
 class CorrectionDialog(Button):
     def __init__(self, word_ll, word_ul):

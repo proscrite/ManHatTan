@@ -7,8 +7,8 @@ import sys
 import re
 import datetime
 
-sys.path.append('~/Documents/ManHatTan/python_scripts/')
-from test_bulkTranslate import *
+
+# from mht.scripts.python_scripts.test_bulkTranslate import *
 
 def detect_src(self, N : int = 0):
     """Auto-detect languages in wordset given and arrange them by occurrences
