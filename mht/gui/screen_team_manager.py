@@ -6,9 +6,7 @@ from kivy.app import App
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
-from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
 from kivy.uix.button import Button
@@ -45,10 +43,10 @@ import pandas as pd
 ROOT_PATH = '/Users/pabloherrero/Documents/ManHatTan/mht/'
 from mht.gui.common import *
 from mht.scripts.python_scripts.bulkTranslate import bulk_translate
-
+from mht.scripts.python_scripts.update_lipstick import rebag_team
 # from gui.screen_multipleAnswer import MultipleAnswerScreen
 
-
+TEAM_LIP_PATH = ROOT_PATH + '/data/processed/LIPSTICK/hebrew_db_team.lip'
 PATH_ANIM = ROOT_PATH + '/gui/Graphics/Battlers/'
 
 class MiniFigureCell(BoxLayout):
@@ -132,13 +130,14 @@ class MiniFigureCell(BoxLayout):
 
 # class MyApp(App):
 class TeamScreen(Screen):
-    def __init__(self, lip_path, buttons_active: bool = True, **kwargs):
+    def __init__(self, team_lip, buttons_active: bool = True, **kwargs):
         super().__init__(**kwargs)
         # Read team data and set index for easy access
-        self.team_lip = pd.read_csv(lip_path)
+        self.team_lip = team_lip
         self.team_lip = self.team_lip.set_index('n_id', drop=False)
         self.nids = np.array(self.team_lip.n_id[:6].values)
         self.buttons_active = buttons_active
+        self.app = App.get_running_app()
 
         self.canvas_widgets = []
         self.img_display = []   # Each is a matplotlib image object returned by imshow
@@ -152,7 +151,18 @@ class TeamScreen(Screen):
             cell = MiniFigureCell(self.team_lip, nid, self, buttons_active)
             self.main_grid.add_widget(cell)
         # Schedule the update loop. You can schedule it here (or in on_start)
-    # def on_enter(): 
+
+        self.back_btn = Button(text="Back to Menu", on_release=self.back_to_menu,
+                          size_hint=(1, 0.1))
+        self.add_widget(self.back_btn)
+
+        if not self.buttons_active:
+            # If buttons are not active, replace back button by continue button
+            self.remove_widget(self.back_btn)
+            continue_button = Button(text="Continue", size_hint=(1, 0.1))
+            continue_button.bind(on_release=self.call_rebag_team)
+            self.add_widget(continue_button)
+
         Clock.schedule_interval(self.update, 1 / 30)
 
     def update(self, dt):
@@ -197,6 +207,12 @@ class TeamScreen(Screen):
         self.manager.transition = SlideTransition(direction="left")
         self.manager.current = 'similar_words'
 
+    def call_rebag_team(self, instance):
+        self.app.continue_rebag_team()
+
+    def back_to_menu(self, instance):
+        self.manager.transition = SlideTransition(direction="right")
+        self.manager.current = "main_menu"
 
 
 class SimilarWordsScreen(Screen):
@@ -236,11 +252,32 @@ class SimilarWordsScreen(Screen):
 
 class MyApp(App):
     def build(self):
-        sm = ScreenManager()
-        team_screen = TeamScreen(name='team', lip_path='/Users/pabloherrero/Documents/ManHatTan/mht/data/processed/LIPSTICK/hebrew_db_team.lip')
-        sm.add_widget(team_screen)
+        Window.size = (600, 600)
+        self.sm = ScreenManager()
+        self.team_lippath = TEAM_LIP_PATH
+        self.team_lip = load_lipstick(self.team_lippath, modality='dt')
+        team_screen = TeamScreen(name='team', team_lip=self.team_lip, buttons_active=False)
+        self.sm.add_widget(team_screen)
 
-        return sm
+        return self.sm
+    
+    def manage_rebag_team(self):
+        print('Rebagging team...')
+        print(f"Current team: {self.team_lip}")
+
+        new_team = rebag_team(self.team_lip, self.team_lippath)
+        if new_team is 0:
+            print('Rebagging is not needed yet')
+            # self.sm.current = 'main_menu'
+        else:
+            print(f"New team: {new_team}")
+            self.team_lip = new_team
+            # Update the screen with the new team
+            new_team_screen = TeamScreen(name='team', team_lip=new_team, buttons_active=False)
+            self.sm.remove_widget(self.sm.get_screen('team'))
+            self.sm.add_widget(new_team_screen)
+            self.sm.current = 'team'
+            self.sm.transition = SlideTransition(direction="right")
+        
 if __name__ == '__main__':
-    lipstick_path = '/Users/pabloherrero/Documents/ManHatTan/data/processed/LIPSTICK/hebrew_db_team.lip'
     MyApp().run()
