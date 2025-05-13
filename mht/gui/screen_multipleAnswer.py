@@ -106,7 +106,10 @@ class MultipleAnswerScreen(BaseExerciseScreen):
         # App.get_running_app().root.current = "main_menu"
 
     # def background_update_all(self):
-        update_all(self.app.lipstick, self.app.teamlippath, self.app.word_ul, perf, self.speed, mode='m' + self.app.modality)        
-        
-        current_name = self.name
-        self.go_back(current_name)
+        flag_rebag = update_all(self.app.lipstick, self.app.teamlippath, self.app.word_ul, perf, self.speed, mode='m' + self.app.modality)        
+        if flag_rebag:
+            print('Rebagging team...')
+            self.app.init_rebag()
+        else:
+            current_name = self.name
+            self.go_back(current_name)

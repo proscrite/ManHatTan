@@ -129,13 +129,17 @@ class WriteInputScreen(BaseExerciseScreen):
         self.answer_popup.open()
     
     def on_close(self, *args):
-        update_all(self.lipstick, self.lippath, self.word_ul, self.perf,
+        flag_rebag = update_all(self.lipstick, self.lippath, self.word_ul, self.perf,
                    self.speed, mode='w' + self.modality)
+        
         if hasattr(self, 'answer_popup'):
             self.answer_popup.dismiss()
-        
-        current_name = self.name
-        self.go_back(current_name)
-        # self.go_back(None)
+            
+        if flag_rebag:
+            print('Rebagging team...')
+            self.app.init_rebag()
+        else:
+            current_name = self.name
+            self.go_back(current_name)
         
         

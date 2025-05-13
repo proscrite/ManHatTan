@@ -36,11 +36,11 @@ logging.getLogger('matplotlib').setLevel(logging.WARNING)
 from mht.gui.common import set_question, load_lipstick
 from mht.gui.screen_writeInput import WriteInputScreen
 from mht.gui.screen_multipleAnswer import MultipleAnswerScreen
-from mht.gui.team_manager import ShowTeamScreen
+from mht.gui.screen_team_manager import TeamScreen
 from mht.gui.add_correctButton import CorrectionDialog
 
 from mht.scripts.ML_duolingo.duolingo_hlr import *
-from mht.scripts.python_scripts.update_lipstick import update_all
+from mht.scripts.python_scripts.update_lipstick import update_all, rebag_team
 from bidi.algorithm import get_display
 
 # Define common constants (adjust as needed)
@@ -105,7 +105,7 @@ class MainMenuScreen(Screen):
 
     def view_team(self, instance):
         self.manager.transition = SlideTransition(direction="left")
-        self.manager.current = "view_team"
+        self.manager.current = "team"
 
     def set_modality_dt(self, instance):
         self.app.modality = 'dt'
@@ -126,23 +126,53 @@ class ManHatTan(App):
 
         App.__init__(self)
 
+    def init_rebag(self):
+        print('Init rebag...')
+        new_team_screen = TeamScreen(name='init_team', team_lip=self.team_lip, buttons_active=False)
+        self.sm.add_widget(new_team_screen)
+        self.sm.current = 'init_team'
+        self.sm.transition = SlideTransition(direction="right")
+
+    def continue_rebag_team(self):
+        self.team_lip = load_lipstick(self.teamlippath, self.modality)   # Reload the team_lip after updating eligibility
+        print('Continue rebagging team...')
+        print(f"Current team: {self.team_lip}")
+
+        new_team = rebag_team(self.team_lip, self.teamlippath)
+        self.team_lip = new_team
+        print(f"New team: {new_team}")
+        if new_team is 0:
+            print('Rebagging is not needed yet')
+            self.sm.current = 'main_menu'
+            self.sm.remove_widget(self.sm.get_screen('new_team'))
+        else:
+            # Update the screen with the new team
+            self.team_lip.to_csv(self.teamlippath, index=False)
+            new_team_screen = TeamScreen(name='new_team', team_lip=new_team, buttons_active=False)
+            self.sm.remove_widget(self.sm.get_screen('init_team'))
+            self.sm.add_widget(new_team_screen)
+            self.sm.current = 'new_team'
+            self.sm.transition = SlideTransition(direction="right")
+
     def build(self):
         self.teamlippath = TEAM_LIP_PATH
         self.lippath = LIPSTICK_PATH
-        self.lipstick = load_lipstick(self.teamlippath, self.modality)
-        self.rtl_flag = (self.lipstick.learning_language.iloc[0] == 'iw')
+        self.lipstick = load_lipstick(self.lippath, self.modality)
+        self.team_lip = load_lipstick(self.teamlippath, self.modality)
+        self.rtl_flag = (self.team_lip.learning_language.iloc[0] == 'iw')
         if self.flag_refresh:
             self.word_ll, self.word_ul, self.iqu, self.nid = set_question(self.teamlippath, self.rtl_flag, size_head=6)
             self.flag_refresh = False
         
-        sm = ScreenManager()
-        sm.add_widget(MainMenuScreen(self.teamlippath, name="main_menu"))
-        sm.add_widget(WriteInputScreen(self.teamlippath, modality='dt', name="write_input"))
-        sm.add_widget(MultipleAnswerScreen(self.teamlippath, modality='rt', name="multiple_answer"))
-        sm.add_widget(ShowTeamScreen(name="view_team", team_lip=self.lipstick, end_flag=True) )
+        self.sm = ScreenManager()
+        self.sm.add_widget(MainMenuScreen(self.teamlippath, name="main_menu"))
+        self.sm.add_widget(WriteInputScreen(self.teamlippath, modality='dt', name="write_input"))
+        self.sm.add_widget(MultipleAnswerScreen(self.teamlippath, modality='rt', name="multiple_answer"))
+        team_screen = TeamScreen(name='team', team_lip=self.team_lip, buttons_active=True)
+        self.sm.add_widget(team_screen)
 
-        sm.current = "main_menu"
-        return sm
+        self.sm.current = "main_menu"
+        return self.sm
 
     def run(self):
         super().run()

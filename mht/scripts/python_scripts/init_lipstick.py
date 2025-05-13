@@ -146,6 +146,7 @@ def set_lip(gota : pd.DataFrame, flag_lexeme = False):
     lipstick['wrt_history'] = 0
     lipstick['wrt_correct'] = 0
     lipstick['speed'] = 0.
+    lipstick['rebag'] = False
 
     # print('In set_lip:', lipstick.head(5))
     if flag_lexeme:
