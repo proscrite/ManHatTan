@@ -53,6 +53,17 @@ def update_eligibility(lipstick: pd.DataFrame, iw: str, stop_level : int = 6):
 def rebag_team(current_team: pd.DataFrame, team_lip_path: str):
     """Rebag function: return current_team to main lipstick and sample again for a new team"""
     
+    dropped_rebag_team = current_team.drop(current_team[current_team['rebag'] == False].index)
+    print(f"team with dropped rebag = False: {dropped_rebag_team}")
+    ##### This "test" is necessary to avoid an error of calling rebag_team in infinite loop when all entries are False
+    try:
+        print(dropped_rebag_team.index[0])
+
+    except IndexError as e:
+        ##### Return 0 allows continue_rebag_team to return to main menu
+        print('All rebag entries in current team are False. No rebagging needed yet')
+        return 0
+    
     main_lip_path = team_lip_path.replace('_team', '')   # Extract main_lip_path from current_team
     main_lip = pd.read_csv(main_lip_path)                # Read main_lip
     main_lip.set_index('word_ul', inplace=True, drop=False)
@@ -62,11 +73,6 @@ def rebag_team(current_team: pd.DataFrame, team_lip_path: str):
 
     # Resample:
     new_team = main_lip.drop(main_lip[main_lip['rebag'] == True].index).head(6).copy()
-
-    # Call GUI screen: This is not implemented yet. Needs to restructure all in single app with different screens...
-    # TeamManager_main(main_lip_path, team_lip_path) 
-    # Clock.schedule_once(lambda dt: App.get_running_app().reset_team_screen(main_lip_path, team_lip_path))
-    
     return new_team
 
 def train_model(lipstick : pd.DataFrame, lipstick_path : str):
@@ -90,18 +96,20 @@ def update_all(lipstick : pd.DataFrame, lipstick_path : str, word : str, perform
     update_performance(lipstick, word, perform, mode=mode)
     update_speed(lipstick, word, speed)
     update_timedelta(lipstick, word)
-    # _, flag_update_team = update_eligibility(lipstick, word)
-
-    # print('Eligibility flag:', flag_update_team)
-    # if flag_update_team:
-        # print('Rebagging team...')
-        # pass
-        # lipstick = rebag_team(lipstick, lipstick_path)
+    _, flag_update_team = update_eligibility(lipstick, word)
     
     lipstick.sort_values('p_recall', inplace=True)
     lipstick.set_index('p_recall')
     lipstick.to_csv(lipstick_path, index=False)
-    # sleep(1)
+
+    print('Eligibility flag:', flag_update_team)
+    if flag_update_team:
+        print('Calling for Rebagging team...')
+        return True
+    else:
+        print('No rebagging needed yet')
+        return False
+    
     # train_model(lipstick, lipstick_path)
 
 
