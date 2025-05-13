@@ -9,6 +9,7 @@
 *.sh~
 /dump_folder/*
 mht/gui/Graphics/*
+mht/gui/Graphics
 mht/gui/__pycache__/*.pyc
 *.pyc
 scripts/applescripts/*
