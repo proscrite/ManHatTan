@@ -9,9 +9,10 @@ FONT_HEB = ROOT_PATH + '/data/fonts/NotoSansHebrew.ttf'
 PATH_ANIM = ROOT_PATH + '/gui/Graphics/Battlers/'
 
 class BaseExerciseScreen(Screen):
-    def __init__(self, lipstick_path, modality, **kwargs):
+    def __init__(self, lipstick_path, modality, flag_egg, **kwargs):
         super(BaseExerciseScreen, self).__init__(**kwargs)
         self.lippath = lipstick_path
+        print(f"Initializing BaseExerciseScreen with lipstick path: {self.lippath!r}")
         # self.teamlippath = lipstick_path.replace('.lip', '_team.lip')
         self.modality = modality
         self.start_time = time.time()
@@ -19,7 +20,7 @@ class BaseExerciseScreen(Screen):
         self.rtl_flag = (self.lipstick.learning_language.iloc[0] == 'iw')
         
         # Pick a question using your set_question function
-        self.word_ll, self.word_ul, self.iqu, self.nid = set_question(self.lippath, self.rtl_flag, size_head=6)
+        self.word_ll, self.word_ul, self.iqu, self.nid = set_question(self.lippath, self.rtl_flag)
         if self.modality == 'dt':
             self.question, self.answer = self.word_ll, self.word_ul
             self.checkEntry = 'word_ul'
@@ -40,7 +41,7 @@ class BaseExerciseScreen(Screen):
         
         # Build common animated stats panel
         entry_stats = load_pkmn_stats(self.lipstick, self.nid)
-        self.fig, self.img_display, self.anim = plot_combat_stats(entry_stats, self.nframe, self.nid, self.question_displ)
+        self.fig, self.img_display, self.anim = plot_combat_stats(entry_stats, self.nframe, self.nid, self.question_displ, flag_egg=flag_egg)
         self.fig_canvas = FigureCanvasKivyAgg(self.fig)
         from kivy.uix.boxlayout import BoxLayout
         container = BoxLayout()
@@ -67,6 +68,5 @@ class BaseExerciseScreen(Screen):
         sm.add_widget(new_screen)
         
         # Call set_question for new question and go back to main menu
-        self.app.flag_refresh = True
         sm.transition = SlideTransition(direction="right")
         sm.current = "main_menu"
