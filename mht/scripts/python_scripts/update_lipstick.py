@@ -54,7 +54,7 @@ def rebag_team(current_team: pd.DataFrame, team_lip_path: str):
     """Rebag function: return current_team to main lipstick and sample again for a new team"""
     
     dropped_rebag_team = current_team.drop(current_team[current_team['rebag'] == False].index)
-    print(f"team with dropped rebag = False: {dropped_rebag_team}")
+    # print(f"team with dropped rebag = False: {dropped_rebag_team}")
     ##### This "test" is necessary to avoid an error of calling rebag_team in infinite loop when all entries are False
     try:
         print(dropped_rebag_team.index[0])
@@ -73,6 +73,15 @@ def rebag_team(current_team: pd.DataFrame, team_lip_path: str):
 
     # Resample:
     new_team = main_lip.drop(main_lip[main_lip['rebag'] == True].index).head(6).copy()
+    try:
+        print(new_team.index[0])
+    except IndexError as e:
+        print('Main lipstick is fully rebagged. Resetting it')
+        main_lip['rebag'] = False
+        main_lip.to_csv(main_lip_path, index=False)
+        new_team = main_lip.drop(main_lip[main_lip['rebag'] == True].index).sample(6).copy()
+        return new_team, 2
+    
     return new_team
 
 def train_model(lipstick : pd.DataFrame, lipstick_path : str):

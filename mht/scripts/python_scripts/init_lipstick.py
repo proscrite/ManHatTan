@@ -77,6 +77,11 @@ def write_word_vectors(vect_word, vectors, lippath):
         np.savez(f, tokens=vect_word, vectors=vectors)
     print(f"Word vectors written to {vec_bname}")
 
+def force_rtl(s):
+    # Add RLM only if the string contains Hebrew characters
+    return ''.join('\u200F' + str(w) if any('\u0590' <= c <= '\u05FF' for c in str(w)) else str(w) for w in [s])
+
+
 def set_lip(gota : pd.DataFrame, flag_lexeme = False):
     """Provisional simple initialization of lipstick from GOTA.
         Attrs:
@@ -118,7 +123,7 @@ def set_lip(gota : pd.DataFrame, flag_lexeme = False):
     ptruth = pd.Series(np.zeros_like(timest))  # Initialize on 0, also for seen and correct attrs.
     lipstick = pd.DataFrame({'p_recall':ptruth})
 
-    pathnid = '/Users/pabloherrero/Documents/ManHatTan/gui/Graphics/index_stage_0.csv'
+    pathnid = '/Users/pabloherrero/Documents/ManHatTan/mht/gui/Graphics/index_stage_0.csv'
     lenlip = len(lipstick)
     stage0_nids = pd.read_csv(pathnid, index_col=None).T.values[0][:lenlip]
     shuffle(stage0_nids)
@@ -131,7 +136,7 @@ def set_lip(gota : pd.DataFrame, flag_lexeme = False):
     lipstick['ui_language'] = ui_lang
     lipstick['word_ll'] = gota[lear_lang]
     lipstick['word_ul'] = gota[ui_lang]
-    lipstick['lexeme_string'] = None
+    lipstick['lexeme_string'] = 'No lexeme'
     lipstick['history_seen'] = 0
     lipstick['history_correct'] = 0
     lipstick['session_seen'] = 0
@@ -158,6 +163,12 @@ def set_lip(gota : pd.DataFrame, flag_lexeme = False):
         #     lexeme.append(tagSplit[0] + '/' + tagSplit[1])
     else:
         lexeme = 'lernt/lernen<vblex><pri><p3><sg>'
+
+    if lipstick['learning_language'].iloc[0] in ['he', 'iw']:
+        # lipstick['word_ll'] = lipstick['word_ll'].apply(force_rtl)
+        # lipstick['word_ul'] = lipstick['word_ul'].apply(get_display)
+        lipstick['word_ll'] = [w[::-1] for w in lipstick['word_ll'].values]  # Reverse Hebrew words
+        print('In set_lip, displayed_word_ll:', lipstick['word_ll'].head(5))
 
     return lipstick
     # lipstick['history_seen'] = gota['seen_hist']   # Will change this in gotas     # legacy: to retrieve performance when using GOTA as DB

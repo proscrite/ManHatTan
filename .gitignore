@@ -22,3 +22,4 @@ mht/gui/icons/*.png
 mht/data/processed/he_vectors/*
 mht/data/processed/he_vectors/** */
 mht/data/processed/EGGs/*.eggs
+.vscode/launch.json
