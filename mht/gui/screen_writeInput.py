@@ -29,7 +29,7 @@ PATH_ANIM = ROOT_PATH + '/gui/Graphics/Battlers/'
 
 class WriteInputScreen(BaseExerciseScreen):
     def __init__(self, lipstick_path, modality='dt', **kwargs):
-        super(WriteInputScreen, self).__init__(lipstick_path, modality, **kwargs)
+        super(WriteInputScreen, self).__init__(lipstick_path, modality, flag_egg=False, **kwargs)
         self.build_ui()
         self.app = App.get_running_app()
 
