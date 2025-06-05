@@ -8,18 +8,23 @@ from kivy.core.window import Window
 from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
+from kivy.uix.anchorlayout import AnchorLayout
+
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy_garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
 
 import spacy
 import logging
+import datetime
 logging.getLogger('matplotlib').setLevel(logging.WARNING)
 logging.basicConfig(level=logging.WARNING)
 from kivy.logger import Logger as kvLogger
 kvLogger.setLevel(logging.WARNING)
 from kivy.config import Config
 Config.set("kivy", "log_level", "warning")
+logging.getLogger('kivy.network.urlrequest').setLevel(logging.WARNING)
+logging.getLogger('kivy.network.httpclient').setLevel(logging.WARNING)
 
 from bidi.algorithm import get_display
 
@@ -43,8 +48,9 @@ import pandas as pd
 ROOT_PATH = '/Users/pabloherrero/Documents/ManHatTan/mht/'
 from mht.gui.common import *
 from mht.scripts.python_scripts.bulkTranslate import bulk_translate
+from mht.scripts.python_scripts.init_lipstick import set_lip
 from mht.scripts.python_scripts.update_lipstick import rebag_team
-# from gui.screen_multipleAnswer import MultipleAnswerScreen
+from mht.gui.screen_multipleAnswer import MultipleAnswerScreen
 
 TEAM_LIP_PATH = ROOT_PATH + '/data/processed/LIPSTICK/hebrew_db_team.lip'
 PATH_ANIM = ROOT_PATH + '/gui/Graphics/Battlers/'
@@ -72,7 +78,7 @@ class MiniFigureCell(BoxLayout):
                              font_name=FONT_HEB,
                              font_size=46,
                              background_color=(1, 1, 1, 0.3),
-                             size_hint=(0.4, 1),
+                             size_hint=(0.6, 1),
                              disabled = not self.button_active)
         left_button.bind(on_release=self.screen_ref.trigger_similar_words)
         self.add_widget(left_button)
@@ -144,9 +150,17 @@ class TeamScreen(Screen):
         self.anim_list = []     # Each is an animation image (sprite strip)
         self.nframes_list = []  # Current frame indices for each animation
 
+        root_v = BoxLayout(orientation='vertical', spacing=10, padding=10)
+        self.add_widget(root_v)
+        anchor = AnchorLayout(
+            anchor_x='center',
+            anchor_y='center'
+        )
+        root_v.add_widget(anchor)
+
         # Create a grid for all cells; adjust rows/cols as desired.
-        self.main_grid = GridLayout(rows=3, cols=2)
-        self.add_widget(self.main_grid)
+        self.main_grid = GridLayout(rows=3, cols=2, size_hint = (0.8, 1.0))
+        anchor.add_widget(self.main_grid)
         for nid in self.nids:
             cell = MiniFigureCell(self.team_lip, nid, self, buttons_active)
             self.main_grid.add_widget(cell)
@@ -154,7 +168,7 @@ class TeamScreen(Screen):
 
         self.back_btn = Button(text="Back to Menu", on_release=self.back_to_menu,
                           size_hint=(1, 0.1))
-        self.add_widget(self.back_btn)
+        root_v.add_widget(self.back_btn)
 
         if not self.buttons_active:
             # If buttons are not active, replace back button by continue button
@@ -192,7 +206,7 @@ class TeamScreen(Screen):
             self.canvas_widgets[i].draw()
     
     def trigger_similar_words(self, instance):
-    
+        print(f'Manager in TeamScreen = {self.manager}')
         # if there’s already a SimilarWordsScreen, remove it:
         if self.manager.has_screen('similar_words'):
             self.manager.remove_widget(self.manager.get_screen('similar_words'))
@@ -218,14 +232,15 @@ class TeamScreen(Screen):
 class SimilarWordsScreen(Screen):
     def __init__(self, selected_word, lipstick, **kwargs):
         super().__init__(**kwargs)
+        self.app = App.get_running_app()
         self.sel_word = selected_word
         self.team_lip = lipstick
         self.main_grid = GridLayout(cols=1, size_hint = (1, 1))
         self.button_grid = GridLayout(cols = 2, size_hint = (1, 2))
-
+        
         vec_path = '/Users/pabloherrero/Documents/ManHatTan/mht/data/processed/he_vectors'
         self.nlp = spacy.load(vec_path)
-        self._init_similar_words()
+        # self._init_similar_words()
 
         back_btn = Button(text="Back to Menu", on_release=self.go_back,
                           size_hint=(0.5, 1))
@@ -234,16 +249,74 @@ class SimilarWordsScreen(Screen):
 
         self.add_widget(self.main_grid)
     
-    def _init_similar_words(self):
+    def get_eggpath(self, *args):
+        lippath_dir, lippath_fname = os.path.split(self.app.teamlippath)
+        append_fname = '_' + self.sel_word[::-1] + '.eggs'
+        self.path_egg = os.path.join(lippath_dir.replace('LIPSTICK', 'EGGs'), lippath_fname.replace('.lip', append_fname) )
+        return self.path_egg
+
+    def on_enter(self, *args):
+        self.path_egg = self.get_eggpath()
+        if not os.path.exists(self.path_egg):
+            print(f'No egg file found for {self.sel_word}. Creating new one...')
+            self._make_egg_file()
+
+        self.load_egg()
+
+    def _make_egg_file(self):
+        """Create a new egg file with similar words to the selected word."""
         new_words = calculate_similar_words(self.sel_word, self.nlp)
-        sample_words = sample(new_words, 4)
-        source_series = pd.Series(sample_words)
-        # dest_series = bulk_translate(source_series, dest_lang = self.team_lip.ui_language)
+        sample_words = sample(new_words, 10)
+        if 'Monster' in sample_words:
+            sample_words.remove('Monster')
+
+        print(f'Sample words: {sample_words}')
+
+        gota = pd.DataFrame({
+            "word_ll": sample_words,
+            "learning_language": self.team_lip.learning_language.values[0],
+            "ui_language": self.team_lip.ui_language.values[0],
+        })        
+
+        print(f'Before Asyncio Gota: {gota}')
+        dicdf = asyncio.get_event_loop().run_until_complete(
+            bulk_translate(gota, dest_lang='en')
+        )
+        print('After asyncio: ', dicdf)
+
+        today = int(datetime.datetime.timestamp(datetime.datetime.today())) # Correct in init_lipstick.py
+        dicdf['creation_time'] = today
+
+        egg = set_lip(dicdf, flag_lexeme=False)
+        print(f'Word_ll in egg: {egg.word_ll}')
+        # dicdf['learning_language'] = self.team_lip['learning_language'].values[0]
+        # dicdf['ui_language'] = self.team_lip['ui_language'].values[0]
         
-        for w in new_words:
-            label = Button(text = w, font_name=FONT_HEB, font_size=40,)
+        egg.to_csv(self.path_egg, index=False)
+
+    def load_egg(self):
+        """Load the egg file and create buttons for each similar word."""
+        egg = pd.read_csv(self.path_egg)
+        egg = egg.set_index('word_ll', drop=False)
+
+        for w, tr in egg[['word_ll', 'word_ul']].values:
+            btn_sim_word = Button(text = f'{w}: {tr}', font_name=FONT_HEB, font_size=40,)
+            btn_sim_word.bind(on_release=self.trigger_new_MA)
                           
-            self.button_grid.add_widget(label)
+            self.button_grid.add_widget(btn_sim_word)
+
+    def trigger_new_MA(self, instance):
+        pass
+        print(f'Manager in similarwords = {self.manager}')
+        # if there’s already a SimilarWordsScreen, remove it:
+        if self.manager.has_screen('multiple_answer'):
+            self.manager.remove_widget(self.manager.get_screen('multiple_answer'))
+
+        # create & add the new screen
+        self.manager.add_widget(MultipleAnswerScreen(self.path_egg, modality='rt', flag_egg=True, name="multiple_answer"))
+        
+        self.manager.transition = SlideTransition(direction="left")
+        self.manager.current = 'multiple_answer'
 
     def go_back(self, *args):
         sm = self.manager
@@ -254,8 +327,8 @@ class MyApp(App):
     def build(self):
         Window.size = (600, 600)
         self.sm = ScreenManager()
-        self.team_lippath = TEAM_LIP_PATH
-        self.team_lip = load_lipstick(self.team_lippath, modality='dt')
+        self.teamlippath = TEAM_LIP_PATH
+        self.team_lip = load_lipstick(self.teamlippath, modality='dt')
         team_screen = TeamScreen(name='team', team_lip=self.team_lip, buttons_active=False)
         self.sm.add_widget(team_screen)
 
@@ -265,8 +338,8 @@ class MyApp(App):
         print('Rebagging team...')
         print(f"Current team: {self.team_lip}")
 
-        new_team = rebag_team(self.team_lip, self.team_lippath)
-        if new_team is 0:
+        new_team = rebag_team(self.team_lip, self.teamlippath)
+        if new_team == 0:
             print('Rebagging is not needed yet')
             # self.sm.current = 'main_menu'
         else:
