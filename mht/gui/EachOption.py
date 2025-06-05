@@ -60,4 +60,4 @@ class EachOption(Button):
             return
         self.disabled = True
         self.update_color()
-        self.parent.parent.parent.parent.on_close(self.perf)
+        self.parent.parent.parent.parent.process_answer(self.perf)
