@@ -25,7 +25,6 @@ from kivy.uix.screenmanager import Screen, ScreenManager
 from kivy_garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
 
 matplotlib.use("module://kivy.garden.matplotlib.backend_kivy")
-
 matplotlib.use("Agg")
 
 # --- Constants ---
@@ -97,7 +96,7 @@ def load_similar_words_nlp(lip, target_word, nlp):
         print(f"{word}: {score:.3f}, {lip.loc[word, 'word_ul']}")
     return similarities[:3]
 
-def set_question(lipstick_path : str, rtl_flag = False, size_head : int = 10):
+def set_question(lipstick_path : str, rtl_flag = False):
     """Read lipstick head (least practiced words) and select a random question and translation
         size_head : number of options to shuffle from
         return:
@@ -106,16 +105,16 @@ def set_question(lipstick_path : str, rtl_flag = False, size_head : int = 10):
           rndi : index number from random entry (to avoid option repetition in MA)
     """
     print(f'In set_question, lipstick_path: {lipstick_path}')
-    lips_head = pd.read_csv(lipstick_path, nrows = size_head)
+    lips_head = pd.read_csv(lipstick_path, nrows = 6)
 
-    rndi = np.random.randint(0, size_head)
+    rndi = np.random.randint(0, 6)
     qentry = lips_head.loc[rndi]
     # print(qentry)
 
     while qentry.rebag:
         # print(f'The word {qentry.word_ll} has been practiced enough')
 
-        rndi = np.random.randint(0, size_head)
+        rndi = np.random.randint(0, 6)
         qentry = lips_head.iloc[rndi]
         
     nid = qentry.n_id
@@ -223,14 +222,14 @@ def calculate_similar_words(selected_word, nlp):
     words = [nlp.vocab.strings[w] for w in most_similar_words[0][0]]
 
     filtered_words1 = filter_contained(words, selected_filtered)
-    filtered_words = filtered_words1[:6]
+    filtered_words = filtered_words1[:16]
     filtered_words = [get_display(w) for w in filtered_words]
     print('Calculated similar words:', filtered_words)
     return filtered_words
 
 
 # --- Pokemon plotting functions ---- 
-def plot_combat_stats(entry_stats, nframe, nid, question_displ):
+def plot_combat_stats(entry_stats, nframe, nid, question_displ, flag_egg = False):
     """
     Create a matplotlib figure showing combat stats and an animated image.
     Returns the figure, the image object, and the full animation array.
@@ -258,7 +257,10 @@ def plot_combat_stats(entry_stats, nframe, nid, question_displ):
     
     # Animated image: load sprite sheet and display current frame
     ax_im = fig.add_subplot(gs[:, 3])
-    impath = PATH_ANIM + str(nid).zfill(3) + '.png'
+    if flag_egg:
+        impath = PATH_ANIM + 'egg_sprite_sheet.png'
+    else:
+        impath = PATH_ANIM + str(nid).zfill(3) + '.png'
     anim = imread(impath)
     frame_width = anim.shape[0]
     img = anim[:, frame_width * nframe: frame_width * (nframe + 1), :]

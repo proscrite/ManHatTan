@@ -21,3 +21,4 @@ mht/gui/icons/*.png
 *.bin
 mht/data/processed/he_vectors/*
 mht/data/processed/he_vectors/** */
+mht/data/processed/EGGs/*.eggs
