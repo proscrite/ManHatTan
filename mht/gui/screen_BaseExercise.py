@@ -9,7 +9,7 @@ FONT_HEB = ROOT_PATH + '/data/fonts/NotoSansHebrew.ttf'
 PATH_ANIM = ROOT_PATH + '/gui/Graphics/Battlers/'
 
 class BaseExerciseScreen(Screen):
-    def __init__(self, lipstick_path, modality, flag_egg, **kwargs):
+    def __init__(self, lipstick_path, modality, **kwargs):
         super(BaseExerciseScreen, self).__init__(**kwargs)
         self.lippath = lipstick_path
         print(f"Initializing BaseExerciseScreen with lipstick path: {self.lippath!r}")
@@ -29,8 +29,8 @@ class BaseExerciseScreen(Screen):
             self.checkEntry = 'word_ll'
         
         self.nframe = 0
-        self.lipstick.set_index('n_id', inplace=True, drop=False)
-        
+        self.lipstick.set_index('word_ul', inplace=True, drop=False)
+        print('Lipstick loaded:', self.lipstick)
         # Prepare display texts (handling RTL)
         if self.rtl_flag:
             self.question_displ = get_display(self.question)
@@ -40,8 +40,10 @@ class BaseExerciseScreen(Screen):
             self.answer_displ = self.answer
         
         # Build common animated stats panel
-        entry_stats = load_pkmn_stats(self.lipstick, self.nid)
-        self.fig, self.img_display, self.anim = plot_combat_stats(entry_stats, self.nframe, self.nid, self.question_displ, flag_egg=flag_egg)
+        qentry = self.lipstick.loc[self.word_ul].copy()
+        entry_stats = load_pkmn_stats(qentry)
+        
+        self.fig, self.img_display, self.anim = plot_combat_stats(entry_stats, self.nframe, self.nid, self.question_displ)
         self.fig_canvas = FigureCanvasKivyAgg(self.fig)
         from kivy.uix.boxlayout import BoxLayout
         container = BoxLayout()
@@ -59,11 +61,11 @@ class BaseExerciseScreen(Screen):
     def go_back(self, current_name, *args):
      # Get the ScreenManager
         sm = self.manager
-        # if current_name == None:
-        #     current_name = sm.current
+        
         # Save the name of this screen so we can re-add it under the same name
         new_screen = type(self)(self.lippath, modality=self.modality, name=current_name)
         # Remove the old screen and add the new one.
+        print(f"self.manager = {sm}, current screen = {sm.current}")
         sm.remove_widget(self)
         sm.add_widget(new_screen)
         
