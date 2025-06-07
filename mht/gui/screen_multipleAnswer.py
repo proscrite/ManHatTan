@@ -8,6 +8,7 @@ from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.clock import Clock
 from kivy.core.window import Window
+from kivy.uix.popup import Popup
 import time, threading
 
 import matplotlib.pyplot as plt
@@ -26,13 +27,12 @@ FONT_HEB = ROOT_PATH + '/data/fonts/NotoSansHebrew.ttf'
 PATH_ANIM = ROOT_PATH + '/gui/Graphics/Battlers/'
 
 class MultipleAnswerScreen(BaseExerciseScreen):
-    def __init__(self, lipstick_path, modality='rt', flag_egg=False, **kwargs):
-        super(MultipleAnswerScreen, self).__init__(lipstick_path, modality, flag_egg=flag_egg, **kwargs)
+    def __init__(self, lipstick_path, modality='rt', **kwargs):
+        super(MultipleAnswerScreen, self).__init__(lipstick_path, modality, **kwargs)
         self.app = App.get_running_app()
         # self.app.lipstick = self.lipstick
         self.app_start_time = time.time()
         self.teamlippath = lipstick_path
-        self.flag_egg = flag_egg
 
         self.build_ui()
     
@@ -77,7 +77,7 @@ class MultipleAnswerScreen(BaseExerciseScreen):
             layout = BoxLayout(orientation='vertical')
             hint_label = Label(text=h, size_hint=(0.2, 0.2))
             layout.add_widget(hint_label)
-            op = EachOption(ans_text, answers[ans_text], self.rtl_flag)
+            op = EachOption(ans_text, answers[ans_text], self.rtl_flag, callback=self.process_answer)
             layout.add_widget(op)
             self.listOp.append(op)
             self.AnswerPanel.add_widget(layout)
@@ -143,16 +143,6 @@ class MultipleAnswerScreen(BaseExerciseScreen):
             self.answer_popup = None
 
         flag_rebag = update_all(self.lipstick, self.teamlippath, self.word_ul, self.perf, self.speed, mode='m' + self.modality)        
-        if self.flag_egg:
-            print('Egg mode active, resetting lipstick_path: ', self.teamlippath)
-            eggpath_dir, eggpath_fname = os.path.split(self.teamlippath)
-            list_fname_split = eggpath_fname.split('_')[:-1]
-            lippath_fname = '_'.join(list_fname_split) + '.lip'
-            self.teamlippath = os.path.join(eggpath_dir.replace('EGGs', 'LIPSTICK'), lippath_fname)
-            print('New teamlippath:', self.teamlippath)
-            self.app.teamlippath = self.teamlippath
-            print('Updating BaseExerciseScreen lippath: ', self.lippath)
-            self.lippath = self.teamlippath
 
         if flag_rebag:
             print('Rebagging team...')
