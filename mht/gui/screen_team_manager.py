@@ -50,7 +50,7 @@ from mht.gui.common import *
 from mht.scripts.python_scripts.bulkTranslate import bulk_translate
 from mht.scripts.python_scripts.init_lipstick import set_lip
 from mht.scripts.python_scripts.update_lipstick import rebag_team
-from mht.gui.screen_multipleAnswer import MultipleAnswerScreen
+from mht.gui.screen_eggMA import EggScreen
 
 TEAM_LIP_PATH = ROOT_PATH + '/data/processed/LIPSTICK/hebrew_db_team.lip'
 PATH_ANIM = ROOT_PATH + '/gui/Graphics/Battlers/'
@@ -70,10 +70,10 @@ class MiniFigureCell(BoxLayout):
         self.screen_ref.canvas_widgets.append(self.canvas_widget)
 
         # Left button (with Hebrew support if needed)
-        word_ll = self.team_lip.loc[nid, 'word_ll']
+        self.word_ll = self.team_lip.loc[nid, 'word_ll']
         if self.team_lip.loc[nid, 'learning_language'] == 'iw':
-            word_ll = get_display(word_ll)
-        left_button = Button(text=word_ll,
+            self.word_ll = get_display(self.word_ll)
+        left_button = Button(text=self.word_ll,
                              opacity=1.0,
                              font_name=FONT_HEB,
                              font_size=46,
@@ -94,7 +94,8 @@ class MiniFigureCell(BoxLayout):
                       top=0.95, bottom=0.05, hspace=0.6)
 
         # Get the stats using your helper function
-        entry_stats = load_pkmn_stats(self.team_lip, nid)
+        qentry = self.team_lip.loc[nid].copy()
+        entry_stats = load_pkmn_stats(qentry)
 
         # Main axes for the animation (first two rows)
         ax_main = fig.add_subplot(gs[:2, :])
@@ -238,8 +239,6 @@ class SimilarWordsScreen(Screen):
         self.main_grid = GridLayout(cols=1, size_hint = (1, 1))
         self.button_grid = GridLayout(cols = 2, size_hint = (1, 2))
         
-        vec_path = '/Users/pabloherrero/Documents/ManHatTan/mht/data/processed/he_vectors'
-        self.nlp = spacy.load(vec_path)
         # self._init_similar_words()
 
         back_btn = Button(text="Back to Menu", on_release=self.go_back,
@@ -265,7 +264,9 @@ class SimilarWordsScreen(Screen):
 
     def _make_egg_file(self):
         """Create a new egg file with similar words to the selected word."""
-        new_words = calculate_similar_words(self.sel_word, self.nlp)
+        vec_path = '/Users/pabloherrero/Documents/ManHatTan/mht/data/processed/he_vectors'
+        nlp = spacy.load(vec_path)
+        new_words = calculate_similar_words(self.sel_word, nlp)
         sample_words = sample(new_words, 10)
         if 'Monster' in sample_words:
             sample_words.remove('Monster')
@@ -288,6 +289,7 @@ class SimilarWordsScreen(Screen):
         dicdf['creation_time'] = today
 
         egg = set_lip(dicdf, flag_lexeme=False)
+        egg['n_id'] = 0
         print(f'Word_ll in egg: {egg.word_ll}')
         # dicdf['learning_language'] = self.team_lip['learning_language'].values[0]
         # dicdf['ui_language'] = self.team_lip['ui_language'].values[0]
@@ -309,14 +311,14 @@ class SimilarWordsScreen(Screen):
         pass
         print(f'Manager in similarwords = {self.manager}')
         # if there’s already a SimilarWordsScreen, remove it:
-        if self.manager.has_screen('multiple_answer'):
-            self.manager.remove_widget(self.manager.get_screen('multiple_answer'))
+        if self.manager.has_screen('egg_multiple_answer'):
+            self.manager.remove_widget(self.manager.get_screen('egg_multiple_answer'))
 
         # create & add the new screen
-        self.manager.add_widget(MultipleAnswerScreen(self.path_egg, modality='rt', flag_egg=True, name="multiple_answer"))
+        self.manager.add_widget(EggScreen(self.path_egg, modality='rt', name="egg_multiple_answer"))
         
         self.manager.transition = SlideTransition(direction="left")
-        self.manager.current = 'multiple_answer'
+        self.manager.current = 'egg_multiple_answer'
 
     def go_back(self, *args):
         sm = self.manager
