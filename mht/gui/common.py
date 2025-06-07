@@ -229,7 +229,7 @@ def calculate_similar_words(selected_word, nlp):
 
 
 # --- Pokemon plotting functions ---- 
-def plot_combat_stats(entry_stats, nframe, nid, question_displ, flag_egg = False):
+def plot_combat_stats(entry_stats, nframe, nid, question_displ):
     """
     Create a matplotlib figure showing combat stats and an animated image.
     Returns the figure, the image object, and the full animation array.
@@ -257,10 +257,9 @@ def plot_combat_stats(entry_stats, nframe, nid, question_displ, flag_egg = False
     
     # Animated image: load sprite sheet and display current frame
     ax_im = fig.add_subplot(gs[:, 3])
-    if flag_egg:
-        impath = PATH_ANIM + 'egg_sprite_sheet.png'
-    else:
-        impath = PATH_ANIM + str(nid).zfill(3) + '.png'
+    
+    impath = PATH_ANIM + str(nid).zfill(3) + '.png'
+    print(f'Loading animation from: {impath}')
     anim = imread(impath)
     frame_width = anim.shape[0]
     img = anim[:, frame_width * nframe: frame_width * (nframe + 1), :]
@@ -349,9 +348,9 @@ def plot_stats(entry_stats, hp):
 
     return fig
 
-def load_pkmn_stats(lipstick, nid):
-    
-    qentry = lipstick.loc[nid].copy()
+def load_pkmn_stats(qentry):
+    """Load the stats of a Pokemon from the lipstick DataFrame.
+       Returns a dictionary with the stats to be displayed in the combat panel."""
     
     dict_stats = {'mrt': 'Attack',
                 'mdt': 'Defense', 
