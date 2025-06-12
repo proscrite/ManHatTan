@@ -229,7 +229,7 @@ def calculate_similar_words(selected_word, nlp):
 
 
 # --- Pokemon plotting functions ---- 
-def plot_combat_stats(entry_stats, nframe, nid, question_displ):
+def plot_combat_stats(entry_stats, nframe, nid, question_displ, n_cracks: int = 0):
     """
     Create a matplotlib figure showing combat stats and an animated image.
     Returns the figure, the image object, and the full animation array.
@@ -258,7 +258,11 @@ def plot_combat_stats(entry_stats, nframe, nid, question_displ):
     # Animated image: load sprite sheet and display current frame
     ax_im = fig.add_subplot(gs[:, 3])
     
-    impath = PATH_ANIM + str(nid).zfill(3) + '.png'
+
+    if nid == 0:
+        impath = PATH_ANIM + str(nid).zfill(3) + '_c' + str(n_cracks) + '.png'
+    else:
+        impath = PATH_ANIM + str(nid).zfill(3) + '.png'
     print(f'Loading animation from: {impath}')
     anim = imread(impath)
     frame_width = anim.shape[0]
