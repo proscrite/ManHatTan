@@ -42,8 +42,9 @@ class BaseExerciseScreen(Screen):
         # Build common animated stats panel
         qentry = self.lipstick.loc[self.word_ul].copy()
         entry_stats = load_pkmn_stats(qentry)
-        
-        self.fig, self.img_display, self.anim = plot_combat_stats(entry_stats, self.nframe, self.nid, self.question_displ)
+        n_cracks = qentry.get('history_correct', 0) % 6
+
+        self.fig, self.img_display, self.anim = plot_combat_stats(entry_stats, self.nframe, self.nid, self.question_displ, n_cracks = n_cracks)
         self.fig_canvas = FigureCanvasKivyAgg(self.fig)
         from kivy.uix.boxlayout import BoxLayout
         container = BoxLayout()
