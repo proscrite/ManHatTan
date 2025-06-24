@@ -8,6 +8,7 @@ from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.clock import Clock
 from kivy.core.window import Window
+from kivy.uix.popup import Popup
 import time, threading
 
 import matplotlib.pyplot as plt
@@ -29,11 +30,9 @@ class MultipleAnswerScreen(BaseExerciseScreen):
     def __init__(self, lipstick_path, modality='rt', **kwargs):
         super(MultipleAnswerScreen, self).__init__(lipstick_path, modality, **kwargs)
         self.app = App.get_running_app()
-        self.app.lipstick = self.lipstick
+        # self.app.lipstick = self.lipstick
         self.app_start_time = time.time()
         self.teamlippath = lipstick_path
-
-        self.word_ll, self.word_ul, self.iqu, self.nid = set_question(self.teamlippath, self.rtl_flag, size_head=6)
 
         self.build_ui()
     
@@ -78,7 +77,7 @@ class MultipleAnswerScreen(BaseExerciseScreen):
             layout = BoxLayout(orientation='vertical')
             hint_label = Label(text=h, size_hint=(0.2, 0.2))
             layout.add_widget(hint_label)
-            op = EachOption(ans_text, answers[ans_text], self.rtl_flag)
+            op = EachOption(ans_text, answers[ans_text], self.rtl_flag, callback=self.process_answer)
             layout.add_widget(op)
             self.listOp.append(op)
             self.AnswerPanel.add_widget(layout)
@@ -96,17 +95,55 @@ class MultipleAnswerScreen(BaseExerciseScreen):
         elif keycode == 7:
             self.listOp[3].on_release()
 
+    def confirmation_popup(self, perf, *_):
+        # Create a fresh layout for the popup.
+        layout = GridLayout(cols=2, padding=10)
+        label = Button(text='Exercise: ' + self.question_displ, font_name=FONT_HEB, 
+                    font_size=40, bold=True, size_hint=(2, 1))
+        layout.add_widget(label)
 
-    def on_close(self, perf):
+        # Always create a new CorrectionDialog instance.
+        correction = CorrectionDialog(self.question_displ, self.answer)
+        # If by any chance correction already has a parent, remove it.
+        if correction.parent:
+            correction.parent.remove_widget(correction)
+        layout.add_widget(correction)
+        
+        
+        if perf == 1:
+            result_btn = Button(text='Correct! ' + self.answer_displ, font_name = FONT_HEB,
+                                font_size=40, size_hint=(2, 1),
+                                background_color=(0, 1, 0, 1))
+        else:
+            result_btn = Button(text='Incorrect! ' + self.answer_displ, font_name = FONT_HEB,
+                                font_size=40, size_hint=(2, 1),
+                                background_color=(1, 0, 0, 1))
+            
+        layout.add_widget(result_btn)
+        
+        cont_btn = Button(text='Continue', on_release=self.on_close,
+                          size_hint=(0.5, 1), background_color=(1, 1, 0, 1))
+        layout.add_widget(cont_btn)
+        
+        self.answer_popup = Popup(content=layout)
+        self.answer_popup.open()
+
+    def process_answer(self, perf):
+        print('In process_answer word_ul: ', self.word_ul)
+        self.perf = perf
         elapsed_time = time.time() - self.app_start_time
         self.speed = 1 / elapsed_time
-        # Run update_all in background so as not to block the UI
-        # threading.Thread(target=self.background_update_all, daemon=True).start()
-        # For this unified app, simply navigate back to the main menu
-        # App.get_running_app().root.current = "main_menu"
+        self.confirmation_popup(self.perf)
 
-    # def background_update_all(self):
-        flag_rebag = update_all(self.app.lipstick, self.app.teamlippath, self.app.word_ul, perf, self.speed, mode='m' + self.app.modality)        
+    def on_close(self, *_):
+
+        # Dismiss the popup if it exists
+        if hasattr(self, 'answer_popup') and self.answer_popup:
+            self.answer_popup.dismiss()
+            self.answer_popup = None
+
+        flag_rebag = update_all(self.lipstick, self.teamlippath, self.word_ul, self.perf, self.speed, mode='m' + self.modality)        
+
         if flag_rebag:
             print('Rebagging team...')
             self.app.init_rebag()

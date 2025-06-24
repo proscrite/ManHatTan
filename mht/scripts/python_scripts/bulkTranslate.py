@@ -1,11 +1,13 @@
 from googletrans import Translator
 translator = Translator()
+import asyncio
 import pandas as pd
 import numpy as np
 import os
 import sys
 import re
 import datetime
+from bidi.algorithm import get_display
 
 
 # from mht.scripts.python_scripts.test_bulkTranslate import *
@@ -77,19 +79,20 @@ def split_dest(dest_str : str) -> list:
     dest_clean = [e.strip() for e in nonum]  # Strip from whitespaces at beginning & end of string
     return dest_clean
 
-def bulk_translate(src : pd.Series, dest_lang : str) -> pd.Series:
-    """Send single src_str for bulk translation request to server,
-    split retrieved dest_str into its entries using RegEx.
-    Returns dest : final formatted Series in dest_lang language"""
+async def bulk_translate(src: pd.DataFrame, dest_lang: str = None):
+    async with Translator() as translator:
+        src_list = [get_display(w) for w in src.word_ll.values]
+        if dest_lang == None:
+            dest_lang = src.ui_language.values[0]
+        src_lang = 'iw'
 
-    dest_str = translator.translate(src.to_string(), src=src.name, dest=dest_lang).text
-
-    dest_clean = split_dest(dest_str)
-
-    dest = pd.Series(dest_clean, name = dest_lang)
-
-    print('Attempted translation of %i entries. Check DB for mistranslations.' %len(dest))
-    return dest
+        result = await translator.translate(src_list, src=src_lang, dest=dest_lang)
+        print('Translation finished')
+        dest_dict = {}
+        for s, d in zip(src_list, result):
+            dest_dict[get_display(s)] = d.text
+        dest = pd.DataFrame(dest_dict.items(), columns=[src_lang, dest_lang])
+        return dest
 
 
 def make_dicdf(src : pd.Series, dest : pd.Series, cadera_path : str) -> pd.DataFrame:
