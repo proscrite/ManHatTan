@@ -258,7 +258,21 @@ def plot_combat_stats(entry_stats, nframe, nid, question_displ, n_cracks: int = 
     # Animated image: load sprite sheet and display current frame
     ax_im = fig.add_subplot(gs[:, 3])
     
+    im_obj, anim = load_pkmn_animation(ax_im, nframe, nid, n_cracks)
+    ax_im.set_xlabel(f'Translate: {question_displ}', color='yellow',
+                    fontsize=26)
 
+    return fig, im_obj, anim
+
+def load_pkmn_animation(ax_im, nframe, nid, n_cracks=0):
+    """
+    Load a Pokemon animation frame into the given axis.
+    Args:  
+        ax_im: The matplotlib axis to load the image into.
+        nframe: The frame number to display.
+        nid: The Pokemon ID (0 for special case).
+        n_cracks: Number of cracks for special animations (default is 0).
+    """
     if nid == 0:
         impath = PATH_ANIM + str(nid).zfill(3) + '_c' + str(n_cracks) + '.png'
     else:
@@ -268,10 +282,7 @@ def plot_combat_stats(entry_stats, nframe, nid, question_displ, n_cracks: int = 
     frame_width = anim.shape[0]
     img = anim[:, frame_width * nframe: frame_width * (nframe + 1), :]
     im_obj = ax_im.imshow(img)
-    ax_im.set_xlabel(f'Translate: {question_displ}', color='yellow',
-                     fontsize=26)
-    
-    return fig, im_obj, anim
+    return im_obj, anim
 
 def draw_rounded_bar(ax, width, color, y_offset=0.25, bar_height=0.5, corner_radius=0.07):
     """

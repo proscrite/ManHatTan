@@ -14,6 +14,7 @@ from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy_garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
 
+import threading
 import spacy
 import logging
 import datetime
@@ -229,6 +230,7 @@ class TeamScreen(Screen):
         self.manager.transition = SlideTransition(direction="right")
         self.manager.current = "main_menu"
 
+####   Screen for Similar Words loading  ####
 
 class SimilarWordsScreen(Screen):
     def __init__(self, selected_word, lipstick, **kwargs):
@@ -236,31 +238,84 @@ class SimilarWordsScreen(Screen):
         self.app = App.get_running_app()
         self.sel_word = selected_word
         self.team_lip = lipstick
-        self.main_grid = GridLayout(cols=1, size_hint = (1, 1))
-        self.button_grid = GridLayout(cols = 2, size_hint = (1, 2))
-        
-        # self._init_similar_words()
 
+        # Root layout: vertical, black background
+        self.root_layout = BoxLayout(orientation='vertical', spacing=10, padding=10)
+        with self.root_layout.canvas.before:
+            from kivy.graphics import Color, Rectangle
+            Color(0, 0, 0, 1)
+            self.bg_rect = Rectangle(size=self.size, pos=self.pos)
+        self.bind(size=self._update_bg_rect, pos=self._update_bg_rect)
+
+        info_label = Label(text="Searching the genealogy tree for eggs...", size_hint=(1, None),
+            height=70, color=(1, 1, 1, 1), font_size=40 )
+        self.root_layout.add_widget(info_label)
+
+        # Animation container (fills most of the space)
+        self.anim_container = BoxLayout( orientation='vertical', size_hint=(1, None),
+                                         height=700, padding=0, spacing=0)
+
+        with self.anim_container.canvas.before:
+            Color(0, 0, 0, 1)
+            self.anim_bg_rect = Rectangle(size=self.anim_container.size, pos=self.anim_container.pos)
+        self.anim_container.bind(size=self._update_anim_bg_rect, pos=self._update_anim_bg_rect)
+        self.root_layout.add_widget(self.anim_container)
+
+        self.add_widget(self.root_layout)
+
+        # Bottom back button
         back_btn = Button(text="Back to Menu", on_release=self.go_back,
-                          size_hint=(0.5, 1))
-        self.main_grid.add_widget(self.button_grid)
-        self.main_grid.add_widget(back_btn)
+            size_hint=(1, None), height=90, font_size=40, background_color=(0.2, 0.2, 0.2, 1), color=(1, 1, 1, 1)
+        )
+        self.root_layout.add_widget(back_btn)
 
-        self.add_widget(self.main_grid)
-    
-    def get_eggpath(self, *args):
-        lippath_dir, lippath_fname = os.path.split(self.app.teamlippath)
-        append_fname = '_' + self.sel_word[::-1] + '.eggs'
-        self.path_egg = os.path.join(lippath_dir.replace('LIPSTICK', 'EGGs'), lippath_fname.replace('.lip', append_fname) )
-        return self.path_egg
+        self.anim = None
+        self.im_obj = None
+        self.fig = None
+        self.fig_canvas = None
+        self.nframe = 0
 
     def on_enter(self, *args):
         self.path_egg = self.get_eggpath()
+        self.show_egg_animation()
         if not os.path.exists(self.path_egg):
             print(f'No egg file found for {self.sel_word}. Creating new one...')
-            self._make_egg_file()
+            threading.Thread(target=self._make_egg_file_and_continue, daemon=True).start()
+        else:
+            Clock.schedule_once(lambda dt: self.trigger_new_MA(None), 0.5)
 
-        self.load_egg()
+    def on_leave(self, *args):
+        Clock.unschedule(self.update_animation)
+        if hasattr(self, 'fig_canvas'):
+            self.anim_container.remove_widget(self.fig_canvas)
+
+    def show_egg_animation(self):
+        """Show the egg animation in the main grid."""
+        fig, ax = plt.subplots(figsize=(2.25, 2.25))
+        fig.patch.set_facecolor('black')
+        ax.set_facecolor('black')
+        ax.axis('off')
+        im_obj, anim = load_pkmn_animation(ax, nframe=0, nid=0)
+        self.anim = anim
+        self.im_obj = im_obj
+        self.fig = fig
+        self.fig_canvas = FigureCanvasKivyAgg(fig)
+        self.anim_container.clear_widgets()
+        self.anim_container.add_widget(self.fig_canvas)
+        self.nframe = 0
+        Clock.schedule_interval(self.update_animation, 1/12)
+
+    def update_animation(self, dt):
+        frame_width = self.anim.shape[0]
+        total_frames = self.anim.shape[1] // frame_width
+        self.nframe = (self.nframe + 1) % total_frames
+        new_img = self.anim[:, frame_width * self.nframe: frame_width * (self.nframe + 1), :]
+        self.im_obj.set_data(new_img)
+        self.fig_canvas.draw()
+
+    def _make_egg_file_and_continue(self):
+        self._make_egg_file()
+        Clock.schedule_once(lambda dt: self.trigger_new_MA(None), 0)
 
     def _make_egg_file(self):
         """Create a new egg file with similar words to the selected word."""
@@ -280,9 +335,12 @@ class SimilarWordsScreen(Screen):
         })        
 
         print(f'Before Asyncio Gota: {gota}')
-        dicdf = asyncio.get_event_loop().run_until_complete(
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        dicdf = loop.run_until_complete(
             bulk_translate(gota, dest_lang='en')
         )
+        loop.close()
         print('After asyncio: ', dicdf)
 
         today = int(datetime.datetime.timestamp(datetime.datetime.today())) # Correct in init_lipstick.py
@@ -301,14 +359,7 @@ class SimilarWordsScreen(Screen):
         egg = pd.read_csv(self.path_egg)
         egg = egg.set_index('word_ll', drop=False)
 
-        for w, tr in egg[['word_ll', 'word_ul']].values:
-            btn_sim_word = Button(text = f'{w}: {tr}', font_name=FONT_HEB, font_size=40,)
-            btn_sim_word.bind(on_release=self.trigger_new_MA)
-                          
-            self.button_grid.add_widget(btn_sim_word)
-
     def trigger_new_MA(self, instance):
-        pass
         print(f'Manager in similarwords = {self.manager}')
         # if there’s already a SimilarWordsScreen, remove it:
         if self.manager.has_screen('egg_multiple_answer'):
@@ -319,11 +370,26 @@ class SimilarWordsScreen(Screen):
         
         self.manager.transition = SlideTransition(direction="left")
         self.manager.current = 'egg_multiple_answer'
-
+    
     def go_back(self, *args):
         sm = self.manager
         sm.transition = SlideTransition(direction="right")
         sm.current = "team"
+
+    def _update_bg_rect(self, *args):
+        self.bg_rect.size = self.size
+        self.bg_rect.pos = self.pos
+
+    def _update_anim_bg_rect(self, *args):
+        self.anim_bg_rect.size = self.anim_container.size
+        self.anim_bg_rect.pos = self.anim_container.pos
+    
+    def get_eggpath(self, *args):
+        lippath_dir, lippath_fname = os.path.split(self.app.teamlippath)
+        append_fname = '_' + self.sel_word[::-1] + '.eggs'
+        self.path_egg = os.path.join(lippath_dir.replace('LIPSTICK', 'EGGs'), lippath_fname.replace('.lip', append_fname) )
+        return self.path_egg
+
 
 class MyApp(App):
     def build(self):
