@@ -270,8 +270,8 @@ def load_pkmn_animation(ax_im, nframe, nid, n_cracks=0):
     Args:  
         ax_im: The matplotlib axis to load the image into.
         nframe: The frame number to display.
-        nid: The Pokemon ID (0 for special case).
-        n_cracks: Number of cracks for special animations (default is 0).
+        nid: The Pokemon ID (0 for special case of EGGs).
+        n_cracks: Number of cracks for special animations (default is 0, maximum is 5).
     """
     if nid == 0:
         impath = PATH_ANIM + str(nid).zfill(3) + '_c' + str(n_cracks) + '.png'
