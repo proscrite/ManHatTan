@@ -20,9 +20,10 @@ from mht.scripts.python_scripts.update_lipstick import update_all
 
 # --- EachOption class for multiple choice answers ---
 class EachOption(Button):
-    def __init__(self, text, val, rtl_flag=False):
+    def __init__(self, text, val, rtl_flag=False, callback=None, **kwargs):
         super(EachOption, self).__init__(size_hint=(1, 0.8))
         self.app = App.get_running_app()
+        self.callback = callback
         self.background_normal = ''
         self.background_down = ''
         self.background_color = (0, 0, 0, 0)
@@ -56,8 +57,8 @@ class EachOption(Button):
         self.canvas.ask_update()
 
     def on_release(self, *args):
-        if self.app.root.current != "multiple_answer":
-            return
+        # if self.app.root.current != "multiple_answer":
+        #     return
         self.disabled = True
         self.update_color()
-        self.parent.parent.parent.parent.on_close(self.perf)
+        self.parent.parent.parent.parent.process_answer(self.perf)

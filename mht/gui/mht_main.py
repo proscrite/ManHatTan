@@ -31,7 +31,32 @@ import logging
 kvLogger.setLevel(logging.WARNING)
 logging.getLogger('matplotlib').setLevel(logging.WARNING)
 
+from kivy.config import Config
+# change 'log_level' from DEBUG → WARNING (so you only see WARNING / ERROR)
+Config.set('kivy', 'log_level', 'warning')
+logging.getLogger('kivy.network.urlrequest').setLevel(logging.WARNING)
+logging.getLogger('kivy.network.httpclient').setLevel(logging.WARNING)
 # Import dependencies from your modules (adjust the paths if necessary)
+os.environ['KIVY_NO_CONSOLELOG'] = '1'
+
+# 2) If you still want Kivy warnings/errors:
+from kivy.config import Config
+Config.set('kivy', 'log_level', 'warning')
+
+# 3) Globally raise the stdlib log level
+import logging
+logging.basicConfig(level=logging.WARNING)
+logging.getLogger().setLevel(logging.WARNING)
+
+# 4) Specifically silence the HTTP/2 + HPACK libraries
+logging.getLogger('h2.connection').setLevel(logging.WARNING)
+logging.getLogger('hpack').setLevel(logging.WARNING)
+logging.getLogger('hyper').setLevel(logging.WARNING)
+
+# 5) And silence Kivy’s URLRequest debug chatter (if you use that)
+logging.getLogger('kivy.network.urlrequest').setLevel(logging.WARNING)
+logging.getLogger('kivy.network.httpclient').setLevel(logging.WARNING)
+
 
 from mht.gui.common import set_question, load_lipstick
 from mht.gui.screen_writeInput import WriteInputScreen
@@ -161,7 +186,7 @@ class ManHatTan(App):
         self.team_lip = load_lipstick(self.teamlippath, self.modality)
         self.rtl_flag = (self.team_lip.learning_language.iloc[0] == 'iw')
         if self.flag_refresh:
-            self.word_ll, self.word_ul, self.iqu, self.nid = set_question(self.teamlippath, self.rtl_flag, size_head=6)
+            self.word_ll, self.word_ul, self.iqu, self.nid = set_question(self.teamlippath, self.rtl_flag)
             self.flag_refresh = False
         
         self.sm = ScreenManager()
