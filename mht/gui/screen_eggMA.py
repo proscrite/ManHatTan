@@ -1,6 +1,5 @@
 # --- Multiple Answer Screen (refactored from kivy_multipleAnswer.py) --- #
 from kivy.app import App
-from kivy.uix.screenmanager import Screen
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.floatlayout import FloatLayout
@@ -33,6 +32,13 @@ class EggScreen(MultipleAnswerScreen):
         self.is_egg_screen = True
         print('Initializing EggScreen with lipstick path:', lipstick_path)
         # Any Egg-specific initialization can go here
+
+    def build_ui(self):
+        super().build_ui()
+        # --- Add Bypass Button ---
+        bypass_btn = Button(text='Bypass Word', background_color=(0.8, 0.5, 0.2, 1))
+        bypass_btn.bind(on_release=self.bypass_word)
+        self.optMenu.add_widget(bypass_btn)
 
     def _get_liptick_path(self):
         eggpath_dir, eggpath_fname = os.path.split(self.teamlippath)
@@ -77,6 +83,43 @@ class EggScreen(MultipleAnswerScreen):
             print(f'New lipstick saved to {lippath}')
         else:
             print('No new lipstick entry created.')
+
+    def _delete_word_from_EGG(self, *_):
+        """Delete the word from the egg database."""
+        egg_df = pd.read_csv(self.teamlippath)
+        if self.word_ul in egg_df['word_ul'].values:
+            egg_df = egg_df[egg_df['word_ul'] != self.word_ul]
+            egg_df.to_csv(self.teamlippath, index=False)
+            print(f"Removed {self.word_ul} from egg database.")
+        else:
+            print(f"{self.word_ul} not found in egg database.")
+
+    def _reload_egg_screen(self):
+        """Reload the EggScreen to refresh the current word."""
+        manager = self.manager
+        temp_screen = None
+
+        # Add a temporary blank screen if not present
+        if not manager.has_screen('temp_blank'):
+            temp_screen = Screen(name='temp_blank')
+            manager.add_widget(temp_screen)
+        manager.current = 'temp_blank'
+
+        if manager.has_screen(self.name):
+            manager.remove_widget(self)  # Remove the current EggScreen
+        
+        new_egg_screen = EggScreen(self.teamlippath, modality=self.modality, name=self.name)
+        manager.add_widget(new_egg_screen)   # Add the new EggScreen with the same name
+        manager.current = self.name     # Switch to the new EggScreen
+
+        if temp_screen:
+            manager.remove_widget(temp_screen)
+
+    def bypass_word(self, instance):
+        """Bypass the current word: remove from egg db and reload EggScreen."""
+        print(f"Bypassing word: {self.word_ul}")
+        self._delete_word_from_EGG(self.word_ul)
+        self._reload_egg_screen()
 
     def on_close(self, *_):
         # Dismiss the popup if it exists
