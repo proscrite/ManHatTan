@@ -41,7 +41,7 @@ class MultipleAnswerScreen(BaseExerciseScreen):
         self.upper_panel = GridLayout(cols=3, size_hint_y=0.8)
         
         # Options panel (left column)
-        self.optMenu = GridLayout(cols=1, rows=2, size_hint_x=0.25,
+        self.optMenu = GridLayout(cols=1, rows=3, size_hint_x=0.25,
                                   padding=20, spacing=20)
         exit_btn = Button(text='Exit', background_color=(0.6, 0.5, 0.5, 1))
         exit_btn.bind(on_release=self.go_back)
