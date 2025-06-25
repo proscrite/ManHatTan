@@ -83,22 +83,40 @@ class MainMenuScreen(Screen):
         super(MainMenuScreen, self).__init__(**kwargs)
         self.lipstick_path = lipstick_path
         self.app = App.get_running_app()
-        self.layout = BoxLayout(orientation='vertical', padding=20, spacing=20, minimum_width = 1000)
-        btn_write = Button(text="Write Input Exercise", font_size=40)
-        btn_multi = Button(text="Multiple Answer Exercise", font_size=40)
+        self.layout = BoxLayout(orientation='vertical', padding=20, spacing=20, minimum_width=1000)
+
+        self._add_main_buttons()
+        self._add_lower_panel()
+
+        self.add_widget(self.layout)
+
+    def _add_main_buttons(self):
+        btn_write = Button(
+            text="[b]Write Input Exercise[/b]\n[i][size=20]Type your answer in free text[/size][/i]",
+            font_size=40,
+            markup=True,
+            background_color=(0.2, 0.5, 0.9, 1),
+            color=(1, 1, 1, 1)
+        )
+        btn_multi = Button(
+            text="[b]Multiple Answer Exercise[/b]\n[i][size=20]Choose the correct answer[/size][/i]",
+            font_size=40,
+            markup=True,
+            background_color=(0.9, 0.6, 0.2, 1),
+            color=(1, 1, 1, 1)
+        )
         btn_write.bind(on_release=self.go_to_write)
         btn_multi.bind(on_release=self.go_to_multi)
-
         self.layout.add_widget(btn_write)
         self.layout.add_widget(btn_multi)
-                
+
+    def _add_lower_panel(self):
         self.learning_language = self.app.lipstick['learning_language'][0]
         self.ui_language = self.app.lipstick['ui_language'][0]
         print(f'learning_language = {self.learning_language}, ui_language = {self.ui_language}')
         features = self.app.lipstick.columns
         print(f'Features: {features}')
 
-        # Create the dropdown and keep a reference
         self.dropdown = DropDown()
         item_dt = Button(text=self.ui_language, size_hint_y=None, height=84)
         item_rt = Button(text=self.learning_language, size_hint_y=None, height=84)
@@ -107,7 +125,7 @@ class MainMenuScreen(Screen):
         self.dropdown.add_widget(item_dt)
         self.dropdown.add_widget(item_rt)
 
-        lower_panel = GridLayout(cols=3, size_hint_y=0.2, minimum_width = 5000)
+        lower_panel = GridLayout(cols=3, size_hint_y=0.2, minimum_width=5000)
         self.dropdown_button = Button(text='Exercise Language', size_hint=(0.5, 0.3))
         self.dropdown_button.bind(on_release=self.dropdown.open)
         self.dropdown.bind(on_select=lambda instance, x: setattr(self.dropdown_button, 'text', x))
@@ -118,8 +136,7 @@ class MainMenuScreen(Screen):
         exit_button = Button(text='Exit', size_hint=(0.5, 0.3), on_release=self.exit)
         lower_panel.add_widget(exit_button)
         self.layout.add_widget(lower_panel)
-        self.add_widget(self.layout)
-    
+
     def go_to_write(self, instance):
         self.manager.transition = SlideTransition(direction="left")
         self.manager.current = "write_input"
