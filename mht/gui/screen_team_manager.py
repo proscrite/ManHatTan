@@ -247,9 +247,9 @@ class SimilarWordsScreen(Screen):
             self.bg_rect = Rectangle(size=self.size, pos=self.pos)
         self.bind(size=self._update_bg_rect, pos=self._update_bg_rect)
 
-        info_label = Label(text="Searching the genealogy tree for eggs...", size_hint=(1, None),
+        self.info_label = Label(text="Searching the genealogy tree for eggs...", size_hint=(1, None),
             height=70, color=(1, 1, 1, 1), font_size=40 )
-        self.root_layout.add_widget(info_label)
+        self.root_layout.add_widget(self.info_label)
 
         # Animation container (fills most of the space)
         self.anim_container = BoxLayout( orientation='vertical', size_hint=(1, None),
@@ -264,7 +264,7 @@ class SimilarWordsScreen(Screen):
         self.add_widget(self.root_layout)
 
         # Bottom back button
-        back_btn = Button(text="Back to Menu", on_release=self.go_back,
+        back_btn = Button(text="Back to Team", on_release=self.go_back,
             size_hint=(1, None), height=90, font_size=40, background_color=(0.2, 0.2, 0.2, 1), color=(1, 1, 1, 1)
         )
         self.root_layout.add_widget(back_btn)
@@ -277,6 +277,10 @@ class SimilarWordsScreen(Screen):
 
     def on_enter(self, *args):
         self.path_egg = self.get_eggpath()
+        if not self.egg_has_entries():
+            self.info_label.text="Sorry, you hatched all available eggs for this word :/"
+            return
+
         self.show_egg_animation()
         if not os.path.exists(self.path_egg):
             print(f'No egg file found for {self.sel_word}. Creating new one...')
@@ -286,7 +290,7 @@ class SimilarWordsScreen(Screen):
 
     def on_leave(self, *args):
         Clock.unschedule(self.update_animation)
-        if hasattr(self, 'fig_canvas'):
+        if getattr(self, 'fig_canvas', None) is not None and self.fig_canvas in self.anim_container.children:
             self.anim_container.remove_widget(self.fig_canvas)
 
     def show_egg_animation(self):
@@ -389,6 +393,18 @@ class SimilarWordsScreen(Screen):
         append_fname = '_' + self.sel_word[::-1] + '.eggs'
         self.path_egg = os.path.join(lippath_dir.replace('LIPSTICK', 'EGGs'), lippath_fname.replace('.lip', append_fname) )
         return self.path_egg
+
+    def egg_has_entries(self):
+        """Return True if the egg file exists and has at least one row."""
+        if not os.path.exists(self.path_egg):
+            return False
+        try:
+            import pandas as pd
+            df = pd.read_csv(self.path_egg)
+            return not df.empty
+        except Exception as e:
+            print(f"Error reading egg file: {e}")
+            return False
 
 
 class MyApp(App):

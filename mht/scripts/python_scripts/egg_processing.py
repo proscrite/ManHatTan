@@ -81,3 +81,13 @@ def add_egg_to_lipstick(egg_entry, lipstick):
     new_lipstick = new_lipstick.reset_index(drop=True)
 
     return new_lipstick
+
+def delete_word_from_egg(word_ul: str, egg_path: str):
+    """Delete the word from the EGG database after hatching."""
+    egg_df = pd.read_csv(egg_path)
+    if word_ul in egg_df['word_ul'].values:
+        egg_df = egg_df[egg_df['word_ul'] != word_ul]
+        egg_df.to_csv(egg_path, index=False)
+        print(f"Removed {word_ul} from EGG database after hatching.")
+    else:
+        print(f"{word_ul} not found in EGG database.")
