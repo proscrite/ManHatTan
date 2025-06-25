@@ -88,16 +88,9 @@ class EggScreen(MultipleAnswerScreen):
             print(f'New lipstick saved to {lippath}')
         else:
             print('No new lipstick entry created.')
-
-    def _delete_word_from_EGG(self, *_):
-        """Delete the word from the egg database."""
-        egg_df = pd.read_csv(self.teamlippath)
-        if self.word_ul in egg_df['word_ul'].values:
-            egg_df = egg_df[egg_df['word_ul'] != self.word_ul]
-            egg_df.to_csv(self.teamlippath, index=False)
-            print(f"Removed {self.word_ul} from egg database.")
-        else:
-            print(f"{self.word_ul} not found in egg database.")
+        
+        # Delete the word from the egg database
+        egg_proc.delete_word_from_egg(word_ul, egg_path)
 
     def _reload_egg_screen(self):
         """Reload the EggScreen to refresh the current word."""
@@ -151,73 +144,76 @@ class EggScreen(MultipleAnswerScreen):
         label = Label(text="The egg is hatching!", font_size=32, size_hint=(1, 0.2))
         layout.add_widget(label)
 
+        self._fill_hatch_popup(layout, random_nid)
+
+        anchor = AnchorLayout(anchor_x='center', anchor_y='center', size_hint=(1, 0.85))
+        anchor.add_widget(self.fig_canvas)
+        layout.add_widget(anchor)
+
+        self.continue_btn = Button(text="Continue", size_hint=(1, 0.2), font_size=24, disabled=True)
+        layout.add_widget(self.continue_btn)
+
+        popup = Popup(title="Egg Hatching!", content=layout, size_hint=(0.8, 0.6), auto_dismiss=False)
+        self.continue_btn.bind(on_release=popup.dismiss)
+
+        self._run_hatch_animation(popup)
+        popup.open()
+
+    def _fill_hatch_popup(self, layout, random_nid):
         fig, ax = plt.subplots(figsize=(3, 3))
         fig.patch.set_facecolor('black')
         ax.axis('off')
         ax.set_facecolor('black')
 
-        # Load both animations
-        im_obj_egg, anim_egg = load_pkmn_animation(ax, nframe=0, nid=0, n_cracks=5)
-        im_obj_new, anim_new = load_pkmn_animation(ax, nframe=0, nid=random_nid)
-        im_obj_new.set_visible(False)  # Start with only egg visible
+        self.im_obj_egg, self.anim_egg = load_pkmn_animation(ax, nframe=0, nid=0, n_cracks=5)
+        self.im_obj_new, self.anim_new = load_pkmn_animation(ax, nframe=0, nid=random_nid)
+        
+        if self.rtl_flag: 
+            self.word_ll = get_display(self.word_ll)
+        ax.set_title(f'{self.word_ll}', color='yellow', fontsize=26)
+        self.im_obj_new.set_visible(False)
 
-        # Set axis limits to single frame size
-        frame_height = anim_egg.shape[0]
-        frame_width = anim_egg.shape[0]
-        ax.set_xlim(0, frame_width)
-        ax.set_ylim(frame_height, 0)
+        frame_size = self.anim_egg.shape[0]
+        ax.set_xlim(0, frame_size)
+        ax.set_ylim(frame_size, 0)
 
-        fig_canvas = FigureCanvasKivyAgg(fig)
-        fig_canvas.size_hint = (1, 1)
+        self.fig_canvas = FigureCanvasKivyAgg(fig)
+        self.ax = ax
 
-        anchor = AnchorLayout(anchor_x='center', anchor_y='center', size_hint=(1, 0.85))
-        anchor.add_widget(fig_canvas)
-        layout.add_widget(anchor)
-
-        continue_btn = Button(text="Continue", size_hint=(1, 0.2), font_size=24, disabled=True)
-        layout.add_widget(continue_btn)
-
-        popup = Popup(title="Egg Hatching!", content=layout, size_hint=(0.8, 0.6), auto_dismiss=False)
-        continue_btn.bind(on_release=popup.dismiss)
-        popup.open()
-
+    def _run_hatch_animation(self, popup):
         self._hatch_anim_frame = 0
         self._hatch_anim_cycles = 0
-        egg_total_frames = anim_egg.shape[1] // anim_egg.shape[0]
-        new_total_frames = anim_new.shape[1] // anim_new.shape[0]
+        egg_total_frames = self.anim_egg.shape[1] // self.anim_egg.shape[0]
+        new_total_frames = self.anim_new.shape[1] // self.anim_new.shape[0]
         max_egg_cycles = 2
         new_anim_played = False
 
         def update(dt):
             nonlocal new_anim_played
             if not new_anim_played:
-                # Play egg animation for max_egg_cycles
-                frame_width = anim_egg.shape[0]
+                frame_width = self.anim_egg.shape[0]
                 frame = self._hatch_anim_frame % egg_total_frames
-                new_img = anim_egg[:, frame_width * frame: frame_width * (frame + 1), :]
-                im_obj_egg.set_data(new_img)
-                fig_canvas.draw()
+                new_img = self.anim_egg[:, frame_width * frame: frame_width * (frame + 1), :]
+                self.im_obj_egg.set_data(new_img)
+                self.fig_canvas.draw()
                 self._hatch_anim_frame += 1
                 if self._hatch_anim_frame % egg_total_frames == 0:
                     self._hatch_anim_cycles += 1
                     if self._hatch_anim_cycles >= max_egg_cycles:
-                        # Switch to new animation
-                        im_obj_egg.set_visible(False)
-                        im_obj_new.set_visible(True)
-                        # Reset frame and axis limits for new animation
+                        self.im_obj_egg.set_visible(False)
+                        self.im_obj_new.set_visible(True)
                         self._hatch_anim_frame = 0
                         self._hatch_anim_cycles = 0
-                        ax.set_xlim(0, anim_new.shape[0])
-                        ax.set_ylim(anim_new.shape[0], 0)
+                        self.ax.set_xlim(0, self.anim_new.shape[0])
+                        self.ax.set_ylim(self.anim_new.shape[0], 0)
                         new_anim_played = True
-                        continue_btn.disabled = False
+                        self.continue_btn.disabled = False
             else:
-                # Play new animation for 1 cycle
-                frame_width = anim_new.shape[0]
+                frame_width = self.anim_new.shape[0]
                 frame = self._hatch_anim_frame % new_total_frames
-                new_img = anim_new[:, frame_width * frame: frame_width * (frame + 1), :]
-                im_obj_new.set_data(new_img)
-                fig_canvas.draw()
+                new_img = self.anim_new[:, frame_width * frame: frame_width * (frame + 1), :]
+                self.im_obj_new.set_data(new_img)
+                self.fig_canvas.draw()
                 self._hatch_anim_frame += 1
 
         self._hatch_anim_event = Clock.schedule_interval(update, 1/12)
