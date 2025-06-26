@@ -40,8 +40,8 @@ def scrap_verb_link(hebrew_verb):
     for entry in soup.select('.verb-search-result'):
         lemma = entry.select_one('.verb-search-lemma a')
         binyan = entry.select_one('.verb-search-binyan')
-        if 'verb' in binyan.get_text(strip=True).lower():
-        
+        pos_string = binyan.get_text(strip=True).lower()  # Get the Parts of Speech string
+        if ':verb' in pos_string:   # The colon : is used to prevent "adverb" to be matched
             if lemma:
                 text = lemma.get_text(strip=True)
                 url = lemma['href']
@@ -60,8 +60,21 @@ def scrap_conjugation_dict(verb_url):
     conjug_dict = {}
     for entry in conjugation_entries:
         for div in entry.find_all('div', id=True):
-            menukad = div.find('span', class_='menukad')
-            chaser = div.find('span', class_='chaser')
+            div_classes = div.get('class', [])
+            menukad = div.find('span', class_='menukad')   # Short spelling with niqqud (no yuds or vavs)
+            chaser = div.find('span', class_='chaser')     # Long spelling (with yuds and vavs)
+            # Check if this div is a popover-host
+            if 'popover-host' in div_classes:   # Popover-hosts are used for "auxiliary" forms which are the common in modern Hebrew 
+                aux_forms = div.find('div', class_='aux-forms hidden')
+                if aux_forms:
+                    menukad_spans = aux_forms.find_all('span', class_='menukad')
+                    if menukad_spans:
+                        conjugated_verb_nikkud = menukad_spans[-1].get_text(strip=True)
+                        verb_noniqqud = Hebrew(conjugated_verb_nikkud).no_niqqud()
+                        verb_noniqqud = str(verb_noniqqud).replace('~', '').replace(' ', '')
+                        conjug_dict[div['id']] = verb_noniqqud
+                        continue  # Skip to next div after handling aux-forms
+                    
             if chaser:
                 conjugated_verb_nikkud = chaser.get_text(strip=True)
                 verb_noniqqud = Hebrew(conjugated_verb_nikkud).no_niqqud()
@@ -87,6 +100,7 @@ def parse_conjugation_key(key):
         english_parts.append(eng)
         hebrew_parts.append(heb)
     parsed_english = " - ".join(english_parts)
+    parsed_english = parsed_english.replace("passive - ", "passive, ")
     parsed_hebrew = " ,".join(hebrew_parts)
     return parsed_english, parsed_hebrew
 
@@ -99,7 +113,7 @@ def get_conj_dict(hebrew_verb):
         print(f"No conjugation data found for {hebrew_verb}")
         return {}
     
-    conjugation_dict = {k: v for k, v in conjugation_dict.items() if 'IMP-' not in k}
+    conjugation_dict = {k: v for k, v in conjugation_dict.items() if 'IMP-' not in k} # Exclude imperative forms
 
     return conjugation_dict
 
@@ -112,10 +126,10 @@ def get_random_conjugation(hebrew_verb):
     # Randomly select a key from the conjugation dictionary
     random_key = random.choice(list(conjugation_dict.keys()))
     conjugated_verb = conjugation_dict[random_key]
-    
+    infinitive_form = conjugation_dict['INF-L']
     # Parse the key to get a human-readable form
     parsed_english, parsed_hebrew = parse_conjugation_key(random_key)
-    return parsed_english, parsed_hebrew, conjugated_verb
+    return parsed_english, parsed_hebrew, conjugated_verb, infinitive_form
 
 if __name__ == "__main__":
     hebrew_verb = sys.argv[1] if len(sys.argv) > 1 else "לכתוב"
