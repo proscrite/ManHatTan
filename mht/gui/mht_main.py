@@ -39,10 +39,6 @@ logging.getLogger('kivy.network.httpclient').setLevel(logging.WARNING)
 # Import dependencies from your modules (adjust the paths if necessary)
 os.environ['KIVY_NO_CONSOLELOG'] = '1'
 
-# 2) If you still want Kivy warnings/errors:
-from kivy.config import Config
-Config.set('kivy', 'log_level', 'warning')
-
 # 3) Globally raise the stdlib log level
 import logging
 logging.basicConfig(level=logging.WARNING)

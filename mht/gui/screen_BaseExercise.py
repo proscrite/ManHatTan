@@ -50,6 +50,7 @@ class BaseExerciseScreen(Screen):
         container = BoxLayout()
         container.add_widget(self.fig_canvas)
         self.animated_container = container
+        print(f"Initialized BaseExerciseScreen with question: {self.question_displ!r}, answer: {self.answer_displ!r}")
 
     def update(self, dt):
         # Common animation update method

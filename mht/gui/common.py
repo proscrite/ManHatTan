@@ -229,20 +229,21 @@ def calculate_similar_words(selected_word, nlp):
 
 
 # --- Pokemon plotting functions ---- 
-def plot_combat_stats(entry_stats, nframe, nid, question_displ, n_cracks: int = 0):
+def plot_combat_stats(entry_stats, nframe, nid, question_displ, n_cracks: int = 0, width_ratios=None):
     """
     Create a matplotlib figure showing combat stats and an animated image.
     Returns the figure, the image object, and the full animation array.
     """
-    positions = [(0.125, 0.75), (0.25, 0.75), (0.375, 0.75),
-                 (0.175, 0.4), (0.325, 0.4)]
+    if width_ratios is None:
+        width_ratios = [0.3, 0.3, 0.3, 0.9]
     fig = plt.figure(figsize=(12, 4))
     fig.patch.set_facecolor("black")
-    gs = GridSpec(3, 4, width_ratios=[0.3, 0.3, 0.3, 0.9],
-                  height_ratios=[1, 1, 1])
+    gs = GridSpec(3, 4, width_ratios=width_ratios, height_ratios=[1, 1, 1])
     colors = ['gold', 'maroon', 'magenta', 'navy', 'darkorange']
     
     # Example: draw pie charts for each stat (assuming entry_stats is a dict)
+    positions = [(0.125, 0.75), (0.25, 0.75), (0.375, 0.75),
+                 (0.175, 0.4), (0.325, 0.4)]
     for (x, y), (k, v) in zip(positions, entry_stats.items()):
         ax = fig.add_axes([x - 0.1, y - 0.1, 0.3, 0.3])
         ax.pie([v, 10 - v], wedgeprops=dict(width=0.5),
