@@ -121,7 +121,7 @@ def get_random_conjugation(hebrew_verb):
     """Get a random conjugation of a Hebrew verb."""
     conjugation_dict = get_conj_dict(hebrew_verb)
     if not conjugation_dict:
-        return None, None, None
+        return None, None, None, None
 
     # Randomly select a key from the conjugation dictionary
     random_key = random.choice(list(conjugation_dict.keys()))
@@ -133,7 +133,7 @@ def get_random_conjugation(hebrew_verb):
 
 if __name__ == "__main__":
     hebrew_verb = sys.argv[1] if len(sys.argv) > 1 else "לכתוב"
-    parsed_english, parsed_hebrew, conjugated_verb = get_random_conjugation(hebrew_verb)
+    parsed_english, parsed_hebrew, conjugated_verb, infinitive_form = get_random_conjugation(hebrew_verb)
     if parsed_english and conjugated_verb:
         print(f"Random conjugation for '{hebrew_verb}':")
         print(f"Key: {parsed_english}")
