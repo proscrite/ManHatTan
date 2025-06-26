@@ -14,9 +14,11 @@ class BaseExerciseScreen(Screen):
         super(BaseExerciseScreen, self).__init__(**kwargs)
         self.lippath = lipstick_path
         self.modality = modality
+        self.lipstick = load_lipstick(self.lippath, self.modality)  # <-- Load here!
         self.built = False  # Add this flag
 
     def on_enter(self, *args):
+        self.reload_lipstick()
         if not self.built:
             self.init_exercise()
             self.build_ui()
@@ -32,9 +34,10 @@ class BaseExerciseScreen(Screen):
         
         # All the logic that was in __init__ before:
         self.start_time = time.time()
-        self.lipstick = load_lipstick(self.lippath, self.modality)
         self.rtl_flag = (self.lipstick.learning_language.iloc[0] == 'iw')
-        self.word_ll, self.word_ul, self.iqu, self.nid = set_question(self.lippath, self.rtl_flag)
+        self.word_ll, self.word_ul, self.iqu, self.nid = set_question(self.lippath)
+        
+        print(f"After set_question, selected word_ll: {self.word_ll}, word_ul: {self.word_ul}, iqu: {self.iqu}, nid: {self.nid}")
         if self.modality == 'dt':
             self.question, self.answer = self.word_ll, self.word_ul
             self.checkEntry = 'word_ul'
@@ -51,6 +54,7 @@ class BaseExerciseScreen(Screen):
             self.answer_displ = self.answer
         qentry = self.lipstick.loc[self.word_ul].copy()
         
+        print(f"Initializing BaseExerciseScreen with question: {self.question_displ}, answer: {self.answer_displ}, nid: {self.nid}")
         entry_stats = load_pkmn_stats(qentry)
         n_cracks = qentry.get('history_correct', 0) % 6
         self.fig, self.img_display, self.anim = plot_combat_stats(entry_stats, self.nframe, self.nid, self.question_displ, n_cracks = n_cracks)
@@ -75,3 +79,6 @@ class BaseExerciseScreen(Screen):
     def go_back(self, current_name, *args):
         self.manager.transition = SlideTransition(direction="right")
         self.manager.current = "main_menu"
+
+    def reload_lipstick(self):
+        self.lipstick = load_lipstick(self.lippath, self.modality)
