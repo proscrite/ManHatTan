@@ -116,8 +116,8 @@ class MainMenuScreen(Screen):
         self.layout.add_widget(btn_conj)
 
     def _add_lower_panel(self):
-        self.learning_language = self.app.lipstick['learning_language'][0]
-        self.ui_language = self.app.lipstick['ui_language'][0]
+        self.learning_language = self.app.lipstick['learning_language'].iloc[0]
+        self.ui_language = self.app.lipstick['ui_language'].iloc[0]
         print(f'learning_language = {self.learning_language}, ui_language = {self.ui_language}')
         features = self.app.lipstick.columns
         print(f'Features: {features}')
@@ -212,14 +212,14 @@ class ManHatTan(App):
         self.team_lip = load_lipstick(self.teamlippath, self.modality)
         self.rtl_flag = (self.team_lip.learning_language.iloc[0] == 'iw')
         if self.flag_refresh:
-            self.word_ll, self.word_ul, self.iqu, self.nid = set_question(self.teamlippath, self.rtl_flag)
+            self.word_ll, self.word_ul, self.iqu, self.nid = set_question(self.teamlippath)
             self.flag_refresh = False
         
         self.sm = ScreenManager()
         self.sm.add_widget(MainMenuScreen(self.teamlippath, name="main_menu"))
         self.sm.add_widget(WriteInputScreen(self.teamlippath, modality='dt', name="write_input"))
         self.sm.add_widget(MultipleAnswerScreen(self.teamlippath, modality='rt', name="multiple_answer"))
-        self.sm.add_widget(ConjugationScreen(self.teamlippath, modality='dt', name="conjugation"))
+        self.sm.add_widget(ConjugationScreen(self.lippath, modality='dt', name="conjugation"))
         team_screen = TeamScreen(name='team', team_lip=self.team_lip, buttons_active=True)
         self.sm.add_widget(team_screen)
 
