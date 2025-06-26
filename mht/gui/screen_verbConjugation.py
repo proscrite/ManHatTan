@@ -49,7 +49,6 @@ class ConjugationScreen(WriteInputScreen):
         self.answer = None
         self.nid = random.randint(1, 151)  # Use a random n_id for the pkmn panel
         self.rtl_flag = True
-        Clock.schedule_once(lambda dt: self.show_verb_input_popup(), 0.5)
 
     def build_ui(self):
         # Only build UI after verb is set
@@ -77,14 +76,16 @@ class ConjugationScreen(WriteInputScreen):
             self.verb_input.hint_text = "Please enter a verb!"
             return
         self.verb = verb
-        parsed_key, parsed_hint, conjugated_verb = get_random_conjugation(self.verb)
-        if not parsed_key or not conjugated_verb:
+        self.init_exercise()
+
+        parsed_english_key, parsed_hebrew_hint, conjugated_verb = get_random_conjugation(self.verb)
+        if not parsed_english_key or not conjugated_verb:
             self.verb_input.text = ""
             self.verb_input.hint_text = "No conjugation found, try another verb."
             return
-        self.question = f"{parsed_key}"
+        self.question = f"{parsed_english_key}"
         self.answer = str(conjugated_verb)
-        self.hint_answer = get_display(parsed_hint) if parsed_hint else 'Enter conjugation'
+        self.hint_answer = get_display(parsed_hebrew_hint) if parsed_hebrew_hint else 'Enter conjugation'
         self.answer = get_display(self.answer)  # Ensure proper RTL display
         print(f"Conjugation found: {self.question} -> {self.answer}")
         self.verb_popup.dismiss()
@@ -172,15 +173,18 @@ class ConjugationScreen(WriteInputScreen):
         self.answer_popup = Popup(content=layout)
         self.answer_popup.open()
 
+    def on_enter(self, *args):
+        self.show_verb_input_popup()
 
 
-class TestConjugationApp(App):
-    def build(self):
-        sm = ScreenManager()
-        # You can change modality if needed
-        conj_screen = ConjugationScreen(LIPSTICK_PATH, modality='dt', name='conjugation')
-        sm.add_widget(conj_screen)
-        return sm
 
-if __name__ == "__main__":
-    TestConjugationApp().run()
+# class TestConjugationApp(App):
+#     def build(self):
+#         sm = ScreenManager()
+#         # You can change modality if needed
+#         conj_screen = ConjugationScreen(LIPSTICK_PATH, modality='dt', name='conjugation')
+#         sm.add_widget(conj_screen)
+#         return sm
+
+# if __name__ == "__main__":
+#     TestConjugationApp().run()
