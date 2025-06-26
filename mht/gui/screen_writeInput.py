@@ -30,11 +30,10 @@ PATH_ANIM = ROOT_PATH + '/gui/Graphics/Battlers/'
 class WriteInputScreen(BaseExerciseScreen):
     def __init__(self, lipstick_path, modality='dt', **kwargs):
         super(WriteInputScreen, self).__init__(lipstick_path, modality, **kwargs)
-        self.build_ui()
         self.app = App.get_running_app()
 
-
     def build_ui(self):
+        self.clear_widgets()
         # Create a horizontal layout that splits the animated panel and the input/options
         self.box = BoxLayout(orientation='horizontal')
         self.InputPanel = GridLayout(cols=1, rows=2, size_hint=(0.8, 1),
@@ -42,7 +41,7 @@ class WriteInputScreen(BaseExerciseScreen):
         self.optMenu = GridLayout(cols=1, rows=3, size_hint=(0.2, 1),
                                   padding=20, spacing=20)
         
-        # Add common animated panel from the base class
+        # Now animated_container is guaranteed to exist
         self.InputPanel.add_widget(self.animated_container)
         
         input_callback = partial(self.checkAnswer)
@@ -142,5 +141,16 @@ class WriteInputScreen(BaseExerciseScreen):
         else:
             current_name = self.name
             self.go_back(current_name)
-        
-        
+    
+    def on_leave(self, *args):
+        self.clear_widgets()
+        self.built = False
+        # Unschedule updates
+        Clock.unschedule(self.update)
+        # Unbind keyboard
+        Window.unbind(on_key_down=self._on_keyboard_handler)
+        # Dismiss popups
+        if hasattr(self, 'answer_popup') and self.answer_popup:
+            self.answer_popup.dismiss()
+            self.answer_popup = None
+
