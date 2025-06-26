@@ -30,19 +30,16 @@ PATH_ANIM = ROOT_PATH + '/gui/Graphics/Battlers/'
 class WriteInputScreen(BaseExerciseScreen):
     def __init__(self, lipstick_path, modality='dt', **kwargs):
         super(WriteInputScreen, self).__init__(lipstick_path, modality, **kwargs)
-        self.build_ui()
         self.app = App.get_running_app()
 
-
     def build_ui(self):
+        self.clear_widgets()
         # Create a horizontal layout that splits the animated panel and the input/options
         self.box = BoxLayout(orientation='horizontal')
-        self.InputPanel = GridLayout(cols=1, rows=2, size_hint=(0.8, 1),
-                                       padding=20, spacing=20)
-        self.optMenu = GridLayout(cols=1, rows=3, size_hint=(0.2, 1),
-                                  padding=20, spacing=20)
+        self.InputPanel = GridLayout(cols=1, rows=2, size_hint=(0.8, 1), padding=20, spacing=20)
+        self.optMenu = self.create_opt_menu()
         
-        # Add common animated panel from the base class
+        # Now animated_container is guaranteed to exist
         self.InputPanel.add_widget(self.animated_container)
         
         input_callback = partial(self.checkAnswer)
@@ -57,26 +54,39 @@ class WriteInputScreen(BaseExerciseScreen):
                                     pos_hint={"center_x": 0.5, "center_y": 0.5}, center_y=0.5, halign="center",)
         
         self.InputPanel.add_widget(self.input)
-        
-        # Create buttons for the options menu
-        input_callback = partial(self.checkAnswer)
-        enter_btn = Button(text='Enter', on_release=input_callback,
-                           size_hint=(0.5, 1))
-        self.optMenu.add_widget(enter_btn)
-        exit_btn = Button(text='Exit', on_release=self.go_back,
-                          size_hint=(0.5, 1))
-        self.optMenu.add_widget(exit_btn)
-        back_btn = Button(text="Back to Menu", on_release=self.go_back,
-                          size_hint=(0.5, 1))
-        self.optMenu.add_widget(back_btn)
-        
+
         self.box.add_widget(self.InputPanel)
         self.box.add_widget(self.optMenu)
         self.add_widget(self.box)
         
         Clock.schedule_interval(self.update, 1/30)
         Window.bind(on_key_down=self._on_keyboard_handler)
+        print('WriteInputScreen initialized with modality:', self.modality)
     
+    def create_opt_menu(self, input_callback=None):
+        """Create and return the standard option menu with Enter, Exit, and Back buttons."""
+        optMenu = GridLayout(cols=1, rows=3, size_hint=(0.2, 1), padding=20, spacing=20)
+
+        if input_callback is None:
+            input_callback = partial(self.checkAnswer)
+
+        exit_btn = Button(
+            text='Exit', on_release=self.go_back,
+            size_hint=(1, 1), font_size=28, background_color=(0.5, 0.5, 0.5, 1), color=(1, 1, 1, 1),
+        )
+        back_btn = Button(
+            text="Back to Menu", on_release=self.go_back,
+            size_hint=(1, 1), font_size=28, background_color=(0.3, 0.3, 0.3, 1), color=(1, 1, 1, 1)
+        )
+        enter_btn = Button(
+            text='Enter', on_release=input_callback,
+            size_hint=(1, 1), font_size=28, background_color=(0.2, 0.6, 0.9, 1), color=(1, 1, 1, 1)
+        )
+        optMenu.add_widget(exit_btn)
+        optMenu.add_widget(back_btn)
+        optMenu.add_widget(enter_btn)
+        return optMenu
+        
     def _on_keyboard_handler(self, instance, keyboard, keycode, *args):
         if keycode == 40:  # Enter key
             self.checkAnswer(None)
@@ -141,5 +151,17 @@ class WriteInputScreen(BaseExerciseScreen):
         else:
             current_name = self.name
             self.go_back(current_name)
-        
-        
+    
+    def on_leave(self, *args):
+        self.clear_widgets()
+        self.built = False
+        # Unschedule updates
+        Clock.unschedule(self.update)
+        # Unbind keyboard
+        Window.unbind(on_key_down=self._on_keyboard_handler)
+        # Dismiss popups
+        if hasattr(self, 'answer_popup') and self.answer_popup:
+            self.answer_popup.dismiss()
+            self.answer_popup = None
+
+
