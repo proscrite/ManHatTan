@@ -34,7 +34,6 @@ class MultipleAnswerScreen(BaseExerciseScreen):
         self.app_start_time = time.time()
         self.teamlippath = lipstick_path
 
-        self.build_ui()
     
     def build_ui(self):
         self.box = BoxLayout(orientation='vertical')
@@ -150,3 +149,14 @@ class MultipleAnswerScreen(BaseExerciseScreen):
         else:
             current_name = self.name
             self.go_back(current_name)
+
+    def on_leave(self, *args):
+        self.built = False
+        # Unschedule updates
+        Clock.unschedule(self.update)
+        # Unbind keyboard
+        Window.unbind(on_key_down=self._on_keyboard_handler)
+        # Dismiss popups
+        if hasattr(self, 'answer_popup') and self.answer_popup:
+            self.answer_popup.dismiss()
+            self.answer_popup = None

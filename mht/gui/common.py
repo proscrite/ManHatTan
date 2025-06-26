@@ -96,7 +96,7 @@ def load_similar_words_nlp(lip, target_word, nlp):
         print(f"{word}: {score:.3f}, {lip.loc[word, 'word_ul']}")
     return similarities[:3]
 
-def set_question(lipstick_path : str, rtl_flag = False):
+def set_question(lipstick_path : str):
     """Read lipstick head (least practiced words) and select a random question and translation
         size_head : number of options to shuffle from
         return:
@@ -105,23 +105,19 @@ def set_question(lipstick_path : str, rtl_flag = False):
           rndi : index number from random entry (to avoid option repetition in MA)
     """
     print(f'In set_question, lipstick_path: {lipstick_path}')
-    lips_head = pd.read_csv(lipstick_path, nrows = 6)
+    lipstick = pd.read_csv(lipstick_path)
 
-    rndi = np.random.randint(0, 6)
-    qentry = lips_head.loc[rndi]
-    # print(qentry)
-
-    while qentry.rebag:
-        # print(f'The word {qentry.word_ll} has been practiced enough')
-
-        rndi = np.random.randint(0, 6)
-        qentry = lips_head.iloc[rndi]
-        
+    eligible = lipstick[lipstick['rebag'] == False]
+    if eligible.empty:
+        raise ValueError("No eligible entries found in lipstick.")
+    qentry = eligible.sample(1).iloc[0]
     nid = qentry.n_id
     word_ll, word_ul = qentry.word_ll, qentry.word_ul
+    iqu = qentry.name
+    word_ll, word_ul = qentry.word_ll, qentry.word_ul
 
-    print(f'word_ll = {word_ll}, word_ul = {word_ul}, iqu = {rndi}, nid = {nid}')
-    return word_ll, word_ul, rndi, nid
+    print(f'word_ll = {word_ll}, word_ul = {word_ul}, iqu = {iqu}, nid = {nid}')
+    return word_ll, word_ul, iqu, nid
 
 def sample_similar_options(lipstick_path : str, iquest : int, modality : str, n_options : int = 3):
     """ Pick at random n_options to set as false answers from lipstick head"""
@@ -187,6 +183,17 @@ def shuffle_dic(opts : dict):
 
 # --- Filtering functions ---
 
+def search_verbs(lipstick):
+    """Return a DataFrame of rows where 'lexeme_string' contains '<VERB>'."""
+    return lipstick[lipstick['lexeme_string'].str.contains('<VERB>', na=False)]
+
+def sample_random_verb(lipstick):
+    """Return a random verb (word_ll) from the verbs in lipstick."""
+    verbs_df = search_verbs(lipstick)
+    if verbs_df.empty:
+        return None
+    return verbs_df.sample(1).iloc[0]['word_ll']
+
 def filter_sofits(word):
     # Filter out final letters (sofit) from the word
     # and replace them with their regular counterparts for comparison and filtering
@@ -229,20 +236,21 @@ def calculate_similar_words(selected_word, nlp):
 
 
 # --- Pokemon plotting functions ---- 
-def plot_combat_stats(entry_stats, nframe, nid, question_displ, n_cracks: int = 0):
+def plot_combat_stats(entry_stats, nframe, nid, question_displ, n_cracks: int = 0, width_ratios=None):
     """
     Create a matplotlib figure showing combat stats and an animated image.
     Returns the figure, the image object, and the full animation array.
     """
-    positions = [(0.125, 0.75), (0.25, 0.75), (0.375, 0.75),
-                 (0.175, 0.4), (0.325, 0.4)]
+    if width_ratios is None:
+        width_ratios = [0.3, 0.3, 0.3, 0.9]
     fig = plt.figure(figsize=(12, 4))
     fig.patch.set_facecolor("black")
-    gs = GridSpec(3, 4, width_ratios=[0.3, 0.3, 0.3, 0.9],
-                  height_ratios=[1, 1, 1])
+    gs = GridSpec(3, 4, width_ratios=width_ratios, height_ratios=[1, 1, 1])
     colors = ['gold', 'maroon', 'magenta', 'navy', 'darkorange']
     
     # Example: draw pie charts for each stat (assuming entry_stats is a dict)
+    positions = [(0.125, 0.75), (0.25, 0.75), (0.375, 0.75),
+                 (0.175, 0.4), (0.325, 0.4)]
     for (x, y), (k, v) in zip(positions, entry_stats.items()):
         ax = fig.add_axes([x - 0.1, y - 0.1, 0.3, 0.3])
         ax.pie([v, 10 - v], wedgeprops=dict(width=0.5),

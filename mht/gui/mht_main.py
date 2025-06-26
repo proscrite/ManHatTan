@@ -39,10 +39,6 @@ logging.getLogger('kivy.network.httpclient').setLevel(logging.WARNING)
 # Import dependencies from your modules (adjust the paths if necessary)
 os.environ['KIVY_NO_CONSOLELOG'] = '1'
 
-# 2) If you still want Kivy warnings/errors:
-from kivy.config import Config
-Config.set('kivy', 'log_level', 'warning')
-
 # 3) Globally raise the stdlib log level
 import logging
 logging.basicConfig(level=logging.WARNING)
@@ -62,7 +58,7 @@ from mht.gui.common import set_question, load_lipstick
 from mht.gui.screen_writeInput import WriteInputScreen
 from mht.gui.screen_multipleAnswer import MultipleAnswerScreen
 from mht.gui.screen_team_manager import TeamScreen
-from mht.gui.add_correctButton import CorrectionDialog
+from mht.gui.screen_verbConjugation import ConjugationScreen
 
 from mht.scripts.ML_duolingo.duolingo_hlr import *
 from mht.scripts.python_scripts.update_lipstick import update_all, rebag_team
@@ -105,14 +101,23 @@ class MainMenuScreen(Screen):
             background_color=(0.9, 0.6, 0.2, 1),
             color=(1, 1, 1, 1)
         )
+        btn_conj = Button(
+            text="[b]Conjugation Exercise[/b]\n[i][size=20]Practice Hebrew verb conjugation[/size][/i]",
+            font_size=40,
+            markup=True,
+            background_color=(0.2, 0.8, 0.4, 1),
+            color=(1, 1, 1, 1)
+        )
         btn_write.bind(on_release=self.go_to_write)
         btn_multi.bind(on_release=self.go_to_multi)
+        btn_conj.bind(on_release=self.go_to_conjugation)
         self.layout.add_widget(btn_write)
         self.layout.add_widget(btn_multi)
+        self.layout.add_widget(btn_conj)
 
     def _add_lower_panel(self):
-        self.learning_language = self.app.lipstick['learning_language'][0]
-        self.ui_language = self.app.lipstick['ui_language'][0]
+        self.learning_language = self.app.lipstick['learning_language'].iloc[0]
+        self.ui_language = self.app.lipstick['ui_language'].iloc[0]
         print(f'learning_language = {self.learning_language}, ui_language = {self.ui_language}')
         features = self.app.lipstick.columns
         print(f'Features: {features}')
@@ -144,6 +149,10 @@ class MainMenuScreen(Screen):
     def go_to_multi(self, instance):
         self.manager.transition = SlideTransition(direction="left")
         self.manager.current = "multiple_answer"
+
+    def go_to_conjugation(self, instance):
+        self.manager.transition = SlideTransition(direction="left")
+        self.manager.current = "conjugation"
 
     def view_team(self, instance):
         self.manager.transition = SlideTransition(direction="left")
@@ -203,13 +212,14 @@ class ManHatTan(App):
         self.team_lip = load_lipstick(self.teamlippath, self.modality)
         self.rtl_flag = (self.team_lip.learning_language.iloc[0] == 'iw')
         if self.flag_refresh:
-            self.word_ll, self.word_ul, self.iqu, self.nid = set_question(self.teamlippath, self.rtl_flag)
+            self.word_ll, self.word_ul, self.iqu, self.nid = set_question(self.teamlippath)
             self.flag_refresh = False
         
         self.sm = ScreenManager()
         self.sm.add_widget(MainMenuScreen(self.teamlippath, name="main_menu"))
         self.sm.add_widget(WriteInputScreen(self.teamlippath, modality='dt', name="write_input"))
         self.sm.add_widget(MultipleAnswerScreen(self.teamlippath, modality='rt', name="multiple_answer"))
+        self.sm.add_widget(ConjugationScreen(self.lippath, modality='dt', name="conjugation"))
         team_screen = TeamScreen(name='team', team_lip=self.team_lip, buttons_active=True)
         self.sm.add_widget(team_screen)
 
