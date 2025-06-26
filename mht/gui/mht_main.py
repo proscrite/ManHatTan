@@ -26,6 +26,8 @@ from kivy.uix.dropdown import DropDown
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.button import Button
+from kivy.uix.image import Image
+from kivy.uix.widget import Widget
 from kivy.logger import Logger as kvLogger
 import logging
 kvLogger.setLevel(logging.WARNING)
@@ -87,6 +89,11 @@ class MainMenuScreen(Screen):
         self.add_widget(self.layout)
 
     def _add_main_buttons(self):
+        # Horizontal BoxLayout: left for buttons (3/4), right for logo (1/4)
+        self.main_panel = BoxLayout(orientation='horizontal', spacing=20, size_hint_y=0.7)
+
+        # Left: vertical BoxLayout for the three buttons
+        button_panel = BoxLayout(orientation='vertical', spacing=20, size_hint_x=0.75)
         btn_write = Button(
             text="[b]Write Input Exercise[/b]\n[i][size=20]Type your answer in free text[/size][/i]",
             font_size=40,
@@ -111,9 +118,33 @@ class MainMenuScreen(Screen):
         btn_write.bind(on_release=self.go_to_write)
         btn_multi.bind(on_release=self.go_to_multi)
         btn_conj.bind(on_release=self.go_to_conjugation)
-        self.layout.add_widget(btn_write)
-        self.layout.add_widget(btn_multi)
-        self.layout.add_widget(btn_conj)
+
+        button_panel.add_widget(btn_write)
+        button_panel.add_widget(btn_multi)
+        button_panel.add_widget(btn_conj)
+
+        # Right: logo image, vertically centered, 1/4 width
+        logo = Image(
+            source="/Users/pabloherrero/Documents/ManHatTan/mht/gui/icons/mascott_v3.png",
+            allow_stretch=True,
+            keep_ratio=True,
+            size_hint_x=0.25,
+            size_hint_y=1
+        )
+
+        self.main_panel.add_widget(button_panel)
+        self.main_panel.add_widget(logo)
+
+        self.layout.add_widget(self.main_panel)
+
+    def _get_logo_widget(self, rowspan=3):
+        # The Image widget will automatically fill the space
+        return Image(
+            source="/Users/pabloherrero/Documents/ManHatTan/mht/gui/icons/mascott_v3.png",
+            allow_stretch=True,
+            keep_ratio=True,
+            size_hint=(0.25, rowspan)
+        )
 
     def _add_lower_panel(self):
         self.learning_language = self.app.lipstick['learning_language'].iloc[0]
@@ -131,14 +162,20 @@ class MainMenuScreen(Screen):
         self.dropdown.add_widget(item_rt)
 
         lower_panel = GridLayout(cols=3, size_hint_y=0.2, minimum_width=5000)
-        self.dropdown_button = Button(text='Exercise Language', size_hint=(0.5, 0.3))
+        self.dropdown_button = Button(text='Exercise Language',
+                                      size_hint=(0.75, 0.3), background_color=(0.5, 0.2, 0.7, 1), color=(1, 1, 1, 1)
+                                      )
         self.dropdown_button.bind(on_release=self.dropdown.open)
         self.dropdown.bind(on_select=lambda instance, x: setattr(self.dropdown_button, 'text', x))
         lower_panel.add_widget(self.dropdown_button)
 
-        team_button = Button(text='View team', size_hint=(0.5, 0.3), on_release=self.view_team)
+        team_button = Button(text='View team', on_release=self.view_team,
+                             size_hint=(0.75, 0.3), background_color=(0.0, 0.7, 0.7, 1),  color=(1, 1, 1, 1),
+        )
         lower_panel.add_widget(team_button)
-        exit_button = Button(text='Exit', size_hint=(0.5, 0.3), on_release=self.exit)
+        exit_button = Button(text='Exit', on_release=self.exit,
+                             size_hint=(0.75, 0.3), background_color=(0.2, 0.2, 0.2, 1), color=(1, 1, 1, 1),
+                             )
         lower_panel.add_widget(exit_button)
         self.layout.add_widget(lower_panel)
 
