@@ -76,6 +76,7 @@ class WriteInputScreen(BaseExerciseScreen):
         
         Clock.schedule_interval(self.update, 1/30)
         Window.bind(on_key_down=self._on_keyboard_handler)
+        print('WriteInputScreen initialized with modality:', self.modality)
     
     def _on_keyboard_handler(self, instance, keyboard, keycode, *args):
         if keycode == 40:  # Enter key
