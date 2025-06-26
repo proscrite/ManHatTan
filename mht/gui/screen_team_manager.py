@@ -277,14 +277,14 @@ class SimilarWordsScreen(Screen):
 
     def on_enter(self, *args):
         self.path_egg = self.get_eggpath()
-        if not self.egg_has_entries():
-            self.info_label.text="Sorry, you hatched all available eggs for this word :/"
-            return
 
         self.show_egg_animation()
         if not os.path.exists(self.path_egg):
             print(f'No egg file found for {self.sel_word}. Creating new one...')
             threading.Thread(target=self._make_egg_file_and_continue, daemon=True).start()
+        elif not self.egg_has_entries():
+            self.info_label.text="Sorry, you hatched all available eggs for this word :/"
+            return
         else:
             Clock.schedule_once(lambda dt: self.trigger_new_MA(None), 0.5)
 
