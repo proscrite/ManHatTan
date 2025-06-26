@@ -9,8 +9,9 @@ from kivy.uix.textinput import TextInput
 from kivy.core.window import Window
 from kivy.clock import Clock
 import random
-import os
 from kivy.logger import Logger as kvLogger
+import os
+import time
 import logging
 kvLogger.setLevel(logging.WARNING)
 logging.getLogger('matplotlib').setLevel(logging.WARNING)
@@ -31,19 +32,18 @@ import numpy as np
 import matplotlib.pyplot as plt
 # Text input
 from mht.gui.formats.format_text_input import FTextInput, RTLTextInput
-from mht.gui.common import strip_accents
+from mht.gui.common import strip_accents, sample_random_verb, load_lipstick
 from bidi.algorithm import get_display
 from kivy_garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
 
 ROOT_PATH = '/Users/pabloherrero/Documents/ManHatTan/mht'
 FONT_HEB = ROOT_PATH + '/data/fonts/NotoSansHebrew.ttf'
-LIPSTICK_PATH = ROOT_PATH + '/data/processed/LIPSTICK/hebrew_db_team.lip'
+LIPSTICK_PATH = ROOT_PATH + '/data/processed/LIPSTICK/hebrew_db.lip'
 
 class ConjugationScreen(WriteInputScreen):
     def __init__(self, lipstick_path, modality='dt', **kwargs):
         # We'll set question/answer after verb input
         super().__init__(lipstick_path, modality, **kwargs)
-        print(f"Passed super(). Initializing ConjugationScreen with lipstick path: {lipstick_path}")
         self.verb = None
         self.question = None
         self.answer = None
@@ -78,11 +78,12 @@ class ConjugationScreen(WriteInputScreen):
         self.verb = verb
         self.init_exercise()
 
-        parsed_english_key, parsed_hebrew_hint, conjugated_verb = get_random_conjugation(self.verb)
+        parsed_english_key, parsed_hebrew_hint, conjugated_verb, infinitive_form = get_random_conjugation(self.verb)
         if not parsed_english_key or not conjugated_verb:
             self.verb_input.text = ""
             self.verb_input.hint_text = "No conjugation found, try another verb."
             return
+        self.infinitive_form = infinitive_form if infinitive_form else self.verb
         self.question = f"{parsed_english_key}"
         self.answer = str(conjugated_verb)
         self.hint_answer = get_display(parsed_hebrew_hint) if parsed_hebrew_hint else 'Enter conjugation'
@@ -95,18 +96,16 @@ class ConjugationScreen(WriteInputScreen):
         # Now build the UI as in WriteInputScreen, but with our question/answer
         self.box = BoxLayout(orientation='horizontal')
         self.InputPanel = BoxLayout(orientation='vertical', size_hint=(0.8, 1), padding=20, spacing=20)
-        self.optMenu = BoxLayout(orientation='vertical', size_hint=(0.2, 1), padding=20, spacing=20)
-
+        # self.optMenu = BoxLayout(orientation='vertical', size_hint=(0.2, 1), padding=20, spacing=20)
+        self.optMenu = self.create_opt_menu()
+        
         # Animated panel (use random n_id)
-        print(f"In build_conjugation_ui, self.lipstick: {self.lipstick}")
         qentry = self.lipstick.iloc[0]
         entry_stats = load_pkmn_stats(qentry)
-        n_cracks = 0
-        
 
-        fig, img_display, anim = plot_combat_stats(entry_stats, 0, self.nid, self.question, n_cracks=n_cracks,)# width_ratios=[0.2, 0.2, 0.2, 1.4])
+        fig, img_display, anim = plot_combat_stats(entry_stats, 0, self.nid, self.question, n_cracks=0,)# width_ratios=[0.2, 0.2, 0.2, 1.4])
         ax_im = fig.get_axes()[-1]
-        ax_im.set_title(f"Conjugate $\\bf{{{get_display(self.verb)}}}$", color='yellow', fontsize=30)
+        ax_im.set_title(f"Conjugate $\\bf{{{get_display(self.infinitive_form)}}}$", color='yellow', fontsize=30)
 
         qxlabel = self.question.replace(' - ', '\n')
         ax_im.set_xlabel(f"{qxlabel}")
@@ -128,14 +127,6 @@ class ConjugationScreen(WriteInputScreen):
         
         self.InputPanel.add_widget(self.input)
 
-        # Buttons
-        enter_btn = Button(text='Enter', on_release=input_callback, size_hint=(0.5, 1))
-        exit_btn = Button(text='Exit', on_release=self.go_back, size_hint=(0.5, 1))
-        back_btn = Button(text="Back to Menu", on_release=self.go_back, size_hint=(0.5, 1))
-        self.optMenu.add_widget(enter_btn)
-        self.optMenu.add_widget(exit_btn)
-        self.optMenu.add_widget(back_btn)
-
         self.box.add_widget(self.InputPanel)
         self.box.add_widget(self.optMenu)
         self.add_widget(self.box)
@@ -152,7 +143,7 @@ class ConjugationScreen(WriteInputScreen):
 
         
         layout = GridLayout(cols=1, padding=10)
-        label = Label(text=f'[b]Question:  {get_display(self.verb)}, {self.question}[/b]', markup=True, font_name=FONT_HEB, font_size=40, bold=True, size_hint=(1, 0.5))
+        label = Label(text=f'[b]Question:  {get_display(self.infinitive_form)}, {self.question}[/b]', markup=True, font_name=FONT_HEB, font_size=40, bold=True, size_hint=(1, 0.5))
         layout.add_widget(label)
 
         user_input = self.input.text.strip()
@@ -173,10 +164,34 @@ class ConjugationScreen(WriteInputScreen):
         self.answer_popup = Popup(content=layout)
         self.answer_popup.open()
 
+    def start_random_conjugation(self):
+        """Start a random conjugation exercise by selecting a verb from lipstick."""
+
+        verb = sample_random_verb(self.lipstick)
+        if verb:
+            self.verb = verb
+            self.init_exercise()
+            print(f"Initialized exercise with verb: {get_display(self.verb)}")
+            parsed_english_key, parsed_hebrew_hint, conjugated_verb, infinitive_form = get_random_conjugation(self.verb)
+            if not parsed_english_key or not conjugated_verb:
+                print("No conjugation found, try another verb.")
+                return
+            self.infinitive_form = infinitive_form if infinitive_form else verb
+            self.question = f"{parsed_english_key}"
+            self.answer = get_display(str(conjugated_verb))
+            self.hint_answer = get_display(parsed_hebrew_hint) if parsed_hebrew_hint else 'Enter conjugation'
+            print(f"Conjugation found: {self.question} -> {self.answer}")
+            self.build_conjugation_ui()
+        else:
+            print("No verbs found in lipstick.")
+            # Optionally, fall back to popup:
+            self.show_verb_input_popup()
+
     def on_enter(self, *args):
-        self.show_verb_input_popup()
+        self.init_exercise()
+        self.start_random_conjugation()
 
-
+# Uncomment this section to test the ConjugationScreen in a standalone app
 
 # class TestConjugationApp(App):
 #     def build(self):
