@@ -30,6 +30,9 @@ from kivy.uix.image import Image
 from kivy.uix.widget import Widget
 from kivy.logger import Logger as kvLogger
 import logging
+from functools import partial
+import random
+
 kvLogger.setLevel(logging.WARNING)
 logging.getLogger('matplotlib').setLevel(logging.WARNING)
 
@@ -56,7 +59,7 @@ logging.getLogger('kivy.network.urlrequest').setLevel(logging.WARNING)
 logging.getLogger('kivy.network.httpclient').setLevel(logging.WARNING)
 
 
-from mht.gui.common import set_question, load_lipstick
+from mht.gui.common import set_question, load_lipstick, language_dict
 from mht.gui.screen_writeInput import WriteInputScreen
 from mht.gui.screen_multipleAnswer import MultipleAnswerScreen
 from mht.gui.screen_team_manager import TeamScreen
@@ -74,6 +77,7 @@ TEAM_LIP_PATH = LIPSTICK_PATH.replace('.lip', '_team.lip')
 font_path = ROOT_PATH + '/data/fonts/NotoSansHebrew.ttf'
 print(f"[DEBUG] Looking for font at: {font_path!r}")
 print(f"[DEBUG] Exists? {os.path.exists(font_path)}")
+
 
 # mht_main.py
 class MainMenuScreen(Screen):
@@ -115,8 +119,8 @@ class MainMenuScreen(Screen):
             background_color=(0.2, 0.8, 0.4, 1),
             color=(1, 1, 1, 1)
         )
-        btn_write.bind(on_release=self.go_to_write)
-        btn_multi.bind(on_release=self.go_to_multi)
+        btn_write.bind(on_release=partial(self.go_to_exercise, screen_name="write_input"))
+        btn_multi.bind(on_release=partial(self.go_to_exercise, screen_name="multiple_answer"))
         btn_conj.bind(on_release=self.go_to_conjugation)
 
         button_panel.add_widget(btn_write)
@@ -154,15 +158,18 @@ class MainMenuScreen(Screen):
         print(f'Features: {features}')
 
         self.dropdown = DropDown()
-        item_dt = Button(text=self.ui_language, size_hint_y=None, height=84)
-        item_rt = Button(text=self.learning_language, size_hint_y=None, height=84)
-        item_dt.bind(on_release=self.set_modality_dt)
-        item_rt.bind(on_release=self.set_modality_rt)
+        item_dt = Button(text=language_dict[self.ui_language], size_hint_y=None, height=84)
+        item_rt = Button(text=language_dict[self.learning_language], size_hint_y=None, height=84)
+        item_random = Button(text="Random", size_hint_y=None, height=84)
+        item_dt.bind(on_release=partial(self.set_modality, modality='dt'))
+        item_rt.bind(on_release=partial(self.set_modality, modality='rt'))
+        item_random.bind(on_release=partial(self.set_modality, modality='random'))
         self.dropdown.add_widget(item_dt)
         self.dropdown.add_widget(item_rt)
+        self.dropdown.add_widget(item_random)
 
         lower_panel = GridLayout(cols=3, size_hint_y=0.2, minimum_width=5000)
-        self.dropdown_button = Button(text='Exercise Language',
+        self.dropdown_button = Button(text='Exercise Language: Random',
                                       size_hint=(0.75, 0.3), background_color=(0.5, 0.2, 0.7, 1), color=(1, 1, 1, 1)
                                       )
         self.dropdown_button.bind(on_release=self.dropdown.open)
@@ -179,13 +186,14 @@ class MainMenuScreen(Screen):
         lower_panel.add_widget(exit_button)
         self.layout.add_widget(lower_panel)
 
-    def go_to_write(self, instance):
+    def go_to_exercise(self, instance, screen_name):
+        modality = self.app.modality
+        if modality == 'random':
+            modality = random.choice(['dt', 'rt'])
+        screen = self.manager.get_screen(screen_name)
+        screen.modality = modality
         self.manager.transition = SlideTransition(direction="left")
-        self.manager.current = "write_input"
-    
-    def go_to_multi(self, instance):
-        self.manager.transition = SlideTransition(direction="left")
-        self.manager.current = "multiple_answer"
+        self.manager.current = screen_name
 
     def go_to_conjugation(self, instance):
         self.manager.transition = SlideTransition(direction="left")
@@ -194,21 +202,19 @@ class MainMenuScreen(Screen):
     def view_team(self, instance):
         self.manager.transition = SlideTransition(direction="left")
         self.manager.current = "team"
-
-    def set_modality_dt(self, instance):
-        self.app.modality = 'dt'
-        setattr(self.dropdown_button, 'text', 'Exercise Language: ' + instance.text)
-
-    def set_modality_rt(self, instance):
-        self.app.modality = 'rt'
-        setattr(self.dropdown_button, 'text', 'Exercise Language: ' + instance.text)
+    
+    def set_modality(self, instance, modality):
+        self.app.modality = modality
+        self.dropdown_button.text = 'Exercise Language: ' + instance.text
+        self.dropdown_button.font_name = instance.font_name  # Use the same font as the selected item
+        self.dropdown.dismiss()
 
     def exit(self, instance):
         print('Exiting')
         self.app.stop(self)
 
 class ManHatTan(App):
-    def __init__(self, lippath : str = LIPSTICK_PATH, modality : str = 'dt'):
+    def __init__(self, lippath : str = LIPSTICK_PATH, modality : str = 'random'):
         self.flag_refresh = True
         self.modality = modality
 
@@ -254,8 +260,8 @@ class ManHatTan(App):
         
         self.sm = ScreenManager()
         self.sm.add_widget(MainMenuScreen(self.teamlippath, name="main_menu"))
-        self.sm.add_widget(WriteInputScreen(self.teamlippath, modality='dt', name="write_input"))
-        self.sm.add_widget(MultipleAnswerScreen(self.teamlippath, modality='rt', name="multiple_answer"))
+        self.sm.add_widget(WriteInputScreen(self.teamlippath, modality=self.modality, name="write_input"))
+        self.sm.add_widget(MultipleAnswerScreen(self.teamlippath, modality=self.modality, name="multiple_answer"))
         self.sm.add_widget(ConjugationScreen(self.lippath, modality='dt', name="conjugation"))
         team_screen = TeamScreen(name='team', team_lip=self.team_lip, buttons_active=True)
         self.sm.add_widget(team_screen)
