@@ -29,6 +29,8 @@ matplotlib.use("Agg")
 
 # --- Constants ---
 ROOT_PATH = '/Users/pabloherrero/Documents/ManHatTan/mht'
+LIPSTICK_PATH = ROOT_PATH + '/data/processed/LIPSTICK/hebrew_db.lip'
+TEAM_LIP_PATH = LIPSTICK_PATH.replace('.lip', '_team.lip')
 FONT_HEB = ROOT_PATH + '/data/fonts/NotoSansHebrew.ttf'
 PATH_ANIM = ROOT_PATH + '/gui/Graphics/Battlers/'
 
