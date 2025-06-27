@@ -120,13 +120,13 @@ class WriteInputScreen(BaseExerciseScreen):
             self.answer = strip_accents(self.answer.lower())
         
         if self.answer == input_answer:
-            result_btn = Button(text='Correct! ' + self.answer_displ,
+            result_btn = Button(text='Correct! ' + self.answer_displ, font_name=FONT_HEB, 
                                 font_size=40, size_hint=(2, 1),
                                 background_color=(0, 1, 0, 1))
             self.perf = 1
         else:
             result_btn = Button(text=self.input.text + ': Incorrect! ' + self.answer_displ,
-                                font_size=40, size_hint=(2, 1),
+                                font_size=40, size_hint=(2, 1), font_name=FONT_HEB, 
                                 background_color=(1, 0, 0, 1))
             self.perf = 0
         layout.add_widget(result_btn)
