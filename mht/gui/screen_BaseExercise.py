@@ -1,21 +1,13 @@
 # base_exercise_screen.py
-from kivy.uix.screenmanager import Screen, SlideTransition
-from kivy.uix.gridlayout import GridLayout
-from kivy.uix.button import Button
-from kivy.uix.popup import Popup
-from kivy.clock import Clock
-from mht.gui.add_correctButton import CorrectionDialog
+from mht import gui
+
 import time
 from mht.gui.common import *
 from bidi.algorithm import get_display
 
-ROOT_PATH = '/Users/pabloherrero/Documents/ManHatTan/mht'
-FONT_HEB = ROOT_PATH + '/data/fonts/NotoSansHebrew.ttf'
-PATH_ANIM = ROOT_PATH + '/gui/Graphics/Battlers/'
-
-class BaseExerciseScreen(Screen):
+class BaseExerciseScreen(gui.Screen):
     def __init__(self, lipstick_path, modality, **kwargs):
-        super(BaseExerciseScreen, self).__init__(**kwargs)
+        super(gui.BaseExerciseScreen, self).__init__(**kwargs)
         self.lippath = lipstick_path
         self.modality = modality
         self.lipstick = load_lipstick(self.lippath, self.modality)  # <-- Load here!
@@ -32,7 +24,7 @@ class BaseExerciseScreen(Screen):
         self.clear_widgets()  # Remove all widgets immediately on leave
         self.built = False
         # Unschedule updates
-        Clock.unschedule(self.update)
+        gui.Clock.unschedule(self.update)
 
     def init_exercise(self):
         """Initialize the exercise by setting up the question and answer."""
@@ -81,15 +73,15 @@ class BaseExerciseScreen(Screen):
             on_continue (callable, optional): Callback for the Continue button.
         """
 
-        layout = GridLayout(cols=2, padding=10)
-        label = Button(
+        layout = gui.GridLayout(cols=2, padding=10)
+        label = gui.Button(
             text='Exercise: ' + self.question_displ,
             font_name=FONT_HEB,
             font_size=40, bold=True, size_hint=(2, 1)
         )
         layout.add_widget(label)
 
-        correction = CorrectionDialog(self.question_displ, self.answer)
+        correction = gui.CorrectionDialog(self.question_displ, self.answer)
         if correction.parent:
             correction.parent.remove_widget(correction)
         layout.add_widget(correction)
@@ -104,7 +96,7 @@ class BaseExerciseScreen(Screen):
                 result_text = 'Incorrect! ' + self.answer_displ
             bg_color = (1, 0, 0, 1)
 
-        result_btn = Button(
+        result_btn = gui.Button(
             text=result_text,
             font_name=FONT_HEB,
             font_size=40, size_hint=(2, 1),
@@ -112,20 +104,20 @@ class BaseExerciseScreen(Screen):
         )
         layout.add_widget(result_btn)
 
-        cont_btn = Button(
+        cont_btn = gui.Button(
             text='Continue',
             on_release=on_continue if on_continue else self.on_close,
             size_hint=(0.5, 1), background_color=(1, 1, 0, 1)
         )
         layout.add_widget(cont_btn)
-        
+
         screen_name = getattr(self, "name", None)
         if screen_name:
             popup_title = screen_name.replace("_", " ").title()
         else:
             popup_title = "Exercise"
 
-        self.answer_popup = Popup(title=popup_title, content=layout)
+        self.answer_popup = gui.Popup(title=popup_title, content=layout)
         self.answer_popup.open()
 
     def update(self, dt):
@@ -137,7 +129,7 @@ class BaseExerciseScreen(Screen):
         self.fig_canvas.draw()
     
     def go_back(self, current_name, *args):
-        self.manager.transition = SlideTransition(direction="right")
+        self.manager.transition = gui.SlideTransition(direction="right")
         self.manager.current = "main_menu"
 
     def reload_lipstick(self):
