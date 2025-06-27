@@ -32,6 +32,20 @@ ROOT_PATH = '/Users/pabloherrero/Documents/ManHatTan/mht'
 FONT_HEB = ROOT_PATH + '/data/fonts/NotoSansHebrew.ttf'
 PATH_ANIM = ROOT_PATH + '/gui/Graphics/Battlers/'
 
+# --- Language Dictionary ---
+# This dictionary maps language codes to their names.
+language_dict = {
+    'en': 'English',
+    'iw': 'Hebrew',
+    'es': 'Español',
+    'fr': 'Français',
+    'de': 'Deutsch',
+    'ru': 'Русский',
+    'pt': 'Português',
+    'it': 'Italiano',
+    'ar': 'Arabic',
+}
+
 # --- Utility Functions ---
 def strip_accents(s):
     """Strip accents from a string."""
