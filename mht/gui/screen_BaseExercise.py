@@ -1,6 +1,10 @@
 # base_exercise_screen.py
 from kivy.uix.screenmanager import Screen, SlideTransition
+from kivy.uix.gridlayout import GridLayout
+from kivy.uix.button import Button
+from kivy.uix.popup import Popup
 from kivy.clock import Clock
+from mht.gui.add_correctButton import CorrectionDialog
 import time
 from mht.gui.common import *
 from bidi.algorithm import get_display
@@ -31,7 +35,7 @@ class BaseExerciseScreen(Screen):
         Clock.unschedule(self.update)
 
     def init_exercise(self):
-        
+        """Initialize the exercise by setting up the question and answer."""
         # All the logic that was in __init__ before:
         self.start_time = time.time()
         self.rtl_flag = (self.lipstick.learning_language.iloc[0] == 'iw')
@@ -67,6 +71,62 @@ class BaseExerciseScreen(Screen):
     def build_ui(self):
         # This remains as before, but is only called from on_enter
         pass  # (leave as is, or move your UI code here)
+
+    def show_answer_popup(self, perf, user_input=None, on_continue=None):
+        """Show a popup with the result of the answer.
+
+        Args:
+            perf (int): 1 if correct, 0 if incorrect.
+            user_input (str, optional): The user's answer (for display if incorrect).
+            on_continue (callable, optional): Callback for the Continue button.
+        """
+
+        layout = GridLayout(cols=2, padding=10)
+        label = Button(
+            text='Exercise: ' + self.question_displ,
+            font_name=FONT_HEB,
+            font_size=40, bold=True, size_hint=(2, 1)
+        )
+        layout.add_widget(label)
+
+        correction = CorrectionDialog(self.question_displ, self.answer)
+        if correction.parent:
+            correction.parent.remove_widget(correction)
+        layout.add_widget(correction)
+
+        if perf == 1:
+            result_text = 'Correct! ' + self.answer_displ
+            bg_color = (0, 1, 0, 1)
+        else:
+            if user_input:
+                result_text = f"{user_input}: Incorrect! {self.answer_displ}"
+            else:
+                result_text = 'Incorrect! ' + self.answer_displ
+            bg_color = (1, 0, 0, 1)
+
+        result_btn = Button(
+            text=result_text,
+            font_name=FONT_HEB,
+            font_size=40, size_hint=(2, 1),
+            background_color=bg_color
+        )
+        layout.add_widget(result_btn)
+
+        cont_btn = Button(
+            text='Continue',
+            on_release=on_continue if on_continue else self.on_close,
+            size_hint=(0.5, 1), background_color=(1, 1, 0, 1)
+        )
+        layout.add_widget(cont_btn)
+        
+        screen_name = getattr(self, "name", None)
+        if screen_name:
+            popup_title = screen_name.replace("_", " ").title()
+        else:
+            popup_title = "Exercise"
+
+        self.answer_popup = Popup(title=popup_title, content=layout)
+        self.answer_popup.open()
 
     def update(self, dt):
         # Common animation update method

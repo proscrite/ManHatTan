@@ -100,43 +100,18 @@ class WriteInputScreen(BaseExerciseScreen):
         elapsed_time = time.time() - self.start_time
         self.speed = 1 / elapsed_time
 
-        # Create a fresh layout for the popup.
-        layout = GridLayout(cols=2, padding=10)
-        label = Button(text='Exercise: ' + self.question_displ, font_name=FONT_HEB, 
-                    font_size=40, bold=True, size_hint=(2, 1))
-        layout.add_widget(label)
-
-        # Always create a new CorrectionDialog instance.
-        correction = CorrectionDialog(self.question_displ, self.answer)
-        # If by any chance correction already has a parent, remove it.
-        if correction.parent:
-            correction.parent.remove_widget(correction)
-        layout.add_widget(correction)
-        
         if self.rtl_flag:
             input_answer = get_display(self.input.text)
         else:
             input_answer = strip_accents(self.input.text.lower())
             self.answer = strip_accents(self.answer.lower())
-        
+
         if self.answer == input_answer:
-            result_btn = Button(text='Correct! ' + self.answer_displ, font_name=FONT_HEB, 
-                                font_size=40, size_hint=(2, 1),
-                                background_color=(0, 1, 0, 1))
             self.perf = 1
         else:
-            result_btn = Button(text=self.input.text + ': Incorrect! ' + self.answer_displ,
-                                font_size=40, size_hint=(2, 1), font_name=FONT_HEB, 
-                                background_color=(1, 0, 0, 1))
             self.perf = 0
-        layout.add_widget(result_btn)
-        
-        cont_btn = Button(text='Continue', on_release=self.on_close,
-                          size_hint=(0.5, 1), background_color=(1, 1, 0, 1))
-        layout.add_widget(cont_btn)
-        
-        self.answer_popup = Popup(content=layout)
-        self.answer_popup.open()
+
+        self.show_answer_popup(self.perf, user_input=self.input.text, on_continue=self.on_close)
     
     def on_close(self, *args):
         flag_rebag = update_all(self.lipstick, self.lippath, self.word_ul, self.perf,

@@ -95,37 +95,7 @@ class MultipleAnswerScreen(BaseExerciseScreen):
             self.listOp[3].on_release()
 
     def confirmation_popup(self, perf, *_):
-        # Create a fresh layout for the popup.
-        layout = GridLayout(cols=2, padding=10)
-        label = Button(text='Exercise: ' + self.question_displ, font_name=FONT_HEB, 
-                    font_size=40, bold=True, size_hint=(2, 1))
-        layout.add_widget(label)
-
-        # Always create a new CorrectionDialog instance.
-        correction = CorrectionDialog(self.question_displ, self.answer)
-        # If by any chance correction already has a parent, remove it.
-        if correction.parent:
-            correction.parent.remove_widget(correction)
-        layout.add_widget(correction)
-        
-        
-        if perf == 1:
-            result_btn = Button(text='Correct! ' + self.answer_displ, font_name = FONT_HEB,
-                                font_size=40, size_hint=(2, 1),
-                                background_color=(0, 1, 0, 1))
-        else:
-            result_btn = Button(text='Incorrect! ' + self.answer_displ, font_name = FONT_HEB,
-                                font_size=40, size_hint=(2, 1),
-                                background_color=(1, 0, 0, 1))
-            
-        layout.add_widget(result_btn)
-        
-        cont_btn = Button(text='Continue', on_release=self.on_close,
-                          size_hint=(0.5, 1), background_color=(1, 1, 0, 1))
-        layout.add_widget(cont_btn)
-        
-        self.answer_popup = Popup(content=layout)
-        self.answer_popup.open()
+        self.show_answer_popup(perf, on_continue=self.on_close)
 
     def process_answer(self, perf):
         print('In process_answer word_ul: ', self.word_ul)
