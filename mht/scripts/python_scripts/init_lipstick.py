@@ -8,7 +8,7 @@ from random import shuffle
 from bidi.algorithm import get_display
 from copy import deepcopy
 
-def get_lexemes(lip):
+def get_lexemes_stanza(lip):
     """Get lexemes from a LIPSTICK DataFrame"""
 
     lang = lip.learning_language.iloc[0]
@@ -38,6 +38,17 @@ def get_lexemes(lip):
             if word.deprel != 'root':
                 lexeme_string +=  ',' + word.deprel
         lexemes.append(lexeme_string)
+    return lexemes
+
+def get_lexemes_apertium(lipstick, lear_lang):
+    """Get lexemes from a LIPSTICK DataFrame using Apertium"""
+    import apertium
+    lexemes = []
+    for wd in lipstick.word_ll:
+        tagSplit = str(apertium.tag(lear_lang, wd)[0]).split('/')
+        lexemes.append(tagSplit[0] + '/' + tagSplit[1])
+    
+    # Return the lexemes
     return lexemes
 
 def get_word_vectors(lip, nlp):    # Need to implement this in main workflow
@@ -155,18 +166,23 @@ def set_lip(gota : pd.DataFrame, flag_lexeme = False):
 
     # print('In set_lip:', lipstick.head(5))
     if flag_lexeme:
-        lexemes = get_lexemes(lipstick)
+        try:
+            lexemes = get_lexemes_stanza(lipstick)
+            lipstick['lexeme_string'] = lexemes
+        except FileNotFoundError as e:
+            print(f"Error: {e}. Please ensure that the Stanza models are installed for the language {lear_lang}.")
+            print("You can install them using: stanza.download('language_code')")
+            
+            try:
+                lexemes = get_lexemes_apertium(lipstick, lear_lang)
+            except Exception as e:
+                print(f"Error with Apertium: {e}. Using default lexeme string.")
+                lexemes = ['lernt/lernen<vblex><pri><p3><sg>'] * len(lipstick)
         lipstick['lexeme_string'] = lexemes
-        # lexeme = []
-        # for wd in lipstick.word_ll:
-        #     tagSplit = str(apertium.tag(lear_lang, wd)[0]).split('/')
-        #     lexeme.append(tagSplit[0] + '/' + tagSplit[1])
-    else:
-        lexeme = 'lernt/lernen<vblex><pri><p3><sg>'
+        
 
     if lipstick['learning_language'].iloc[0] in ['he', 'iw']:
-        # lipstick['word_ll'] = lipstick['word_ll'].apply(force_rtl)
-        # lipstick['word_ul'] = lipstick['word_ul'].apply(get_display)
+        
         lipstick['word_ll'] = [w[::-1] for w in lipstick['word_ll'].values]  # Reverse Hebrew words
         print('In set_lip, displayed_word_ll:', lipstick['word_ll'].head(5))
 
