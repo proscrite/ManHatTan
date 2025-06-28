@@ -70,6 +70,7 @@ def write_cadera(rashib : str, cadera : pd.DataFrame):
     pathname = os.path.splitext(os.path.abspath(rashib))[0]
     path, filename = os.path.split(pathname)
     dirPath, _ = os.path.split(path)
+    dirPath = dirPath.replace('raw', 'processed')
     fpath = os.path.join(dirPath, 'CADERAs', filename+'.cder')
 
     filename = clean_filename(filename)

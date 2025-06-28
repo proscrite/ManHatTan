@@ -29,6 +29,10 @@ matplotlib.use("Agg")
 
 # --- Constants ---
 ROOT_PATH = '/Users/pabloherrero/Documents/ManHatTan/mht'
+PATH_KINDLES = ROOT_PATH + '/data/raw/kindle_raw/*'
+PATH_GOOGLE_TRANSL = ROOT_PATH + '/data/raw/googletranslate_csv/*'
+PATH_PLAYBOOKS = ROOT_PATH + 'data/raw/playbooks_raw/*'
+
 LIPSTICK_PATH = ROOT_PATH + '/data/processed/LIPSTICK/hebrew_db.lip'
 TEAM_LIP_PATH = LIPSTICK_PATH.replace('.lip', '_team.lip')
 FONT_HEB = ROOT_PATH + '/data/fonts/NotoSansHebrew.ttf'
