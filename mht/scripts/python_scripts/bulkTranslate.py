@@ -2,6 +2,7 @@ from googletrans import Translator
 translator = Translator()
 import asyncio
 import pandas as pd
+import random
 import numpy as np
 import os
 import sys
@@ -48,29 +49,27 @@ def detect_src(self, N : int = 0):
     maximum = max(ret, key=ret.get)
     return maximum, ret#[maximum]
 
-def load_blue_words(cadera_path : str, src_lang : str, word_color: str = 'blue') -> pd.Series:
-    """Load blue column pd.Series from CADERA and name it src_lang language"""
+def load_words_selected_color(cadera_path : str, src_lang : str, word_color: str = 'blue') -> list:
+    """Load column with selected from CADERA as list"""
     df = pd.read_csv(cadera_path, index_col=0)
-    src = df[word_color].dropna()
-    src.name = src_lang
+    src_list = df[word_color].dropna().to_list()  # Load blue column as list
 
-    return src
+    return src_list
 
-def format_src(src : pd.Series) -> (str, pd.Series):
+def format_src(src_list : list) -> list:
     """Remove non-alphanumeric characters from source array
-    Returns
-    src : pd.Series
-        Formatted source series
+        Parameters
+        src_list : list
+            Source series to be formatted
+        Returns
+        src_formatted : list
+            Formatted source series
     """
-    src_str = re.sub(pattern = '[\W_](?<![\n\s])', repl='', string=src.to_string()) # Remove tabs
-    src_str = re.sub(r'[,.;:"]', '', src_str)  #Remove ortographic symbols
+    
+    src_formatted = [re.sub(pattern = '[\W_](?<![\n\s])', repl='', string=w) for w in src_list]   # Remove tabs
+    src_formatted = [re.sub(r'[,.;:"]', '', w) for w in src_formatted]    #Remove ortographic symbols
 
-    ### Remove also index number from Series
-    src_list = re.split(pattern = '\n\d+\s+', string = src_str)
-    src_list[0] = re.sub(pattern='\d\s+', repl= '', string= src_list[0])
-    src = pd.Series(src_list, name = src.name)
-
-    return src
+    return src_formatted
 
 def split_dest(dest_str : str) -> list:
     """Split translated chunk by line and clean numbers and blank spaces"""
@@ -79,34 +78,117 @@ def split_dest(dest_str : str) -> list:
     dest_clean = [e.strip() for e in nonum]  # Strip from whitespaces at beginning & end of string
     return dest_clean
 
-async def bulk_translate(src: pd.DataFrame, dest_lang: str = None):
+async def detect_language(text):
     async with Translator() as translator:
-        src_list = [get_display(w) for w in src.word_ll.values]
-        if dest_lang == None:
-            dest_lang = src.ui_language.values[0]
-        src_lang = 'iw'
+        try:
+            # Detect the language of the text
+            detected = await translator.detect(text)
+            return detected.lang
+        except Exception as e:
+            print(f"Error during language detection: {e}")
+            return None
 
-        result = await translator.translate(src_list, src=src_lang, dest=dest_lang)
+async def detect_language_list(texts: list):
+    async with Translator() as translator:
+        try:
+            # Detect the languages of a list of texts
+            detected = await translator.detect(texts)
+            return detected
+        except Exception as e:
+            print(f"Error during language detection: {e}")
+            return None
+
+async def find_language(word_list: list, min_confidence=4.0):
+    """Detect language of the blue column in CADERA.
+    Parameters:
+    word_list : list
+        List of words to sample for language detection. Should be at least 10 words long.
+    min_confidence : float
+        Minimum confidence threshold for language detection. Default is 4.0.
+    Returns:
+    str or None
+        Detected language code if confidence is above the threshold, otherwise None.
+    Usage:
+    >>> detected_lang = await find_language(['Hello', 'world', 'ich', 'liebe', 'dich'], min_confidence=4.0)
+    """
+
+    if not word_list or len(word_list) < 10:
+        print("The word list too short. Cannot detect language confidently.")
+        return None
+    # Sample 10 words from the word_list
+
+    sample_list = random.sample(word_list, 10)
+
+    result = await detect_language_list(sample_list)
+    
+    detected_languages = [res.lang for res in result]
+    detected_confidence = [res.confidence for res in result]
+    
+    detection_stats = pd.DataFrame({
+        'detected_language': detected_languages,
+        'confidence': detected_confidence
+    })
+    
+    grouped_confidences = detection_stats.groupby('detected_language').sum().sort_values(by='confidence', ascending=False)
+    
+    max_confidence = grouped_confidences[grouped_confidences['confidence'] == grouped_confidences['confidence'].max()]
+    predicted_lang, summed_conf = max_confidence.index[0], max_confidence['confidence'].values[0]
+    
+    if summed_conf < min_confidence:
+        print(f"Predicted language '{predicted_lang}' with confidence {summed_conf/10} is below the minimum threshold of {min_confidence/10}.")
+        return None
+    else:
+        print(f"Predicted language: {predicted_lang} with confidence: {summed_conf/10}")
+        return predicted_lang
+    
+##### Bulk translation functions #####
+
+async def bulk_translate(src_list: list, src_lang: str, dest_lang: str = None):
+    """Translate a list of strings from src_lang to dest_lang using googletrans.
+    Parameters:
+    src_list : list
+        List of strings to be translated.
+    src_lang : str
+        Source language code (e.g., 'en', 'de', 'es').
+    dest_lang : str, optional
+        Destination language code (e.g., 'en', 'de', 'es'). If not specified, defaults to 'en'.
+    Returns:
+    dest_list : list
+        List of translated strings in the destination language.
+    Usage:
+    >>> translated_df = await bulk_translate(['Hello', 'World'], 'en', 'es')
+    """
+
+    print(f'Starting translation, src = {src_list}, dest_lang = {dest_lang}')
+    async with Translator() as translator:
+        
+        if not dest_lang:
+            print('No destination language specified. Using English as default.')
+            dest_lang = 'en'
+
+        dest_list = await translator.translate(text = src_list, dest=dest_lang, src=src_lang)
         print('Translation finished')
-        dest_dict = {}
-        for s, d in zip(src_list, result):
-            dest_dict[get_display(s)] = d.text
-        dest = pd.DataFrame(dest_dict.items(), columns=[src_lang, dest_lang])
-        return dest
+        
+        return dest_list
 
-
-def make_dicdf(src : pd.Series, dest : pd.Series, cadera_path : str) -> pd.DataFrame:
-    """Assemble src and dest pd.Series into dictionary df
+def make_gota_df(src_list : list, dest_list : list, src_lang: str, dest_lang: str, cadera_path : str) -> pd.DataFrame:
+    """Assemble src and dest lists into gota_df (GOgle Translation Archive)
     and append first creation datetime (read_time)"""
+    dest_text_list = [d.text for d in dest_list]
 
-    dicdf = pd.DataFrame([src, dest]).T
-    dicdf.name = os.path.splitext(os.path.basename(cadera_path))[0]
+    assert len(src_list) == len(dest_text_list), 'bulk_translate error: len(dest) does not match len(src)'
 
+    dest_dict = {}
+    for s, d in zip(src_list, dest_list):
+        dest_dict[s] = d.text
+    gota_df = pd.DataFrame(dest_dict.items(), columns=[src_lang, dest_lang])
+    
+    gota_df.name = os.path.splitext(os.path.basename(cadera_path))[0]
     #today = datetime.datetime.today()
     today = int(datetime.datetime.timestamp(datetime.datetime.today())) # Correct in init_lipstick.py
 
-    dicdf['creation_time'] = today
-    return dicdf
+    gota_df['creation_time'] = today
+    return gota_df
 
 def write_gota(cadera_path : str, dicdf : pd.DataFrame):
     """Take basename from cadera and write dictDf to GOTA file"""
@@ -130,22 +212,22 @@ def check_language(lang : str, meta_lang : str):
         print(langKeys)
         exit
 
-def bulkTranslate_main(cadera_path : str, word_color: str, dest_lang : str, src_lang : str):
+async def bulkTranslate_main(cadera_path : str, word_color: str, dest_lang : str, src_lang : str):
     check_language(dest_lang, 'dest')
     check_language(src_lang, 'src')
     print('Correct language format')
 
-    src = load_blue_words(cadera_path, src_lang, word_color)
-    src = format_src(src)    # Remove non-alphanumeric characters
-    #src = test_long_sentence(src)   # Seek & destroy entries longer than 3 words
+    src_unformat = load_words_selected_color(cadera_path, src_lang, word_color)
+    src_list = format_src(src_unformat)    # Remove non-alphanumeric characters
+
     # Legacy: now incorporate long sentences as context
 
-    dest = bulk_translate(src, dest_lang)
+    dest_list = await bulk_translate(src_list, src_lang, dest_lang)
 
-    assert len(src) == len(dest), 'bulk_translate error: len(dest) does not match len(src)'
-    dicDf = make_dicdf(src, dest, cadera_path)
+    gota_df = make_gota_df(src_list, dest_list, src_lang=src_lang, dest_lang=dest_lang, cadera_path= cadera_path)
 
-    gota_path = write_gota(cadera_path, dicDf)
+    gota_path = write_gota(cadera_path, gota_df)
+    print('GOTA file written to %s' %gota_path)
     return gota_path
 
 ######### Main #########
