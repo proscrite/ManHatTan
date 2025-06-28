@@ -1,53 +1,42 @@
-from kivy.app import App
-from kivy.uix.image import Image
-from kivy.uix.behaviors import ButtonBehavior
-from kivy.uix.button import Button
-from kivy.uix.label import Label
-from kivy.uix.widget import Widget
-from kivy.uix.popup import Popup
-from kivy.uix.gridlayout import GridLayout
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.textinput import TextInput
-from kivy.clock import Clock
 
 import kivy.core.window as window
 from kivy.base import EventLoop
 from kivy.cache import Cache
+from mht import gui
 
-
-from functools import partial
-from time import sleep
+import os
+import asyncio
 from glob import glob
 import sys
 sys.path.append('../python_scripts/')
 sys.path.append('../ML')
 
-from update_lipstick import *
-from duolingo_hlr import *
-from rashib import *
-from krahtos import *
-from bulkTranslate import bulkTranslate_main
-from googletrans import Translator
+# from duolingo_hlr import *
 
-from gost import *
-from init_lipstick import *
-
-from kivy_multipleAnswer import FTextInput
-from kivy_select_book import BookButton
-from kivy_choose_word_color import choose_color_main
-from kivy_choose_lang import choose_lang_main
+from mht.scripts.python_scripts.rashib import rashib_main
+from mht.scripts.python_scripts.krahtos import krahtos_main
+from mht.scripts.python_scripts.gost import gost_main
+from mht.scripts.python_scripts.bulkTranslate import bulkTranslate_main
+from mht.scripts.python_scripts.init_lipstick import *
+from mht.scripts.python_scripts.update_lipstick import *
+from mht.gui.common import PATH_PLAYBOOKS, PATH_GOOGLE_TRANSL, PATH_KINDLES
 
 
-class addNewBook(App):
+from mht.gui.book_processor.kivy_select_book import BookButton
+from mht.gui.book_processor.kivy_choose_word_color import choose_color_main
+from mht.gui.book_processor.kivy_choose_lang import choose_lang_main
+
+class addNewBook(gui.App):
 
     def __init__(self):
-        App.__init__(self)
-        self.grid = GridLayout(cols=2)
+        gui.App.__init__(self)
+        self.grid = gui.GridLayout(cols=2)
         self.path : str
 
     def load_books(self):
-        kindles = '/Users/pabloherrero/Documents/ManHatTan/kindle_raw/*'
-        playbooks = '/Users/pabloherrero/Documents/ManHatTan/playbooks_raw/*'
+        kindles = PATH_KINDLES 
+        playbooks = PATH_PLAYBOOKS 
+        googletranslations = PATH_GOOGLE_TRANSL
         books_full = glob(kindles)
         books_full += glob(playbooks)
         books = {}
@@ -65,8 +54,8 @@ class addNewBook(App):
         self.path = path
 
     def build(self):
-        lb = Label(text='Select book to process:', size_hint=(1,1))
-        self.giveup = Button(text='Exit', background_color=(0.6, 0.5, 0.5, 1))
+        lb = gui.Label(text='Select book to process:', size_hint=(1,1))
+        self.giveup = gui.Button(text='Exit', background_color=(0.6, 0.5, 0.5, 1))
         self.giveup.bind(on_release=self.exit)
         self.grid.add_widget(lb)
         self.grid.add_widget(self.giveup)
@@ -78,7 +67,7 @@ class addNewBook(App):
 
     def exit(self, instance):
         print("break")
-        App.stop(self)
+        gui.App.stop(self)
 
 
 def reset():
@@ -115,7 +104,14 @@ def add_new_book_main():
     user_lang, learn_lang = choose_lang_main(cder_path, word_color)
     print('user_lang: %s\nlearning_lang: %s' %(user_lang, learn_lang))
     print('Words color: %s' %word_color)
-    gota_path = bulkTranslate_main(cder_path, word_color, user_lang, learn_lang)
+
+    # Detect language using asyncio and googletrans
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    gota_path = loop.run_until_complete(
+        bulkTranslate_main(cder_path, word_color, user_lang, learn_lang)
+    )
+    loop.close()
     assert '.got' in gota_path, "Wrong GOTA extension"
 
     print('Initializing word bank...')

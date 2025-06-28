@@ -6,11 +6,11 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 
-import datetime
-import numpy as np
 import pandas as pd
+import asyncio
 from googletrans import Translator
-from kivy_choose_word_color import DfguiWidget
+from mht.gui.book_processor.kivy_choose_word_color import DfguiWidget
+from mht.scripts.python_scripts.bulkTranslate import find_language
 
 class LangButton(Button):
 
@@ -39,7 +39,23 @@ class chooseLangs(App):
         words_ll = pd.read_csv(self.cder_path, index_col=0, nrows=10)[self.word_color]
         words_header = self.word_color + ' entries'
         self.cadera = pd.DataFrame({words_header : words_ll})
-        self.learn_lang = Translator().detect(words_ll.to_string()).lang
+        
+        wordll_list = words_ll.dropna().to_list()
+        
+        # Detect language using asyncio and googletrans
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        result = loop.run_until_complete(
+            find_language(wordll_list, min_confidence=4.0)
+        )
+        loop.close()
+        if result is not None:
+            self.learn_lang = result
+        else:
+            self.learn_lang = None
+            raise ValueError("Could not detect language confidently. Please check the CADERA file or provide a different one.")
+        # self.learn_lang = Translator().detect(words_ll.to_string()).lang
+        
         self.cadera['Detected language'] = self.learn_lang
 
     def set_ulang(self, ulang):
@@ -52,6 +68,8 @@ class chooseLangs(App):
     def build(self):
         mainGrid = GridLayout(cols=2)
         boxDf = BoxLayout(orientation='vertical')
+        
+        self.select_cadera_entries()
         boxDf.add_widget(DfguiWidget(self.cadera))
         mainGrid.add_widget(boxDf)
 
