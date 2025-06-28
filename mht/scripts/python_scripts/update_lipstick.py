@@ -67,8 +67,11 @@ def rebag_team(current_team: pd.DataFrame, team_lip_path: str):
     main_lip_path = team_lip_path.replace('_team', '')   # Extract main_lip_path from current_team
     main_lip = pd.read_csv(main_lip_path)                # Read main_lip
     main_lip.set_index('word_ul', inplace=True, drop=False)
-    team_inds = current_team.index                       # Assign the current_team entries to main_lip and write
+    current_team.set_index('word_ul', inplace=True, drop=False)
+
+    team_inds = current_team['word_ul']                       # Assign the current_team entries to main_lip and write
     main_lip.update(current_team)
+    print(f"Before writing, main lip is \n{main_lip.loc[team_inds]}")
     main_lip.to_csv(main_lip_path, index=False)
 
     # Resample:

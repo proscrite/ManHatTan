@@ -1,52 +1,27 @@
 import os
 # os.environ['KIVY_NO_CONSOLELOG'] = '1'
 os.environ["KIVY_NO_FILELOG"] = "1"
-
-from kivy.app import App
-from kivy.clock import Clock
-from kivy.core.window import Window
-from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.gridlayout import GridLayout
-from kivy.uix.anchorlayout import AnchorLayout
-
-from kivy.uix.label import Label
-from kivy.uix.button import Button
-from kivy_garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
-
 import threading
 import spacy
-import logging
 import datetime
-logging.getLogger('matplotlib').setLevel(logging.WARNING)
-logging.basicConfig(level=logging.WARNING)
-from kivy.logger import Logger as kvLogger
-kvLogger.setLevel(logging.WARNING)
-from kivy.config import Config
-Config.set("kivy", "log_level", "warning")
-logging.getLogger('kivy.network.urlrequest').setLevel(logging.WARNING)
-logging.getLogger('kivy.network.httpclient').setLevel(logging.WARNING)
-
 from bidi.algorithm import get_display
 
 from random import sample
-import sys
 import matplotlib.pyplot as plt
 import matplotlib
 from matplotlib.gridspec import GridSpec
 from matplotlib.patches import FancyBboxPatch
+from kivy_garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
 
 # Use only one backend!
 matplotlib.use("module://kivy.garden.matplotlib.backend_kivy")
 # matplotlib.use("Agg")
 from skimage.io import imread
 import asyncio
-from googletrans import Translator
-from googletrans import LANGUAGES
 import numpy as np
 import pandas as pd
 
-ROOT_PATH = '/Users/pabloherrero/Documents/ManHatTan/mht/'
+from mht import gui
 from mht.gui.common import *
 from mht.scripts.python_scripts.bulkTranslate import bulk_translate
 from mht.scripts.python_scripts.init_lipstick import set_lip
@@ -54,9 +29,8 @@ from mht.scripts.python_scripts.update_lipstick import rebag_team
 from mht.gui.screen_eggMA import EggScreen
 
 TEAM_LIP_PATH = ROOT_PATH + '/data/processed/LIPSTICK/hebrew_db_team.lip'
-PATH_ANIM = ROOT_PATH + '/gui/Graphics/Battlers/'
 
-class MiniFigureCell(BoxLayout):
+class MiniFigureCell(gui.BoxLayout):
     def __init__(self, team_lip, nid, screen_ref, button_active = True, **kwargs):
         super().__init__(orientation='horizontal', **kwargs)
         self.team_lip = team_lip
@@ -74,7 +48,7 @@ class MiniFigureCell(BoxLayout):
         self.word_ll = self.team_lip.loc[nid, 'word_ll']
         if self.team_lip.loc[nid, 'learning_language'] == 'iw':
             self.word_ll = get_display(self.word_ll)
-        left_button = Button(text=self.word_ll,
+        left_button = gui.Button(text=self.word_ll,
                              opacity=1.0,
                              font_name=FONT_HEB,
                              font_size=46,
@@ -137,7 +111,7 @@ class MiniFigureCell(BoxLayout):
 
 
 # class MyApp(App):
-class TeamScreen(Screen):
+class TeamScreen(gui.Screen):
     def __init__(self, team_lip, buttons_active: bool = True, **kwargs):
         super().__init__(**kwargs)
         # Read team data and set index for easy access
@@ -145,41 +119,41 @@ class TeamScreen(Screen):
         self.team_lip = self.team_lip.set_index('n_id', drop=False)
         self.nids = np.array(self.team_lip.n_id[:6].values)
         self.buttons_active = buttons_active
-        self.app = App.get_running_app()
+        self.app = gui.App.get_running_app()
 
         self.canvas_widgets = []
         self.img_display = []   # Each is a matplotlib image object returned by imshow
         self.anim_list = []     # Each is an animation image (sprite strip)
         self.nframes_list = []  # Current frame indices for each animation
 
-        root_v = BoxLayout(orientation='vertical', spacing=10, padding=10)
+        root_v = gui.BoxLayout(orientation='vertical', spacing=10, padding=10)
         self.add_widget(root_v)
-        anchor = AnchorLayout(
+        anchor = gui.AnchorLayout(
             anchor_x='center',
             anchor_y='center'
         )
         root_v.add_widget(anchor)
 
         # Create a grid for all cells; adjust rows/cols as desired.
-        self.main_grid = GridLayout(rows=3, cols=2, size_hint = (0.8, 1.0))
+        self.main_grid = gui.GridLayout(rows=3, cols=2, size_hint = (0.8, 1.0))
         anchor.add_widget(self.main_grid)
         for nid in self.nids:
             cell = MiniFigureCell(self.team_lip, nid, self, buttons_active)
             self.main_grid.add_widget(cell)
         # Schedule the update loop. You can schedule it here (or in on_start)
 
-        self.back_btn = Button(text="Back to Menu", on_release=self.back_to_menu,
+        self.back_btn = gui.Button(text="Back to Menu", on_release=self.back_to_menu,
                           size_hint=(1, 0.1))
         root_v.add_widget(self.back_btn)
 
         if not self.buttons_active:
             # If buttons are not active, replace back button by continue button
             self.remove_widget(self.back_btn)
-            continue_button = Button(text="Continue", size_hint=(1, 0.1))
+            continue_button = gui.Button(text="Continue", size_hint=(1, 0.1))
             continue_button.bind(on_release=self.call_rebag_team)
             self.add_widget(continue_button)
 
-        Clock.schedule_interval(self.update, 1 / 30)
+        gui.Clock.schedule_interval(self.update, 1 / 30)
 
     def update(self, dt):
         # Update the animation frames for each cell.
@@ -220,39 +194,39 @@ class TeamScreen(Screen):
             lipstick= self.team_lip
         )
         self.manager.add_widget(sws)
-        self.manager.transition = SlideTransition(direction="left")
+        self.manager.transition = gui.SlideTransition(direction="left")
         self.manager.current = 'similar_words'
 
     def call_rebag_team(self, instance):
         self.app.continue_rebag_team()
 
     def back_to_menu(self, instance):
-        self.manager.transition = SlideTransition(direction="right")
+        self.manager.transition = gui.SlideTransition(direction="right")
         self.manager.current = "main_menu"
 
 ####   Screen for Similar Words loading  ####
 
-class SimilarWordsScreen(Screen):
+class SimilarWordsScreen(gui.Screen):
     def __init__(self, selected_word, lipstick, **kwargs):
         super().__init__(**kwargs)
-        self.app = App.get_running_app()
+        self.app = gui.App.get_running_app()
         self.sel_word = selected_word
         self.team_lip = lipstick
 
         # Root layout: vertical, black background
-        self.root_layout = BoxLayout(orientation='vertical', spacing=10, padding=10)
+        self.root_layout = gui.BoxLayout(orientation='vertical', spacing=10, padding=10)
         with self.root_layout.canvas.before:
             from kivy.graphics import Color, Rectangle
             Color(0, 0, 0, 1)
             self.bg_rect = Rectangle(size=self.size, pos=self.pos)
         self.bind(size=self._update_bg_rect, pos=self._update_bg_rect)
 
-        self.info_label = Label(text="Searching the genealogy tree for eggs...", size_hint=(1, None),
+        self.info_label = gui.Label(text="Searching the genealogy tree for eggs...", size_hint=(1, None),
             height=70, color=(1, 1, 1, 1), font_size=40 )
         self.root_layout.add_widget(self.info_label)
 
         # Animation container (fills most of the space)
-        self.anim_container = BoxLayout( orientation='vertical', size_hint=(1, None),
+        self.anim_container = gui.BoxLayout( orientation='vertical', size_hint=(1, None),
                                          height=700, padding=0, spacing=0)
 
         with self.anim_container.canvas.before:
@@ -264,7 +238,7 @@ class SimilarWordsScreen(Screen):
         self.add_widget(self.root_layout)
 
         # Bottom back button
-        back_btn = Button(text="Back to Team", on_release=self.go_back,
+        back_btn = gui.Button(text="Back to Team", on_release=self.go_back,
             size_hint=(1, None), height=90, font_size=40, background_color=(0.2, 0.2, 0.2, 1), color=(1, 1, 1, 1)
         )
         self.root_layout.add_widget(back_btn)
@@ -286,10 +260,10 @@ class SimilarWordsScreen(Screen):
             self.info_label.text="Sorry, you hatched all available eggs for this word :/"
             return
         else:
-            Clock.schedule_once(lambda dt: self.trigger_new_MA(None), 0.5)
+            gui.Clock.schedule_once(lambda dt: self.trigger_new_MA(None), 0.5)
 
     def on_leave(self, *args):
-        Clock.unschedule(self.update_animation)
+        gui.Clock.unschedule(self.update_animation)
         if getattr(self, 'fig_canvas', None) is not None and self.fig_canvas in self.anim_container.children:
             self.anim_container.remove_widget(self.fig_canvas)
 
@@ -307,7 +281,7 @@ class SimilarWordsScreen(Screen):
         self.anim_container.clear_widgets()
         self.anim_container.add_widget(self.fig_canvas)
         self.nframe = 0
-        Clock.schedule_interval(self.update_animation, 1/12)
+        gui.Clock.schedule_interval(self.update_animation, 1/12)
 
     def update_animation(self, dt):
         frame_width = self.anim.shape[0]
@@ -319,7 +293,7 @@ class SimilarWordsScreen(Screen):
 
     def _make_egg_file_and_continue(self):
         self._make_egg_file()
-        Clock.schedule_once(lambda dt: self.trigger_new_MA(None), 0)
+        gui.Clock.schedule_once(lambda dt: self.trigger_new_MA(None), 0)
 
     def _make_egg_file(self):
         """Create a new egg file with similar words to the selected word."""
@@ -372,12 +346,12 @@ class SimilarWordsScreen(Screen):
         # create & add the new screen
         self.manager.add_widget(EggScreen(self.path_egg, modality='rt', name="egg_multiple_answer"))
         
-        self.manager.transition = SlideTransition(direction="left")
+        self.manager.transition = gui.SlideTransition(direction="left")
         self.manager.current = 'egg_multiple_answer'
     
     def go_back(self, *args):
         sm = self.manager
-        sm.transition = SlideTransition(direction="right")
+        sm.transition = gui.SlideTransition(direction="right")
         sm.current = "team"
 
     def _update_bg_rect(self, *args):
@@ -407,10 +381,10 @@ class SimilarWordsScreen(Screen):
             return False
 
 
-class MyApp(App):
+class MyApp(gui.App):
     def build(self):
-        Window.size = (600, 600)
-        self.sm = ScreenManager()
+        gui.Window.size = (600, 600)
+        self.sm = gui.ScreenManager()
         self.teamlippath = TEAM_LIP_PATH
         self.team_lip = load_lipstick(self.teamlippath, modality='dt')
         team_screen = TeamScreen(name='team', team_lip=self.team_lip, buttons_active=False)
@@ -434,7 +408,7 @@ class MyApp(App):
             self.sm.remove_widget(self.sm.get_screen('team'))
             self.sm.add_widget(new_team_screen)
             self.sm.current = 'team'
-            self.sm.transition = SlideTransition(direction="right")
+            self.sm.transition = gui.SlideTransition(direction="right")
         
 if __name__ == '__main__':
     MyApp().run()
