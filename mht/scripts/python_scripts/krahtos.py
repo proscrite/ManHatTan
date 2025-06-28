@@ -119,6 +119,7 @@ def write_cadera(krahtos : str, cadera : pd.DataFrame):
     filename = clean_filename(filename)
 
     dirPath, _ = os.path.split(path)
+    dirPath = dirPath.replace('raw', 'processed')
     fpath = os.path.join(dirPath, 'CADERAs', filename+'.cder')
     cadera.to_csv(fpath)
     print('Created CADERA file %s' %fpath)
