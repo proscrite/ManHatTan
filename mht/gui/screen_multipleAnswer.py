@@ -1,55 +1,33 @@
 # --- Multiple Answer Screen (refactored from kivy_multipleAnswer.py) --- #
-from kivy.app import App
-from kivy.uix.screenmanager import Screen
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.gridlayout import GridLayout
-from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.button import Button
-from kivy.uix.label import Label
-from kivy.clock import Clock
-from kivy.core.window import Window
-from kivy.uix.popup import Popup
 import time, threading
-
-import matplotlib.pyplot as plt
-from matplotlib.gridspec import GridSpec
-from skimage.io import imread
 from bidi.algorithm import get_display
 
+from mht import gui
 from mht.gui.common import *
-from mht.gui.add_correctButton import CorrectionDialog
-from mht.gui.screen_BaseExercise import BaseExerciseScreen
-from mht.gui.EachOption import EachOption
 from mht.scripts.python_scripts.update_lipstick import update_all
 
-ROOT_PATH = '/Users/pabloherrero/Documents/ManHatTan/mht'
-FONT_HEB = ROOT_PATH + '/data/fonts/NotoSansHebrew.ttf'
-PATH_ANIM = ROOT_PATH + '/gui/Graphics/Battlers/'
-
-class MultipleAnswerScreen(BaseExerciseScreen):
+class MultipleAnswerScreen(gui.BaseExerciseScreen):
     def __init__(self, lipstick_path, modality='rt', **kwargs):
         super(MultipleAnswerScreen, self).__init__(lipstick_path, modality, **kwargs)
-        self.app = App.get_running_app()
-        # self.app.lipstick = self.lipstick
+        self.app = gui.App.get_running_app()
         self.app_start_time = time.time()
         self.teamlippath = lipstick_path
 
-    
     def build_ui(self):
-        self.box = BoxLayout(orientation='vertical')
-        self.upper_panel = GridLayout(cols=3, size_hint_y=0.8)
+        self.box = gui.BoxLayout(orientation='vertical')
+        self.upper_panel = gui.GridLayout(cols=3, size_hint_y=0.8)
         
         # Options panel (left column)
-        self.optMenu = GridLayout(cols=1, rows=3, size_hint_x=0.25,
-                                  padding=20, spacing=20)
-        exit_btn = Button(text='Exit', background_color=(0.6, 0.5, 0.5, 1))
+        self.optMenu = gui.GridLayout(cols=1, rows=3, size_hint_x=0.25,
+                                      padding=20, spacing=20)
+        exit_btn = gui.Button(text='Exit', background_color=(0.6, 0.5, 0.5, 1))
         exit_btn.bind(on_release=self.go_back)
         self.optMenu.add_widget(exit_btn)
-        correction = CorrectionDialog(self.answer, self.question)
+        correction = gui.CorrectionDialog(self.answer, self.question)
         self.optMenu.add_widget(correction)
         self.upper_panel.add_widget(self.optMenu)
         self.box.add_widget(self.upper_panel)
-        back_btn = Button(text="Back to Menu", size_hint=(1, 0.1))
+        back_btn = gui.Button(text="Back to Menu", size_hint=(1, 0.1))
         back_btn.bind(on_release=self.go_back)
 
         # Animated panel (right column) from the base class
@@ -65,18 +43,18 @@ class MultipleAnswerScreen(BaseExerciseScreen):
         self.box.add_widget(back_btn)
         self.add_widget(self.box)
         
-        Clock.schedule_interval(self.update, 1/30)
-        Window.bind(on_key_down=self._on_keyboard_handler)
+        gui.Clock.schedule_interval(self.update, 1/30)
+        gui.Window.bind(on_key_down=self._on_keyboard_handler)
     
     def load_answers(self, answers: dict):
         self.listOp = []
-        self.AnswerPanel = GridLayout(cols=2, rows=2, padding=40, spacing=20)
+        self.AnswerPanel = gui.GridLayout(cols=2, rows=2, padding=40, spacing=20)
         hints = ['A', 'B', 'C', 'D']
         for h, ans_text in zip(hints, answers):
-            layout = BoxLayout(orientation='vertical')
-            hint_label = Label(text=h, size_hint=(0.2, 0.2))
+            layout = gui.BoxLayout(orientation='vertical')
+            hint_label = gui.Label(text=h, size_hint=(0.2, 0.2))
             layout.add_widget(hint_label)
-            op = EachOption(ans_text, answers[ans_text], self.rtl_flag, callback=self.process_answer)
+            op = gui.EachOption(ans_text, answers[ans_text], self.rtl_flag, callback=self.process_answer)
             layout.add_widget(op)
             self.listOp.append(op)
             self.AnswerPanel.add_widget(layout)
@@ -95,37 +73,7 @@ class MultipleAnswerScreen(BaseExerciseScreen):
             self.listOp[3].on_release()
 
     def confirmation_popup(self, perf, *_):
-        # Create a fresh layout for the popup.
-        layout = GridLayout(cols=2, padding=10)
-        label = Button(text='Exercise: ' + self.question_displ, font_name=FONT_HEB, 
-                    font_size=40, bold=True, size_hint=(2, 1))
-        layout.add_widget(label)
-
-        # Always create a new CorrectionDialog instance.
-        correction = CorrectionDialog(self.question_displ, self.answer)
-        # If by any chance correction already has a parent, remove it.
-        if correction.parent:
-            correction.parent.remove_widget(correction)
-        layout.add_widget(correction)
-        
-        
-        if perf == 1:
-            result_btn = Button(text='Correct! ' + self.answer_displ, font_name = FONT_HEB,
-                                font_size=40, size_hint=(2, 1),
-                                background_color=(0, 1, 0, 1))
-        else:
-            result_btn = Button(text='Incorrect! ' + self.answer_displ, font_name = FONT_HEB,
-                                font_size=40, size_hint=(2, 1),
-                                background_color=(1, 0, 0, 1))
-            
-        layout.add_widget(result_btn)
-        
-        cont_btn = Button(text='Continue', on_release=self.on_close,
-                          size_hint=(0.5, 1), background_color=(1, 1, 0, 1))
-        layout.add_widget(cont_btn)
-        
-        self.answer_popup = Popup(content=layout)
-        self.answer_popup.open()
+        self.show_answer_popup(perf, on_continue=self.on_close)
 
     def process_answer(self, perf):
         print('In process_answer word_ul: ', self.word_ul)
@@ -153,9 +101,9 @@ class MultipleAnswerScreen(BaseExerciseScreen):
     def on_leave(self, *args):
         self.built = False
         # Unschedule updates
-        Clock.unschedule(self.update)
+        gui.Clock.unschedule(self.update)
         # Unbind keyboard
-        Window.unbind(on_key_down=self._on_keyboard_handler)
+        gui.Window.unbind(on_key_down=self._on_keyboard_handler)
         # Dismiss popups
         if hasattr(self, 'answer_popup') and self.answer_popup:
             self.answer_popup.dismiss()

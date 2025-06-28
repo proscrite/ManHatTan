@@ -6,80 +6,26 @@ into one application with multiple screens. One screen handles free text input (
 multiple choice options (“Multiple Answer”). A main menu lets the user choose which exercise to run.
 """
 import os
-os.environ["KIVY_NO_FILELOG"] = "1"
-
-from kivy.config import Config
-# Increase window width by 20%
-orig_width = Config.getint('graphics', 'width')
-print('Orig_width = ', orig_width)
-# new_width = int(orig_width * 1.9)
-Config.set('graphics', 'width', str(800))
-
-# Set window position to custom and force it to the upper left
-Config.set('graphics', 'position', 'custom')
-Config.set('graphics', 'left', '0')
-Config.set('graphics', 'top', '0')
-
-from kivy.app import App
-from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
-from kivy.uix.dropdown import DropDown
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.gridlayout import GridLayout
-from kivy.uix.button import Button
-from kivy.logger import Logger as kvLogger
 import logging
-kvLogger.setLevel(logging.WARNING)
-logging.getLogger('matplotlib').setLevel(logging.WARNING)
-
-from kivy.config import Config
-# change 'log_level' from DEBUG → WARNING (so you only see WARNING / ERROR)
-Config.set('kivy', 'log_level', 'warning')
-logging.getLogger('kivy.network.urlrequest').setLevel(logging.WARNING)
-logging.getLogger('kivy.network.httpclient').setLevel(logging.WARNING)
-# Import dependencies from your modules (adjust the paths if necessary)
-os.environ['KIVY_NO_CONSOLELOG'] = '1'
-
-# 3) Globally raise the stdlib log level
+from functools import partial
+import random
 import logging
-logging.basicConfig(level=logging.WARNING)
-logging.getLogger().setLevel(logging.WARNING)
 
-# 4) Specifically silence the HTTP/2 + HPACK libraries
-logging.getLogger('h2.connection').setLevel(logging.WARNING)
-logging.getLogger('hpack').setLevel(logging.WARNING)
-logging.getLogger('hyper').setLevel(logging.WARNING)
+from mht import gui
 
-# 5) And silence Kivy’s URLRequest debug chatter (if you use that)
-logging.getLogger('kivy.network.urlrequest').setLevel(logging.WARNING)
-logging.getLogger('kivy.network.httpclient').setLevel(logging.WARNING)
-
-
-from mht.gui.common import set_question, load_lipstick
-from mht.gui.screen_writeInput import WriteInputScreen
-from mht.gui.screen_multipleAnswer import MultipleAnswerScreen
-from mht.gui.screen_team_manager import TeamScreen
-from mht.gui.screen_verbConjugation import ConjugationScreen
-
+from mht.gui.common import *
 from mht.scripts.ML_duolingo.duolingo_hlr import *
-from mht.scripts.python_scripts.update_lipstick import update_all, rebag_team
-from bidi.algorithm import get_display
-
-# Define common constants (adjust as needed)
-ROOT_PATH = '/Users/pabloherrero/Documents/ManHatTan/mht'
-LIPSTICK_PATH = ROOT_PATH + '/data/processed/LIPSTICK/hebrew_db.lip'
-TEAM_LIP_PATH = LIPSTICK_PATH.replace('.lip', '_team.lip')
-
-font_path = ROOT_PATH + '/data/fonts/NotoSansHebrew.ttf'
-print(f"[DEBUG] Looking for font at: {font_path!r}")
-print(f"[DEBUG] Exists? {os.path.exists(font_path)}")
+from mht.scripts.python_scripts.update_lipstick import rebag_team
+from mht.gui.config_utils import set_logging_and_kivy_config
+set_logging_and_kivy_config(verbose=False)
 
 # mht_main.py
-class MainMenuScreen(Screen):
+class MainMenuScreen(gui.Screen):
     def __init__(self, lipstick_path, **kwargs):
         super(MainMenuScreen, self).__init__(**kwargs)
         self.lipstick_path = lipstick_path
-        self.app = App.get_running_app()
-        self.layout = BoxLayout(orientation='vertical', padding=20, spacing=20, minimum_width=1000)
+        self.app = gui.App.get_running_app()
+        self.layout = gui.BoxLayout(orientation='vertical', padding=20, spacing=20, minimum_width=1000)
 
         self._add_main_buttons()
         self._add_lower_panel()
@@ -87,33 +33,58 @@ class MainMenuScreen(Screen):
         self.add_widget(self.layout)
 
     def _add_main_buttons(self):
-        btn_write = Button(
+        self.main_panel = gui.BoxLayout(orientation='horizontal', spacing=20, size_hint_y=0.7)
+
+        button_panel = gui.BoxLayout(orientation='vertical', spacing=20, size_hint_x=0.75)
+        btn_write = gui.Button(
             text="[b]Write Input Exercise[/b]\n[i][size=20]Type your answer in free text[/size][/i]",
             font_size=40,
             markup=True,
             background_color=(0.2, 0.5, 0.9, 1),
             color=(1, 1, 1, 1)
         )
-        btn_multi = Button(
+        btn_multi = gui.Button(
             text="[b]Multiple Answer Exercise[/b]\n[i][size=20]Choose the correct answer[/size][/i]",
             font_size=40,
             markup=True,
             background_color=(0.9, 0.6, 0.2, 1),
             color=(1, 1, 1, 1)
         )
-        btn_conj = Button(
+        btn_conj = gui.Button(
             text="[b]Conjugation Exercise[/b]\n[i][size=20]Practice Hebrew verb conjugation[/size][/i]",
             font_size=40,
             markup=True,
             background_color=(0.2, 0.8, 0.4, 1),
             color=(1, 1, 1, 1)
         )
-        btn_write.bind(on_release=self.go_to_write)
-        btn_multi.bind(on_release=self.go_to_multi)
+        btn_write.bind(on_release=partial(self.go_to_exercise, screen_name="write_input"))
+        btn_multi.bind(on_release=partial(self.go_to_exercise, screen_name="multiple_answer"))
         btn_conj.bind(on_release=self.go_to_conjugation)
-        self.layout.add_widget(btn_write)
-        self.layout.add_widget(btn_multi)
-        self.layout.add_widget(btn_conj)
+
+        button_panel.add_widget(btn_write)
+        button_panel.add_widget(btn_multi)
+        button_panel.add_widget(btn_conj)
+
+        logo = gui.Image(
+            source="/Users/pabloherrero/Documents/ManHatTan/mht/gui/icons/mascott_v3.png",
+            allow_stretch=True,
+            keep_ratio=True,
+            size_hint_x=0.25,
+            size_hint_y=1
+        )
+
+        self.main_panel.add_widget(button_panel)
+        self.main_panel.add_widget(logo)
+
+        self.layout.add_widget(self.main_panel)
+
+    def _get_logo_widget(self, rowspan=3):
+        return gui.Image(
+            source="/Users/pabloherrero/Documents/ManHatTan/mht/gui/icons/mascott_v3.png",
+            allow_stretch=True,
+            keep_ratio=True,
+            size_hint=(0.25, rowspan)
+        )
 
     def _add_lower_panel(self):
         self.learning_language = self.app.lipstick['learning_language'].iloc[0]
@@ -122,67 +93,78 @@ class MainMenuScreen(Screen):
         features = self.app.lipstick.columns
         print(f'Features: {features}')
 
-        self.dropdown = DropDown()
-        item_dt = Button(text=self.ui_language, size_hint_y=None, height=84)
-        item_rt = Button(text=self.learning_language, size_hint_y=None, height=84)
-        item_dt.bind(on_release=self.set_modality_dt)
-        item_rt.bind(on_release=self.set_modality_rt)
+        self.dropdown = gui.DropDown()
+        item_dt = gui.Button(text=language_dict[self.ui_language], size_hint_y=None, height=84)
+        item_rt = gui.Button(text=language_dict[self.learning_language], size_hint_y=None, height=84)
+        item_random = gui.Button(text="Random", size_hint_y=None, height=84)
+        item_dt.bind(on_release=partial(self.set_modality, modality='dt'))
+        item_rt.bind(on_release=partial(self.set_modality, modality='rt'))
+        item_random.bind(on_release=partial(self.set_modality, modality='random'))
         self.dropdown.add_widget(item_dt)
         self.dropdown.add_widget(item_rt)
+        self.dropdown.add_widget(item_random)
 
-        lower_panel = GridLayout(cols=3, size_hint_y=0.2, minimum_width=5000)
-        self.dropdown_button = Button(text='Exercise Language', size_hint=(0.5, 0.3))
+        lower_panel = gui.GridLayout(cols=3, size_hint_y=0.2, minimum_width=5000)
+        self.dropdown_button = gui.Button(
+            text='Exercise Language: Random',
+            size_hint=(0.75, 0.3), background_color=(0.5, 0.2, 0.7, 1), color=(1, 1, 1, 1)
+        )
         self.dropdown_button.bind(on_release=self.dropdown.open)
         self.dropdown.bind(on_select=lambda instance, x: setattr(self.dropdown_button, 'text', x))
         lower_panel.add_widget(self.dropdown_button)
 
-        team_button = Button(text='View team', size_hint=(0.5, 0.3), on_release=self.view_team)
+        team_button = gui.Button(
+            text='View team', on_release=self.view_team,
+            size_hint=(0.75, 0.3), background_color=(0.0, 0.7, 0.7, 1), color=(1, 1, 1, 1),
+        )
         lower_panel.add_widget(team_button)
-        exit_button = Button(text='Exit', size_hint=(0.5, 0.3), on_release=self.exit)
+        exit_button = gui.Button(
+            text='Exit', on_release=self.exit,
+            size_hint=(0.75, 0.3), background_color=(0.2, 0.2, 0.2, 1), color=(1, 1, 1, 1),
+        )
         lower_panel.add_widget(exit_button)
         self.layout.add_widget(lower_panel)
 
-    def go_to_write(self, instance):
-        self.manager.transition = SlideTransition(direction="left")
-        self.manager.current = "write_input"
-    
-    def go_to_multi(self, instance):
-        self.manager.transition = SlideTransition(direction="left")
-        self.manager.current = "multiple_answer"
+    def go_to_exercise(self, instance, screen_name):
+        modality = self.app.modality
+        if modality == 'random':
+            modality = random.choice(['dt', 'rt'])
+        screen = self.manager.get_screen(screen_name)
+        screen.modality = modality
+        self.manager.transition = gui.SlideTransition(direction="left")
+        self.manager.current = screen_name
 
     def go_to_conjugation(self, instance):
-        self.manager.transition = SlideTransition(direction="left")
+        self.manager.transition = gui.SlideTransition(direction="left")
         self.manager.current = "conjugation"
 
     def view_team(self, instance):
-        self.manager.transition = SlideTransition(direction="left")
+        self.manager.transition = gui.SlideTransition(direction="left")
         self.manager.current = "team"
-
-    def set_modality_dt(self, instance):
-        self.app.modality = 'dt'
-        setattr(self.dropdown_button, 'text', 'Exercise Language: ' + instance.text)
-
-    def set_modality_rt(self, instance):
-        self.app.modality = 'rt'
-        setattr(self.dropdown_button, 'text', 'Exercise Language: ' + instance.text)
+    
+    def set_modality(self, instance, modality):
+        self.app.modality = modality
+        self.dropdown_button.text = 'Exercise Language: ' + instance.text
+        self.dropdown_button.font_name = instance.font_name  # Use the same font as the selected item
+        self.dropdown.dismiss()
 
     def exit(self, instance):
         print('Exiting')
         self.app.stop(self)
 
-class ManHatTan(App):
-    def __init__(self, lippath : str = LIPSTICK_PATH, modality : str = 'dt'):
+class ManHatTan(gui.App):
+    def __init__(self, lippath : str = LIPSTICK_PATH, modality : str = 'random'):
         self.flag_refresh = True
         self.modality = modality
 
-        App.__init__(self)
+        gui.App.__init__(self)
 
     def init_rebag(self):
         print('Init rebag...')
-        new_team_screen = TeamScreen(name='init_team', team_lip=self.team_lip, buttons_active=False)
+        new_team_screen = gui.TeamScreen(name='init_team', team_lip=self.team_lip, buttons_active=False)
         self.sm.add_widget(new_team_screen)
         self.sm.current = 'init_team'
-        self.sm.transition = SlideTransition(direction="right")
+        self.sm.transition = gui.SlideTransition(direction="right")
 
     def continue_rebag_team(self):
         self.team_lip = load_lipstick(self.teamlippath, self.modality)   # Reload the team_lip after updating eligibility
@@ -197,13 +179,13 @@ class ManHatTan(App):
             self.sm.current = 'main_menu'
             self.sm.remove_widget(self.sm.get_screen('new_team'))
         else:
-            # Update the screen with the new team
-            self.team_lip.to_csv(self.teamlippath, index=False)
-            new_team_screen = TeamScreen(name='new_team', team_lip=new_team, buttons_active=False)
+            # Update the screen with the gui.new team
+            self.team_lip.to_csv(self.tgui.eamlippath, index=False)
+            new_team_screen = gui.TeamScreen(name='new_team', team_lip=new_team, buttons_active=False)
             self.sm.remove_widget(self.sm.get_screen('init_team'))
             self.sm.add_widget(new_team_screen)
             self.sm.current = 'new_team'
-            self.sm.transition = SlideTransition(direction="right")
+            self.sm.transition = gui.SlideTransition(direction="right")
 
     def build(self):
         self.teamlippath = TEAM_LIP_PATH
@@ -215,12 +197,12 @@ class ManHatTan(App):
             self.word_ll, self.word_ul, self.iqu, self.nid = set_question(self.teamlippath)
             self.flag_refresh = False
         
-        self.sm = ScreenManager()
+        self.sm = gui.ScreenManager()
         self.sm.add_widget(MainMenuScreen(self.teamlippath, name="main_menu"))
-        self.sm.add_widget(WriteInputScreen(self.teamlippath, modality='dt', name="write_input"))
-        self.sm.add_widget(MultipleAnswerScreen(self.teamlippath, modality='rt', name="multiple_answer"))
-        self.sm.add_widget(ConjugationScreen(self.lippath, modality='dt', name="conjugation"))
-        team_screen = TeamScreen(name='team', team_lip=self.team_lip, buttons_active=True)
+        self.sm.add_widget(gui.WriteInputScreen(self.teamlippath, modality=self.modality, name="write_input"))
+        self.sm.add_widget(gui.MultipleAnswerScreen(self.teamlippath, modality=self.modality, name="multiple_answer"))
+        self.sm.add_widget(gui.ConjugationScreen(self.lippath, modality='dt', name="conjugation"))
+        team_screen = gui.TeamScreen(name='team', team_lip=self.team_lip, buttons_active=True)
         self.sm.add_widget(team_screen)
 
         self.sm.current = "main_menu"

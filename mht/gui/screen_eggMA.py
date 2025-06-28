@@ -1,35 +1,16 @@
-# --- Multiple Answer Screen (refactored from kivy_multipleAnswer.py) --- #
-from kivy.app import App
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.gridlayout import GridLayout
-from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.anchorlayout import AnchorLayout
-from kivy.uix.button import Button
-from kivy.uix.popup import Popup
-from kivy.uix.label import Label
-from kivy.clock import Clock
-from kivy.core.window import Window
-import time, threading
+# --- Egg Multiple Answer Screen (refactored for centralized gui imports) --- #
+import os
+from mht import gui
 from kivy_garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
 
 import matplotlib.pyplot as plt
-from matplotlib.gridspec import GridSpec
-from skimage.io import imread
 from bidi.algorithm import get_display
-import os
 
 from mht.gui.common import *
-from mht.gui.add_correctButton import CorrectionDialog
-from mht.gui.screen_multipleAnswer import MultipleAnswerScreen
-from mht.gui.EachOption import EachOption
 from mht.scripts.python_scripts.update_lipstick import update_all
 from mht.scripts.python_scripts import egg_processing as egg_proc
 
-ROOT_PATH = '/Users/pabloherrero/Documents/ManHatTan/mht'
-FONT_HEB = ROOT_PATH + '/data/fonts/NotoSansHebrew.ttf'
-PATH_ANIM = ROOT_PATH + '/gui/Graphics/Battlers/'
-
-class EggScreen(MultipleAnswerScreen):
+class EggScreen(gui.MultipleAnswerScreen):
     def __init__(self, lipstick_path, modality='rt', **kwargs):
         super().__init__(lipstick_path, modality=modality, **kwargs)
         self.is_egg_screen = True
@@ -39,7 +20,7 @@ class EggScreen(MultipleAnswerScreen):
     def build_ui(self):
         super().build_ui()
         # --- Add Bypass Button ---
-        bypass_btn = Button(text='Bypass Word', background_color=(0.8, 0.5, 0.2, 1))
+        bypass_btn = gui.Button(text='Bypass Word', background_color=(0.8, 0.5, 0.2, 1))
         bypass_btn.bind(on_release=self.bypass_word)
         self.optMenu.add_widget(bypass_btn)
 
@@ -99,7 +80,7 @@ class EggScreen(MultipleAnswerScreen):
 
         # Add a temporary blank screen if not present
         if not manager.has_screen('temp_blank'):
-            temp_screen = Screen(name='temp_blank')
+            temp_screen = gui.Screen(name='temp_blank')
             manager.add_widget(temp_screen)
         manager.current = 'temp_blank'
 
@@ -138,22 +119,21 @@ class EggScreen(MultipleAnswerScreen):
         current_name = self.name
         self.go_back(current_name)
 
-
     def show_hatch_animation(self, random_nid):
-        layout = BoxLayout(orientation='vertical', spacing=10, padding=10)
-        label = Label(text="The egg is hatching!", font_size=32, size_hint=(1, 0.2))
+        layout = gui.BoxLayout(orientation='vertical', spacing=10, padding=10)
+        label = gui.Label(text="The egg is hatching!", font_size=32, size_hint=(1, 0.2))
         layout.add_widget(label)
 
         self._fill_hatch_popup(layout, random_nid)
 
-        anchor = AnchorLayout(anchor_x='center', anchor_y='center', size_hint=(1, 0.85))
+        anchor = gui.AnchorLayout(anchor_x='center', anchor_y='center', size_hint=(1, 0.85))
         anchor.add_widget(self.fig_canvas)
         layout.add_widget(anchor)
 
-        self.continue_btn = Button(text="Continue", size_hint=(1, 0.2), font_size=24, disabled=True)
+        self.continue_btn = gui.Button(text="Continue", size_hint=(1, 0.2), font_size=24, disabled=True)
         layout.add_widget(self.continue_btn)
 
-        popup = Popup(title="Egg Hatching!", content=layout, size_hint=(0.8, 0.6), auto_dismiss=False)
+        popup = gui.Popup(title="Egg Hatching!", content=layout, size_hint=(0.8, 0.6), auto_dismiss=False)
         self.continue_btn.bind(on_release=popup.dismiss)
 
         self._run_hatch_animation(popup)
@@ -216,8 +196,8 @@ class EggScreen(MultipleAnswerScreen):
                 self.fig_canvas.draw()
                 self._hatch_anim_frame += 1
 
-        self._hatch_anim_event = Clock.schedule_interval(update, 1/12)
+        self._hatch_anim_event = gui.Clock.schedule_interval(update, 1/12)
 
         def on_dismiss(instance):
-            Clock.unschedule(self._hatch_anim_event)
+            gui.Clock.unschedule(self._hatch_anim_event)
         popup.bind(on_dismiss=on_dismiss)
