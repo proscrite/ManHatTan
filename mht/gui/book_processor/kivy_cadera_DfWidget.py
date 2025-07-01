@@ -1,201 +1,121 @@
-import kivy
-kivy.require('1.10.0')
 from kivy.app import App
-from kivy.lang import Builder
-from kivy.properties import ListProperty
-from kivy.uix.actionbar import ActionDropDown
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.button import Button
-from kivy.uix.dropdown import DropDown
-from kivy.uix.label import Label
-from kivy.uix.popup import Popup
-from kivy.uix.gridlayout import GridLayout
-from kivy.uix.boxlayout import BoxLayout
-
-from kivy.uix.tabbedpanel import TabbedPanel
-from kivy.uix.textinput import TextInput
-from kivy.uix.togglebutton import ToggleButton
-from kivy.uix.scrollview import ScrollView
-from kivy.uix.spinner import Spinner
-from kivy.uix.recycleview import RecycleView
-from kivy.base import runTouchApp, stopTouchApp
-from kivy.properties import BooleanProperty,\
-                            ObjectProperty,\
-                            NumericProperty,\
-                            StringProperty
-
-import matplotlib
-matplotlib.use('module://kivy.garden.matplotlib.backend_kivy')
-from matplotlib.figure import Figure
-from kivy.garden.matplotlib.backend_kivyagg import FigureCanvas,\
-                                                   NavigationToolbar2Kivy
-import matplotlib.pyplot as plt
-
+from mht import gui
+from mht.gui.common import COLOR_MAP, DEFAULT_COLOR
+import os
 from collections import OrderedDict
 import numpy as np
 import pandas as pd
-from googletrans import Translator
 
-import datetime
-from datetime import date
-
-Builder.load_string("""
-<HeaderCell>
-    size_hint: (None, None)
-    text_size: self.size
-    halign: "center"
-    valign: "middle"
-    height: '30dp'
-    background_disabled_normal: ''
-    disabled_color: (1, 1, 1, 1)
-    canvas.before:
-        Color:
-            #rgba: 0.165, 0.165, 0.165, 1
-            rgba: root.color
-
-        Rectangle:
-            pos: self.pos
-            size: self.size
-    on_release: root.parent.parent.parent.parent._generate_table(self.text)
-
-<TableHeader>:
-    header: header
-    bar_width: 0
-    do_scroll: False
-    size_hint: (1, None)
-    effect_cls: "ScrollEffect"
-    height: '30dp'
-    GridLayout:
-        id: header
-        rows: 1
-        size_hint: (None, None)
-        width: self.minimum_width
-        height: self.minimum_height
-
-<ScrollCell>:
-    canvas.before:
-        Color:
-            ###rgba: root.colorEven if root.is_even else root.colorOdd
-            rgba: [0.23, 0.23, 0.23, 1] if root.is_even else [0.2, 0.2, 0.2, 1]
-        Rectangle:
-            pos: self.pos
-            size: self.size
-    text: root.text
-    font_size: "12dp"
-    halign: "center"
-    valign: "middle"
-    text_size: self.size
-    size_hint: 1, 1
-    height: 60
-    width: 800
-
-<TableData>:
-    rgrid: rgrid
-    scroll_type: ['bars', 'content']
-    bar_color: [0.2, 0.7, 0.9, 1]
-    bar_inactive_color: [0.2, 0.7, 0.9, .5]
-    do_scroll_x: True
-    do_scroll_y: True
-    effect_cls: "ScrollEffect"
-    viewclass: "ScrollCell"
-    RecycleGridLayout:
-        id: rgrid
-        rows: root.nrows
-        cols: root.ncols
-        size_hint: (None, None)
-        width: self.minimum_width
-        height: self.minimum_height
+kv_path = os.path.join(os.path.dirname(__file__), "kivy_cadera_constructor.kv")
+gui.Builder.load_file(kv_path)
 
 
-<DfguiWidget>
-    panel1: data_frame_panel
-    panel2: col_select_panel
-
-    do_default_tab: False
-
-    TabbedPanelItem:
-        text: 'Data Frame'
-        on_release: root.open_panel1()
-        DataframePanel:
-            id: data_frame_panel
-    TabbedPanelItem:
-        text: 'Columns'
-        ColumnSelectionPanel:
-            id: col_select_panel
+def blend_colors(color1, color2, alpha):
+    """Blend two RGBA colors by alpha (0-1)."""
+    return tuple([
+        color1[i] * (1 - alpha) + color2[i] * alpha
+        for i in range(3)
+    ] + [1])
 
 
-<DataframePanel>:
-    orientation: 'vertical'
+class HoverBehavior(object):
+    hovered = gui.BooleanProperty(False)
+    border_point = gui.ListProperty([0,0])
 
-<ColumnSelectionPanel>:
-    col_list: col_list
-    orientation: 'vertical'
-    ScrollView:
-        do_scroll_x: False
-        do_scroll_y: True
-        size_hint: 1, 1
-        scroll_timeout: 150
-        GridLayout:
-            id: col_list
-            padding: "10sp"
-            spacing: "5sp"
-            cols:1
-            row_default_height: '55dp'
-            row_force_default: True
-            size_hint_y: None
-""")
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
-class HeaderCell(Button):
+        gui.Window.bind(mouse_pos=self.on_mouse_pos)
+
+    def on_mouse_pos(self, *args):
+        if not self.get_root_window():
+            return
+        pos = args[1]
+        inside = self.collide_point(*self.to_widget(*pos))
+        self.hovered = inside
+
+
+class HeaderCell(gui.Button, HoverBehavior):
+    bg_color = gui.ListProperty([1, 1, 1, 1])
+    hover_color = gui.ListProperty([1, 1, 1, 1])
+    down_color = gui.ListProperty([1, 1, 1, 1])
+    hover_scale = gui.NumericProperty(1.0)  # <-- Add this line
+
     def __init__(self, *args, **kwargs):
-        super(HeaderCell, self).__init__(*args, **kwargs)
-        if self.text == 'blue':
-            color = [0, 0, 0.8, 1]
-        else:
-            color = [0.165, 0.165, 0.165, 1]
+        super().__init__(*args, **kwargs)
+        # Set hover and down colors based on bg_color
+        self.hover_color = [min(1, c + 0.15) for c in self.bg_color[:3]] + [1]
+        self.down_color = [max(0, c - 0.15) for c in self.bg_color[:3]] + [1]
+        self.bind(hovered=self.on_hover)
+        self.bind(state=self.on_state)
 
-class ScrollCell(Label):
-    text = StringProperty(None)
-    is_even = BooleanProperty(None)
+    def on_hover(self, instance, value):
+        if value:
+            self.bg_color = self.hover_color
+            self.hover_scale = 1.08  # Grow by 8%
+        else:
+            self.bg_color = self.original_color if hasattr(self, 'original_color') else self.bg_color
+            self.hover_scale = 1.0
+
+    def on_state(self, instance, value):
+        if value == 'down':
+            self.bg_color = self.down_color
+        elif self.hovered:
+            self.bg_color = self.hover_color
+        else:
+            self.bg_color = self.original_color if hasattr(self, 'original_color') else self.bg_color
+
+    def on_bg_color(self, instance, value):
+        # Store the original color for restoring
+        if not hasattr(self, 'original_color'):
+            self.original_color = value[:]
+
+
+class ScrollCell(gui.Label):
+    text = gui.StringProperty(None)
+    is_even = gui.BooleanProperty(None)
     colorEven = [0, 0, 0.8, 1]
     colorOdd = [0.2, 0.2, 0.82, 1]
-    width = NumericProperty(160)
-    size_hint_x = ObjectProperty(None)
+    width = gui.NumericProperty(160)
+    size_hint_x = gui.ObjectProperty(None)
 
-class TableHeader(ScrollView):
+class TableHeader(gui.ScrollView):
     """Fixed table header that scrolls x with the data table"""
-    header = ObjectProperty(None)
+    header = gui.ObjectProperty(None)
 
     def __init__(self, list_dicts=None, col_width=160, *args, **kwargs):
         super(TableHeader, self).__init__(*args, **kwargs)
-
         titles = list_dicts[0].keys()
-
         for title in titles:
-            self.header.add_widget(HeaderCell(text=title, width=col_width, size_hint_x=None))
+            color = COLOR_MAP.get(title.lower(), DEFAULT_COLOR)
+            self.header.add_widget(HeaderCell(text=title, width=col_width, size_hint_x=None, bg_color=color))
 
-class TableData(RecycleView):
-    nrows = NumericProperty(None)
-    ncols = NumericProperty(None)
-    rgrid = ObjectProperty(None)
+class TableData(gui.RecycleView):
+    nrows = gui.NumericProperty(None)
+    ncols = gui.NumericProperty(None)
+    rgrid = gui.ObjectProperty(None)
 
     def __init__(self, list_dicts=[], col_width=160, *args, **kwargs):
         self.nrows = len(list_dicts)
         self.ncols = len(list_dicts[0])
-
         super(TableData, self).__init__(*args, **kwargs)
-
         self.data = []
+        col_names = list(list_dicts[0].keys())
         for i, ord_dict in enumerate(list_dicts):
             is_even = i % 2 == 0
-            row_vals = ord_dict.values()
-            for text in row_vals:
-                self.data.append({'text': text, 'is_even': is_even, 'width': col_width, 'size_hint_x': None})
+            for j, (col, text) in enumerate(ord_dict.items()):
+                base_color = COLOR_MAP.get(col.lower(), DEFAULT_COLOR)
+                gray_even = (0.23, 0.23, 0.23, 1)
+                gray_odd = (0.2, 0.2, 0.2, 1)
+                # Blend: 70% base color, 30% gray
+                blend = blend_colors(base_color, gray_even if is_even else gray_odd, 0.7)
+                self.data.append({'text': text, 'is_even': is_even, 'width': col_width, 'size_hint_x': None, 'bg_color': blend})
 
     def sort_data(self):
         #TODO: Use this to sort table, rather than clearing widget each time.
         pass
 
-class Table(BoxLayout):
+class Table(gui.BoxLayout):
 
     def __init__(self, list_dicts=[], col_width=160, *args, **kwargs):
 
@@ -214,7 +134,7 @@ class Table(BoxLayout):
     def scroll_with_header(self, obj, value):
         self.header.scroll_x = value
 
-class DataframePanel(BoxLayout):
+class DataframePanel(gui.BoxLayout):
     """
     Panel providing the main data frame table view.
     """
@@ -275,8 +195,8 @@ class DataframePanel(BoxLayout):
             row = OrderedDict()
             for col in keys:
                 val = str(col_data[col][i])
-                if len(val) > 50:
-                    space_idx = val.find(' ', 50)
+                if len(val) > 40:
+                    space_idx = val.find(' ', 40)
                     if space_idx != -1:
                         val = val[:space_idx] + "(...)"
                     else:
@@ -322,7 +242,7 @@ class DataframePanel(BoxLayout):
                               self.df_orig.shape[0],
                               index=self.df_orig.index)
 
-class ColumnSelectionPanel(BoxLayout):
+class ColumnSelectionPanel(gui.BoxLayout):
     """
     Panel for selecting and re-arranging columns.
     """
@@ -335,15 +255,15 @@ class ColumnSelectionPanel(BoxLayout):
         self.col_list.bind(minimum_height=self.col_list.setter('height'))
         for col in columns:
             if col in default_cols:
-                self.col_list.add_widget(ToggleButton(text=col, state='down'))
+                self.col_list.add_widget(gui.ToggleButton(text=col, state='down'))
             else:
-                self.col_list.add_widget(ToggleButton(text=col, state='normal'))
+                self.col_list.add_widget(gui.ToggleButton(text=col, state='normal'))
 
     def get_disabled_columns(self):
         return [x.text for x in self.col_list.children if x.state != 'down']
 
 
-class DfguiWidget(TabbedPanel):
+class DfguiWidget(gui.TabbedPanel):
 
     def __init__(self, df, col_width=160, **kwargs):
         super(DfguiWidget, self).__init__(**kwargs)
@@ -361,50 +281,51 @@ class DfguiWidget(TabbedPanel):
         self.panel1._generate_table(disabled=
                                     self.panel2.get_disabled_columns())
 
+# Uncomment the following code to use the chooseColor class as standalone kivy App
 
-class chooseColor(App):
-    def __init__(self, cder_path: str, **kwargs):
-        super(chooseColor, self).__init__(**kwargs)
-        App.__init__(self)
-        self.word_color: str
-        self.cder_path = cder_path
+# class chooseColor(App):
+#     def __init__(self, cder_path: str, **kwargs):
+#         super(chooseColor, self).__init__(**kwargs)
+#         App.__init__(self)
+#         self.word_color: str
+#         self.cder_path = cder_path
 
-    def set_word_col(self, word_col):
-        self.word_color = word_col
-        #stopTouchApp()
-        App.stop(self)
+#     def set_word_col(self, word_col):
+#         self.word_color = word_col
+#         #stopTouchApp()
+#         App.stop(self)
 
-    def build(self):
-        cadera = pd.read_csv(self.cder_path, index_col=0, nrows=10)
-        mainGrid = GridLayout(cols=2)
+#     def build(self):
+#         cadera = pd.read_csv(self.cder_path, index_col=0, nrows=10)
+#         mainGrid = gui.GridLayout(cols=2)
 
-        boxDf = BoxLayout(orientation='vertical')
-        boxDf.add_widget(DfguiWidget(cadera))
-        mainGrid.add_widget(boxDf)
+#         boxDf = gui.BoxLayout(orientation='vertical')
+#         boxDf.add_widget(DfguiWidget(cadera))
+#         mainGrid.add_widget(boxDf)
 
-        langGrid = GridLayout(cols=1)
-        langGrid.add_widget(Label(text='Select highlight color used:'))
+#         langGrid = gui.GridLayout(cols=1)
+#         langGrid.add_widget(gui.Label(text='Select highlight color used:'))
 
-        mainGrid.add_widget(langGrid)
-        return mainGrid
+#         mainGrid.add_widget(langGrid)
+#         return mainGrid
 
-    def run(self):
-        super().run()
-        return self.word_color
+#     def run(self):
+#         super().run()
+#         return self.word_color
 
 
-def choose_color_main(cder_path):
-    stopTouchApp()
-    CC = chooseColor(cder_path)
-    word_color = CC.run()
-    print('Filter color =', word_color)
-    return word_color
+# def choose_color_main(cder_path):
+#     stopTouchApp()
+#     CC = chooseColor(cder_path)
+#     word_color = CC.run()
+#     print('Filter color =', word_color)
+#     return word_color
 
-if __name__ == '__main__':
+# if __name__ == '__main__':
 
-    cder_path = '~/Documents/ManHatTan/CADERAs/Il castello dei destini incrociati - Notizbuch.cder'
-    CC = chooseColor(cder_path)
-    word_color = CC.run()
-    print('Filter color =', word_color)
+#     cder_path = '~/Documents/ManHatTan/CADERAs/Il castello dei destini incrociati - Notizbuch.cder'
+#     CC = chooseColor(cder_path)
+#     word_color = CC.run()
+#     print('Filter color =', word_color)
 
-    #word_color = DFA.retrieve_word_col()
+#     #word_color = DFA.retrieve_word_col()
