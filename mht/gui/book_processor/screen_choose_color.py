@@ -1,13 +1,21 @@
 from mht import gui
 import pandas as pd
-from mht.gui.book_processor.kivy_choose_word_color import DfguiWidget
+from mht.gui.book_processor.kivy_cadera_DfWidget import DfguiWidget, HoverBehavior
+from mht.gui.common import COLOR_MAP, DEFAULT_COLOR
 
-class ColorOption(gui.Button):
+
+class ColorOption(gui.Button, HoverBehavior):
+    hover_scale = gui.NumericProperty(1.0)
+    bg_color = gui.ListProperty([1, 1, 1, 1])
+    hover_color = gui.ListProperty([1, 1, 1, 1])
+    down_color = gui.ListProperty([1, 1, 1, 1])
+
     def __init__(self, color_name, color_value, callback, **kwargs):
         color_value = tuple(list(color_value[:3]) + [1])
         super().__init__(
             text=color_name.capitalize(),
-            background_color=color_value,
+            background_normal='',
+            background_color=(1, 1, 1, 0),
             font_size=28,
             size_hint=(1, None),
             height=80,
@@ -15,10 +23,53 @@ class ColorOption(gui.Button):
         )
         self.color_name = color_name
         self.callback = callback
+        self.bg_color = color_value
+        self.hover_color = [min(1, c + 0.15) for c in color_value[:3]] + [1]
+        self.down_color = [max(0, c - 0.15) for c in color_value[:3]] + [1]
+        self.bind(hovered=self.on_hover)
+        self.bind(state=self.on_state)
+
+    def on_hover(self, instance, value):
+        if value:
+            self.bg_color = self.hover_color
+            self.hover_scale = 1.08
+        else:
+            self.bg_color = self.original_color if hasattr(self, 'original_color') else self.bg_color
+            self.hover_scale = 1.0
+
+    def on_state(self, instance, value):
+        if value == 'down':
+            self.bg_color = self.down_color
+        elif self.hovered:
+            self.bg_color = self.hover_color
+        else:
+            self.bg_color = self.original_color if hasattr(self, 'original_color') else self.bg_color
+
+    def on_bg_color(self, instance, value):
+        if not hasattr(self, 'original_color'):
+            self.original_color = value[:]
 
     def on_release(self):
         if self.callback:
             self.callback(self.color_name)
+
+
+gui.Builder.load_string("""
+<ColorOption>
+    canvas.before:
+        PushMatrix
+        Scale:
+            origin: self.center
+            x: root.hover_scale
+            y: root.hover_scale
+        Color:
+            rgba: root.bg_color
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [10,]
+        PopMatrix
+""")
 
 class ChooseColorScreen(gui.Screen):
     def __init__(self, cder_path, **kwargs):
@@ -26,13 +77,18 @@ class ChooseColorScreen(gui.Screen):
         self.selected_color = None
         self.cder_path = cder_path
 
-        # Main vertical layout
-        main_layout = gui.BoxLayout(orientation='vertical', spacing=30, padding=30)
+        main_layout = gui.BoxLayout(orientation='horizontal', spacing=30, padding=30)
+        left_panel = self._build_left_panel()
+        right_panel = self._build_right_panel()
 
-        # --- Top: DataFrame Preview in ScrollView ---
+        main_layout.add_widget(left_panel)
+        main_layout.add_widget(right_panel)
+        self.add_widget(main_layout)
+
+    def _build_left_panel(self):
         cadera = pd.read_csv(self.cder_path, index_col=0, nrows=20)
-        top_panel = gui.BoxLayout(orientation='vertical', size_hint_y=0.65, spacing=10)
-        top_panel.add_widget(gui.Label(
+        panel = gui.BoxLayout(orientation='vertical', size_hint_x=0.7, spacing=10)
+        panel.add_widget(gui.Label(
             text="[b]Preview of highlights[/b]",
             font_size=22,
             size_hint_y=None,
@@ -41,41 +97,60 @@ class ChooseColorScreen(gui.Screen):
         ))
         scroll = gui.ScrollView(size_hint=(1, 1))
         scroll.add_widget(DfguiWidget(cadera, col_width=250))
-        top_panel.add_widget(scroll)
-        main_layout.add_widget(top_panel)
+        panel.add_widget(scroll)
+        self.cadera = cadera  # Store for use in right panel
+        return panel
 
-        # --- Bottom: Color Selection ---
-        bottom_panel = gui.BoxLayout(orientation='vertical', size_hint_y=0.35, spacing=10)
-        bottom_panel.add_widget(gui.Label(
+    def _build_right_panel(self):
+        panel = gui.BoxLayout(
+            orientation='vertical',
+            size_hint_x=0.3,
+            spacing=24,
+            padding=[20, 60, 20, 60]
+        )
+        panel.add_widget(gui.Label(
             text="[b]Select highlight color used:[/b]",
-            font_size=26,
+            font_size=32,
             size_hint_y=None,
             height=60,
             markup=True
         ))
+        panel.add_widget(self._build_color_grid())
+        panel.add_widget(gui.Widget())  # Spacer
+        panel.add_widget(self._build_back_button())
+        return panel
 
-        # Center the grid horizontally
-        grid_container = gui.BoxLayout(orientation='horizontal', size_hint_y=None, height=200)
-        grid = gui.GridLayout(cols=2, rows=2, spacing=20, size_hint=(None, None), width=400, height=180)
-        color_options = {
-            'blue': (0.13, 0.19, 0.34, 1),
-            'red': (0.32, 0.13, 0.13, 1),
-            'green': (0.13, 0.27, 0.17, 1),
-            'yellow': (0.36, 0.33, 0.13, 1)
-        }
-        for color_name, color_value in color_options.items():
+    def _build_color_grid(self):
+        color_names = list(self.cadera.columns[:4])
+        grid = gui.GridLayout(
+            cols=2,
+            rows=2,
+            spacing=20,
+            size_hint=(1, None),
+            height=180
+        )
+        for color_name in color_names:
+            color_value = COLOR_MAP.get(color_name.lower(), DEFAULT_COLOR)
+            color_value = tuple(list(color_value[:3]) + [1])
             btn = ColorOption(color_name, color_value, callback=self.select_color, width=180)
             grid.add_widget(btn)
-        grid_container.add_widget(gui.Label(size_hint_x=0.5))  # Spacer left
-        grid_container.add_widget(grid)
-        grid_container.add_widget(gui.Label(size_hint_x=0.5))  # Spacer right
+        return grid
 
-        bottom_panel.add_widget(grid_container)
-        main_layout.add_widget(bottom_panel)
-
-        self.add_widget(main_layout)
+    def _build_back_button(self):
+        back_btn = gui.Button(
+            text="Back",
+            size_hint=(1, None),
+            height=60,
+            font_size=22,
+            background_color=(0.8, 0.8, 0.8, 1)
+        )
+        back_btn.bind(on_release=self.go_back)
+        return back_btn
 
     def select_color(self, color_name):
         self.selected_color = color_name
         self.manager.shared_data['word_color'] = color_name
-        self.manager.current = 'choose_lang'  # or the next screen in your flow
+        self.manager.current = 'choose_lang'
+
+    def go_back(self, instance):
+        self.manager.current = 'select_book'
