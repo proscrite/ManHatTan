@@ -39,17 +39,28 @@ class HeaderCell(gui.Button, HoverBehavior):
     bg_color = gui.ListProperty([1, 1, 1, 1])
     hover_color = gui.ListProperty([1, 1, 1, 1])
     down_color = gui.ListProperty([1, 1, 1, 1])
-    hover_scale = gui.NumericProperty(1.0)  # <-- Add this line
+    hover_scale = gui.NumericProperty(1.0) 
+    color_name = gui.StringProperty('')
+    callback = None
 
     def __init__(self, *args, **kwargs):
+        self.callback = kwargs.pop('callback', None)
+        self.color_name = kwargs.get('color_name', '')
         super().__init__(*args, **kwargs)
         # Set hover and down colors based on bg_color
+        self.hover_enabled = True
         self.hover_color = [min(1, c + 0.15) for c in self.bg_color[:3]] + [1]
         self.down_color = [max(0, c - 0.15) for c in self.bg_color[:3]] + [1]
         self.bind(hovered=self.on_hover)
         self.bind(state=self.on_state)
 
+    def on_release(self):
+        if self.callback and self.color_name:
+            self.callback(self.color_name)
+
     def on_hover(self, instance, value):
+        if not self.hover_enabled:
+            return
         if value:
             self.bg_color = self.hover_color
             self.hover_scale = 1.08  # Grow by 8%
@@ -83,12 +94,19 @@ class TableHeader(gui.ScrollView):
     """Fixed table header that scrolls x with the data table"""
     header = gui.ObjectProperty(None)
 
-    def __init__(self, list_dicts=None, col_width=160, *args, **kwargs):
+    def __init__(self, list_dicts=None, col_width=160, header_callback=None, *args, **kwargs):
         super(TableHeader, self).__init__(*args, **kwargs)
         titles = list_dicts[0].keys()
         for title in titles:
             color = COLOR_MAP.get(title.lower(), DEFAULT_COLOR)
-            self.header.add_widget(HeaderCell(text=title, width=col_width, size_hint_x=None, bg_color=color))
+            self.header.add_widget(HeaderCell(
+                text=title,
+                width=col_width,
+                size_hint_x=None,
+                bg_color=color,
+                color_name=title,
+                callback=header_callback
+            ))
 
 class TableData(gui.RecycleView):
     nrows = gui.NumericProperty(None)
@@ -117,13 +135,13 @@ class TableData(gui.RecycleView):
 
 class Table(gui.BoxLayout):
 
-    def __init__(self, list_dicts=[], col_width=160, *args, **kwargs):
+    def __init__(self, list_dicts=[], col_width=160, header_callback=None, *args, **kwargs):
 
         super(Table, self).__init__(*args, **kwargs)
         self.orientation = "vertical"
         self.halign = "center"
 
-        self.header = TableHeader(list_dicts=list_dicts, col_width=col_width)
+        self.header = TableHeader(list_dicts=list_dicts, col_width=col_width, header_callback=header_callback)
         self.table_data = TableData(list_dicts=list_dicts, col_width=col_width)
 
         # self.table_data.bind('scroll_x', self.scroll_with_header)
@@ -142,7 +160,7 @@ class DataframePanel(gui.BoxLayout):
         super(DataframePanel, self).__init__(**kwargs)
         self.app = App.get_running_app()
 
-    def populate_data(self, df, col_width=160):
+    def populate_data(self, df, col_width=160, header_callback=None):
         self.df_orig = df
         self.col_width = col_width
         self.original_columns = self.df_orig.columns[:]
@@ -151,9 +169,9 @@ class DataframePanel(gui.BoxLayout):
             'history_seen', 'lexeme_string', 'delta', 'timestamp']
         self.sort_key = None
         self._reset_mask()
-        self._generate_table()
+        self._generate_table(header_callback=header_callback)
 
-    def _generate_table(self, sort_key=None, disabled=None):
+    def _generate_table(self, sort_key=None, disabled=None, header_callback=None):
         self.clear_widgets()
         df = self.get_filtered_df()
         if disabled is not None:
@@ -168,7 +186,7 @@ class DataframePanel(gui.BoxLayout):
         col_data, max_len = self._prepare_column_data(df, keys)
         self._pad_columns(col_data, max_len)
         data = self._build_row_data(col_data, keys, max_len)
-        self.add_widget(Table(list_dicts=data, col_width=self.col_width))
+        self.add_widget(Table(list_dicts=data, col_width=self.col_width, header_callback=header_callback))
 
     def _prepare_column_data(self, df, keys):
         """Sort each column so non-NaN at top, NaN ('-') at bottom. Return col_data dict and max_len."""
@@ -265,11 +283,11 @@ class ColumnSelectionPanel(gui.BoxLayout):
 
 class DfguiWidget(gui.TabbedPanel):
 
-    def __init__(self, df, col_width=160, **kwargs):
+    def __init__(self, df, col_width=160, header_callback=None, **kwargs):
         super(DfguiWidget, self).__init__(**kwargs)
         self.df = df
         self.col_width = col_width
-        self.panel1.populate_data(df, col_width=col_width)
+        self.panel1.populate_data(df, col_width=col_width, header_callback=header_callback)
         self.panel2.populate_columns(df.columns[:])
 
     # This should be changed so that the table isn't rebuilt
