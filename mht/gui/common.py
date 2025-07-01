@@ -38,6 +38,17 @@ TEAM_LIP_PATH = LIPSTICK_PATH.replace('.lip', '_team.lip')
 FONT_HEB = ROOT_PATH + '/data/fonts/NotoSansHebrew.ttf'
 PATH_ANIM = ROOT_PATH + '/gui/Graphics/Battlers/'
 
+COLOR_MAP = {
+    'blue':   (0.13, 0.19, 0.34, 1),
+    'red':    (0.32, 0.13, 0.13, 1),
+    'green':  (0.13, 0.27, 0.17, 1),
+    'yellow': (0.85, 0.65, 0.13, 1),
+    'pink':   (0.8, 0.4, 0.6, 1),
+    'orange': (0.9, 0.5, 0.1, 1),
+    'gold':   (0.85, 0.65, 0.13, 1),
+}
+DEFAULT_COLOR = (0.7, 0.7, 0.7, 1)
+
 # --- Language Dictionary ---
 # This dictionary maps language codes to their names.
 language_dict = {
