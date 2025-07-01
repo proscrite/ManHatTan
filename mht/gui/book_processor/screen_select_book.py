@@ -1,5 +1,5 @@
 from mht import gui
-from mht.gui.book_processor.screen_choose_color import ChooseColorScreen
+from mht.gui.book_processor.screen_choose_color_lang import ChooseColorLangScreen
 from mht.gui.common import PATH_KINDLES, PATH_PLAYBOOKS, PATH_GOOGLE_TRANSL
 from glob import glob
 import os
@@ -185,7 +185,7 @@ class SelectBookScreen(gui.Screen):
                 self.manager.remove_widget(self.manager.get_screen('choose_color'))
             print(f"Selected CADERA book path: {cder_path}")
             self.manager.add_widget(
-                ChooseColorScreen(name='choose_color', cder_path=cder_path)
+                ChooseColorLangScreen(name='choose_color', cder_path=cder_path)
             )
             self.manager.current = 'choose_color'
 

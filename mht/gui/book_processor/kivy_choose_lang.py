@@ -9,7 +9,7 @@ from kivy.uix.label import Label
 import pandas as pd
 import asyncio
 from googletrans import Translator
-from mht.gui.book_processor.kivy_choose_word_color import DfguiWidget
+from mht.gui.book_processor.kivy_cadera_DfWidget import DfguiWidget
 from mht.scripts.python_scripts.bulkTranslate import find_language
 
 class LangButton(Button):
