@@ -38,7 +38,7 @@ __all__ = [
     "Clock", "Window", "kvLogger", "Config", "App", "Color", "RoundedRectangle",
     "BooleanProperty", "NumericProperty", "ListProperty", 
     "StringProperty", "ObjectProperty",
-    "TabbedPanel", "TabbedPanelItem",
+    "TabbedPanel", "TabbedPanelItem", "ToggleButton",
     # Custom GUI components
     "BaseExerciseScreen",
     "CorrectionDialog",
