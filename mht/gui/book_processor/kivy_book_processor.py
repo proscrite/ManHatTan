@@ -82,39 +82,43 @@ def add_new_book_main():
     AB = addNewBook()
     AB.load_books()
     filename = AB.run()
+    flag_needs_processing = True
 
     filepath, basename = os.path.split(filename)
-    if 'html' in basename:
+    if '.html' in basename:
         print('Amazon Kindle file detected')
         cder_path = krahtos_main(filename)
 
     elif '.docx' in basename:
         print('Google Books file detected')
         cder_path = rashib_main(filename)
-    """elif '.csv' in basename:
+    
+    elif '.csv' in basename:
         print('Google Saved Translations detected')
-        lippath = gost_main(filename, dest_lang, src_lang)
+        flag_needs_processing = False
+        gota_df = gost_main(filename, dest_lang, src_lang)
         print("Done! Now you can start practicing")
-        return 0"""
 
-    assert '.cder' in cder_path, "Wrong CADERA extension"
-    reset()
-    word_color = choose_color_main(cder_path)
-    reset()
-    user_lang, learn_lang = choose_lang_main(cder_path, word_color)
-    print('user_lang: %s\nlearning_lang: %s' %(user_lang, learn_lang))
-    print('Words color: %s' %word_color)
+    if flag_needs_processing:
+        assert '.cder' in cder_path, "Wrong CADERA extension"
+        reset()
+        word_color = choose_color_main(cder_path)
+        reset()
+        user_lang, learn_lang = choose_lang_main(cder_path, word_color)
+        print('user_lang: %s\nlearning_lang: %s' %(user_lang, learn_lang))
+        print('Words color: %s' %word_color)
 
-    # Detect language using asyncio and googletrans
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    gota_path = loop.run_until_complete(
-        bulkTranslate_main(cder_path, word_color, user_lang, learn_lang)
-    )
-    loop.close()
-    assert '.got' in gota_path, "Wrong GOTA extension"
+        # Detect language using asyncio and googletrans
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        gota_path = loop.run_until_complete(
+            bulkTranslate_main(cder_path, word_color, user_lang, learn_lang)
+        )
+        loop.close()
+        assert '.got' in gota_path, "Wrong GOTA extension"
 
-    print('Initializing word bank...')
+        print('Initializing word bank...')
+
     lippath = init_lipstick_main(gota_path)
     print("Done! You can start practicing")
 
