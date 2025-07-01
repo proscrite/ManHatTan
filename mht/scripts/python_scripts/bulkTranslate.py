@@ -9,6 +9,7 @@ import sys
 import re
 import datetime
 from bidi.algorithm import get_display
+import logging
 
 
 # from mht.scripts.python_scripts.test_bulkTranslate import *
@@ -49,6 +50,17 @@ def detect_src(self, N : int = 0):
     maximum = max(ret, key=ret.get)
     return maximum, ret#[maximum]
 
+def check_language(lang : str, meta_lang : str):
+    """Check whether given dest and src languages are valid"""
+
+    from googletrans import LANGUAGES
+    langKeys = list(LANGUAGES.keys())
+
+    if lang not in langKeys:
+        print('Invalid %s language. Choose from one of the following keys' %meta_lang)
+        print(langKeys)
+        exit
+
 def load_words_selected_color(cadera_path : str, src_lang : str, word_color: str = 'blue') -> list:
     """Load column with selected from CADERA as list"""
     df = pd.read_csv(cadera_path, index_col=0)
@@ -78,6 +90,23 @@ def split_dest(dest_str : str) -> list:
     dest_clean = [e.strip() for e in nonum]  # Strip from whitespaces at beginning & end of string
     return dest_clean
 
+def get_gota_path(cadera_path : str) -> str:
+    """Take basename from cadera and make GOTA path"""
+    pathname = os.path.splitext(os.path.abspath(cadera_path))[0]
+    path, filename = os.path.split(pathname)
+    dirPath, _ = os.path.split(path)
+    gota_path = os.path.join(dirPath, 'GOTAs', filename+'.got')
+    if not os.path.exists(os.path.dirname(gota_path)):
+        os.makedirs(os.path.dirname(gota_path))
+    return gota_path
+
+def write_gota(gota_df : pd.DataFrame, gota_path : str) -> str:
+    """Write GOTA DataFrame to file"""
+
+    gota_df.to_csv(gota_path, index=False)
+    print('Created GOTA file %s' %gota_path)
+    return gota_path
+    
 async def detect_language(text):
     async with Translator() as translator:
         try:
@@ -171,6 +200,20 @@ async def bulk_translate(src_list: list, src_lang: str, dest_lang: str = None):
         
         return dest_list
 
+def check_new_elements(src_list: list, src_lang: str, gota_df: pd.DataFrame) -> list:
+    """Check for new elements in the source string that are not in the GOTA DataFrame."""
+    
+    mask = pd.Series(src_list).isin(gota_df[src_lang])
+    new_words = [w for w in src_list if w not in set(gota_df[src_lang])]
+
+    if not new_words:
+        print('No new elements to translate.')
+        return None
+    else:
+        print(f'New elements to translate: {len(new_words)}')
+        return new_words
+
+
 def make_gota_df(src_list : list, dest_list : list, src_lang: str, dest_lang: str, cadera_path : str) -> pd.DataFrame:
     """Assemble src and dest lists into gota_df (GOgle Translation Archive)
     and append first creation datetime (read_time)"""
@@ -190,29 +233,21 @@ def make_gota_df(src_list : list, dest_list : list, src_lang: str, dest_lang: st
     gota_df['creation_time'] = today
     return gota_df
 
-def write_gota(cadera_path : str, dicdf : pd.DataFrame):
-    """Take basename from cadera and write dictDf to GOTA file"""
-    pathname = os.path.splitext(os.path.abspath(cadera_path))[0]
-    path, filename = os.path.split(pathname)
-    dirPath, _ = os.path.split(path)
-    fpath = os.path.join(dirPath, 'GOTAs', filename+'.got')
-    dicdf.to_csv(fpath)
-
-    print('Created GOTA file %s' %fpath)
-    return fpath
-
-def check_language(lang : str, meta_lang : str):
-    """Check whether given dest and src languages are valid"""
-
-    from googletrans import LANGUAGES
-    langKeys = list(LANGUAGES.keys())
-
-    if lang not in langKeys:
-        print('Invalid %s language. Choose from one of the following keys' %meta_lang)
-        print(langKeys)
-        exit
-
 async def bulkTranslate_main(cadera_path : str, word_color: str, dest_lang : str, src_lang : str):
+    """Main function to handle bulk translation from CADERA file
+        Parameters:
+        cadera_path : str
+            Path to the CADERA file.
+        word_color : str
+            Color of the words to be translated (e.g., 'blue').
+        dest_lang : str
+            Destination language code (e.g., 'en', 'de', 'es').
+        src_lang : str
+            Source language code (e.g., 'en', 'de', 'es').
+        Returns:
+        gota_path : str
+            Path to the GOTA file created after translation."""
+    
     check_language(dest_lang, 'dest')
     check_language(src_lang, 'src')
     print('Correct language format')
@@ -220,13 +255,26 @@ async def bulkTranslate_main(cadera_path : str, word_color: str, dest_lang : str
     src_unformat = load_words_selected_color(cadera_path, src_lang, word_color)
     src_list = format_src(src_unformat)    # Remove non-alphanumeric characters
 
-    # Legacy: now incorporate long sentences as context
-
+    gota_path = get_gota_path(cadera_path)
+    if os.path.exists(gota_path):
+        print('GOTA file already exists, overwriting...')
+        current_gota_df = pd.read_csv(gota_path)
+        src_list = check_new_elements(src_list, src_lang, current_gota_df)  # Keep only new elements
+        if src_list is None:
+            print('No new elements to translate. Finished translating...')
+            return gota_path
+    else:
+        current_gota_df = None
+        print('Creating new GOTA file...')
+        
     dest_list = await bulk_translate(src_list, src_lang, dest_lang)
 
     gota_df = make_gota_df(src_list, dest_list, src_lang=src_lang, dest_lang=dest_lang, cadera_path= cadera_path)
-
-    gota_path = write_gota(cadera_path, gota_df)
+    
+    if current_gota_df is not None:   # If GOTA file already exists, append new data
+        print('Appending new data to existing GOTA file...')
+        gota_df = pd.concat([current_gota_df, gota_df], ignore_index=True)
+    gota_path = write_gota(gota_df, gota_path)
     print('GOTA file written to %s' %gota_path)
     return gota_path
 
