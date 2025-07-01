@@ -87,7 +87,7 @@ Builder.load_string("""
     text_size: self.size
     size_hint: 1, 1
     height: 60
-    width: 400
+    width: 800
 
 <TableData>:
     rgrid: rgrid
@@ -107,7 +107,7 @@ Builder.load_string("""
         height: self.minimum_height
 
 
-<DfguiWidget>:
+<DfguiWidget>
     panel1: data_frame_panel
     panel2: col_select_panel
 
@@ -156,27 +156,29 @@ class HeaderCell(Button):
 class ScrollCell(Label):
     text = StringProperty(None)
     is_even = BooleanProperty(None)
-#    colorEven = [0, 0, 0.8, 1]
-#    colorOdd = [0.2, 0.2, 0.82, 1]
+    colorEven = [0, 0, 0.8, 1]
+    colorOdd = [0.2, 0.2, 0.82, 1]
+    width = NumericProperty(160)
+    size_hint_x = ObjectProperty(None)
 
 class TableHeader(ScrollView):
     """Fixed table header that scrolls x with the data table"""
     header = ObjectProperty(None)
 
-    def __init__(self, list_dicts=None, *args, **kwargs):
+    def __init__(self, list_dicts=None, col_width=160, *args, **kwargs):
         super(TableHeader, self).__init__(*args, **kwargs)
 
         titles = list_dicts[0].keys()
 
         for title in titles:
-            self.header.add_widget(HeaderCell(text=title))
+            self.header.add_widget(HeaderCell(text=title, width=col_width, size_hint_x=None))
 
 class TableData(RecycleView):
     nrows = NumericProperty(None)
     ncols = NumericProperty(None)
     rgrid = ObjectProperty(None)
 
-    def __init__(self, list_dicts=[], *args, **kwargs):
+    def __init__(self, list_dicts=[], col_width=160, *args, **kwargs):
         self.nrows = len(list_dicts)
         self.ncols = len(list_dicts[0])
 
@@ -187,7 +189,7 @@ class TableData(RecycleView):
             is_even = i % 2 == 0
             row_vals = ord_dict.values()
             for text in row_vals:
-                self.data.append({'text': text, 'is_even': is_even})
+                self.data.append({'text': text, 'is_even': is_even, 'width': col_width, 'size_hint_x': None})
 
     def sort_data(self):
         #TODO: Use this to sort table, rather than clearing widget each time.
@@ -195,15 +197,16 @@ class TableData(RecycleView):
 
 class Table(BoxLayout):
 
-    def __init__(self, list_dicts=[], *args, **kwargs):
+    def __init__(self, list_dicts=[], col_width=160, *args, **kwargs):
 
         super(Table, self).__init__(*args, **kwargs)
         self.orientation = "vertical"
+        self.halign = "center"
 
-        self.header = TableHeader(list_dicts=list_dicts)
-        self.table_data = TableData(list_dicts=list_dicts)
+        self.header = TableHeader(list_dicts=list_dicts, col_width=col_width)
+        self.table_data = TableData(list_dicts=list_dicts, col_width=col_width)
 
-        self.table_data.fbind('scroll_x', self.scroll_with_header)
+        # self.table_data.bind('scroll_x', self.scroll_with_header)
 
         self.add_widget(self.header)
         self.add_widget(self.table_data)
@@ -219,8 +222,9 @@ class DataframePanel(BoxLayout):
         super(DataframePanel, self).__init__(**kwargs)
         self.app = App.get_running_app()
 
-    def populate_data(self, df):
+    def populate_data(self, df, col_width=160):
         self.df_orig = df
+        self.col_width = col_width
         self.original_columns = self.df_orig.columns[:]
         self.current_columns = self.df_orig.columns[:]
         self._disabled = ['session_correct', 'session_seen', 'history_correct',
@@ -232,24 +236,54 @@ class DataframePanel(BoxLayout):
     def _generate_table(self, sort_key=None, disabled=None):
         self.clear_widgets()
         df = self.get_filtered_df()
-        data = []
         if disabled is not None:
             self._disabled = disabled
         keys = [x for x in df.columns[:] if x not in self._disabled]
         if sort_key is not None:
-
-            self.app.set_word_col(sort_key)   # Process column from selected color
-
+            self.app.set_word_col(sort_key)
             self.sort_key = sort_key
         elif self.sort_key is None or self.sort_key in self._disabled:
             self.sort_key = keys[0]
-        for i1 in range(len(df.iloc[:, 0])):
-            row = OrderedDict.fromkeys(keys)
-            for i2 in range(len(keys)):
-                row[keys[i2]] = str(df.iloc[i1, i2])
+
+        col_data, max_len = self._prepare_column_data(df, keys)
+        self._pad_columns(col_data, max_len)
+        data = self._build_row_data(col_data, keys, max_len)
+        self.add_widget(Table(list_dicts=data, col_width=self.col_width))
+
+    def _prepare_column_data(self, df, keys):
+        """Sort each column so non-NaN at top, NaN ('-') at bottom. Return col_data dict and max_len."""
+        col_data = {}
+        max_len = 0
+        for col in keys:
+            col_series = df[col].fillna('-')
+            sorted_col = sorted(col_series, key=lambda x: x == '-')
+            col_data[col] = sorted_col
+            if len(sorted_col) > max_len:
+                max_len = len(sorted_col)
+        return col_data, max_len
+
+    def _pad_columns(self, col_data, max_len):
+        """Pad columns with '-' so all columns have the same length."""
+        for col in col_data:
+            if len(col_data[col]) < max_len:
+                col_data[col] += ['-'] * (max_len - len(col_data[col]))
+
+    def _build_row_data(self, col_data, keys, max_len):
+        """Build row-wise data for the table, truncating long entries."""
+        data = []
+        for i in range(max_len):
+            row = OrderedDict()
+            for col in keys:
+                val = str(col_data[col][i])
+                if len(val) > 50:
+                    space_idx = val.find(' ', 50)
+                    if space_idx != -1:
+                        val = val[:space_idx] + "(...)"
+                    else:
+                        val = val[:50] + "(...)"
+                row[col] = val
             data.append(row)
-        data = sorted(data, key=lambda k: k[self.sort_key])
-        self.add_widget(Table(list_dicts=data))
+        return data
 
     def apply_filter(self, conditions):
         """
@@ -311,12 +345,12 @@ class ColumnSelectionPanel(BoxLayout):
 
 class DfguiWidget(TabbedPanel):
 
-    def __init__(self, df, **kwargs):
+    def __init__(self, df, col_width=160, **kwargs):
         super(DfguiWidget, self).__init__(**kwargs)
         self.df = df
-        self.panel1.populate_data(df)
+        self.col_width = col_width
+        self.panel1.populate_data(df, col_width=col_width)
         self.panel2.populate_columns(df.columns[:])
-        #self.app = App.get_running_app()
 
     # This should be changed so that the table isn't rebuilt
     # each time settings change.
