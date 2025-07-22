@@ -13,14 +13,14 @@ def make_lang_dic(languages: list):
     """
     from googletrans import LANGCODES as dictTrans
 
-    langs = {}
+    langs_dict = {}
     for la in languages:
         try:
             lang = dictTrans[la.lower()]
+            langs_dict[lang] = la
         except KeyError:
             pass
-        langs[lang] = la
-    return langs
+    return langs_dict
 
 def gost2gota(gost: pd.DataFrame, langs: dict, ll: str, ul:str):
     """Adapt GOST to GOTA format for LIPSTICK processing
@@ -53,17 +53,19 @@ def gost_main(gost_path: str, ll: str, ul:str):
     """
     gost = pd.read_csv(gost_path, names=['source_lang', 'target_lang', 'source_word', 'translation'])
     languages = gost['source_lang'].unique()
+    langs_dict = make_lang_dic(languages)
+
     if len(languages) < 2:
         print('GOST file does not contain enough languages to process. Exiting...')
         return None
     print('GOST file contains the following languages:', languages)
-    if ll not in languages or ul not in languages:
+    if ll not in langs_dict or ul not in langs_dict:
         print('Learning language (%s) or User language (%s) not found in GOST file. Exiting...' %(ll, ul))
         return None
     
-    langs = make_lang_dic(languages)
     
-    gota_df = gost2gota(gost, langs, ll, ul)
+    
+    gota_df = gost2gota(gost, langs_dict, ll, ul)
 
     if ll == 'iw':
         gota_df = remove_nikud(gota_df)

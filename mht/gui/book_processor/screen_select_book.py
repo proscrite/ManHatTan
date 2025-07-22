@@ -2,9 +2,10 @@ from mht import gui
 from mht.gui.book_processor.screen_choose_color_lang import ChooseColorLangScreen
 from mht.gui.common import PATH_KINDLES, PATH_PLAYBOOKS, PATH_GOOGLE_TRANSL
 from glob import glob
+import pandas as pd
 import os
 
-from mht.scripts import krahtos_main, rashib_main, gost_main
+from mht.scripts import krahtos_main, rashib_main, gost_main, make_lang_dic
 
 
 class BookButton(gui.Button):
@@ -158,7 +159,8 @@ class SelectBookScreen(gui.Screen):
             self.grid.add_widget(btn)
 
     def select_book(self, path):
-        
+        """Callback for book selection button."""
+        self.selected_path = path
 
         self.manager.shared_data['filename'] = path
         filepath, basename = os.path.split(path)
@@ -173,11 +175,15 @@ class SelectBookScreen(gui.Screen):
         elif '.csv' in basename:
             print('Google Saved Translations detected')
             flag_needs_processing = False
-            # You may need to get dest_lang and src_lang from user or config
-            gota_df = gost_main(path, dest_lang, src_lang)
-            print("Done! Now you can start practicing")
-            # Optionally, jump to practice screen here
-            return
+
+            gost = pd.read_csv(path, names=['source_lang', 'target_lang', 'source_word', 'translation'])
+            languages = gost['source_lang'].unique()
+            langs = make_lang_dic(languages)
+
+            self.gota_df = None
+            self.dest_lang = None
+            self.src_lang = None
+            self.prompt_user_lang(langs)
 
         if flag_needs_processing:
             assert '.cder' in cder_path, "Wrong CADERA extension"
@@ -191,6 +197,82 @@ class SelectBookScreen(gui.Screen):
                 ChooseColorLangScreen(name='choose_color_lang', cder_path=cder_path)
             )
             self.manager.current = 'choose_color_lang'
+
+    #### Logic for handling language selection and GOST processing ####
+    #### ONLY for GOST processing ####
+
+    def prompt_user_lang(self, langs):
+        """Prompt user to select learning and user languages."""
+        if len(langs) != 2:
+            print('Not enough languages in GOST file to process. Exiting...')
+            return
+
+        layout = gui.BoxLayout(orientation='vertical', padding=10, spacing=10)
+        grid = gui.GridLayout(cols = 2, padding=10)
+        
+        for lang in langs.keys():
+            button = gui.Button(text=langs[lang],
+                size_hint_x=None, width=400, font_size=32, size_hint_y=None, height=100,
+            )
+            button.bind(on_release=lambda instance, lang=lang: self.process_gost(lang, langs))
+            grid.add_widget(button)
+        layout.add_widget(grid)
+
+        self.dest_lang_popup = gui.Popup(
+            title='Select Learning Language',
+            content=layout,
+            size_hint=(0.8, 0.8),
+            auto_dismiss=False,
+            background_color=(0.2, 0.2, 0.2, 1) 
+            )
+        self.dest_lang_popup.open()
+        
+    def process_gost(self, lang, langs):
+        """Set the destination language and process GOST file."""
+        if not langs or lang not in langs.keys():
+            print(f"Language {lang} not found in GOST file. Exiting...")
+            return
+        self.dest_lang = lang
+        langs.pop(lang, None)
+        self.src_lang = list(langs.keys())[0] if langs else None
+        print(f"Selected Learning Language: {self.dest_lang}, User Language: {self.src_lang}")
+        if hasattr(self, 'dest_lang_popup'):
+            self.dest_lang_popup.dismiss()
+            del self.dest_lang_popup
+    
+        self.gota_df = gost_main(self.selected_path, self.dest_lang, self.src_lang)
+        self.gota_path = self.store_gost(self.gota_df)
+        self.proceed_to_show_gost()
+
+    def store_gost(self, gota_df):
+        """Store the GOST DataFrame in file."""
+        if self.gota_df is not None:
+            pathname = os.path.splitext(os.path.abspath(self.selected_path))[0]
+            path, filename = os.path.split(pathname)
+            dirPath, _ = os.path.split(path)
+            dirPath = dirPath.replace('raw', 'processed')
+
+            gota_path = os.path.join(dirPath, 'GOTAs', filename+'.got')
+            gota_df.to_csv(gota_path, index=False)
+            print(f"GOST data stored in {gota_path}")
+            return gota_path
+        else:
+            print("No GOST data to store.")
+
+    def proceed_to_show_gost(self):
+        # Import here to avoid circular import
+        from mht.gui.book_processor.screen_show_DB import ShowDBScreen
+
+        # Add ShowDBScreen to the manager if not already present
+        if not self.manager.has_screen('show_db'):
+            def back_callback():
+                self.manager.current = 'choose_color_lang'
+            show_db_screen = ShowDBScreen(self.gota_path, back_callback, name='show_db')
+            self.manager.add_widget(show_db_screen)
+        else:
+            show_db_screen = self.manager.get_screen('show_db')
+
+        self.manager.current = 'show_db'
 
     def go_back(self, instance): 
         self.manager.transition = gui.SlideTransition(direction="right")
