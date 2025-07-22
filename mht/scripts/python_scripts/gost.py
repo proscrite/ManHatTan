@@ -1,10 +1,8 @@
 import pandas as pd
-import numpy as np
 import sys
 from hebrew import Hebrew
 
-sys.path.append('../python_scripts/')
-from init_lipstick import *
+from mht.scripts.python_scripts.init_lipstick import set_lip, make_lippath, check_lip_exists, add_new_gota_terms
 
 def make_lang_dic(languages: list):
     """Return a dict with inverted langcodes

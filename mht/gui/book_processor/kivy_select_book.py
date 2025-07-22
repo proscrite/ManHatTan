@@ -28,7 +28,7 @@ class BookButton(Button):
         self.text = 'Selected'
         self.app.set_path(self.path)
         print(self.app.path)
-        stopTouchApp()
+        # stopTouchApp()
         return self.path
 
 class SelectBook(App):
