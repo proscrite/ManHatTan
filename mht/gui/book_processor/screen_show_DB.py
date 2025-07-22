@@ -1,5 +1,6 @@
 from mht import gui
 from mht.gui.book_processor.kivy_cadera_DfWidget import DfguiWidget
+from mht.scripts import init_lipstick_main
 import pandas as pd
 import os
 
@@ -79,6 +80,7 @@ class ShowDBScreen(gui.Screen):
         return panel
 
     def on_continue(self, instance):
+        init_lipstick_main(self.got_path)
         self.manager.transition = gui.SlideTransition(direction="right")
         self.manager.current = "main_menu"
 

@@ -253,7 +253,7 @@ class SelectBookScreen(gui.Screen):
             dirPath = dirPath.replace('raw', 'processed')
 
             gota_path = os.path.join(dirPath, 'GOTAs', filename+'.got')
-            gota_df.to_csv(gota_path, index=False)
+            gota_df.to_csv(gota_path)
             print(f"GOST data stored in {gota_path}")
             return gota_path
         else:
