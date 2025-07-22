@@ -83,4 +83,7 @@ class ShowDBScreen(gui.Screen):
         self.manager.current = "main_menu"
 
     def on_back(self, instance):
-        self.manager.current = 'choose_color_lang'
+        if self.manager.has_screen('choose_color_lang'):
+            self.manager.current = 'choose_color_lang'
+        else:
+            self.manager.current = 'process_book'
