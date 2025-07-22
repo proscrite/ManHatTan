@@ -1,4 +1,5 @@
 import pandas as pd
+import datetime
 import sys
 from hebrew import Hebrew
 
@@ -44,35 +45,30 @@ def remove_nikud(gost):
     return gost
 
 def gost_main(gost_path: str, ll: str, ul:str):
-
+    """Main function to process GOST file and convert it to GOTA format
+    Parameters:
+        gost_path: path to the GOST csv file
+        ll: learning language (short format: en, de, es, it, iw...)
+        ul: user language (short format)
+    """
     gost = pd.read_csv(gost_path, names=['source_lang', 'target_lang', 'source_word', 'translation'])
     languages = gost['source_lang'].unique()
-    langs = make_lang_dic(languages)
-
-    print(gost[gost['source_lang'] == langs[ll]])
+    if len(languages) < 2:
+        print('GOST file does not contain enough languages to process. Exiting...')
+        return None
+    print('GOST file contains the following languages:', languages)
+    if ll not in languages or ul not in languages:
+        print('Learning language (%s) or User language (%s) not found in GOST file. Exiting...' %(ll, ul))
+        return None
     
-    gosta = gost2gota(gost, langs, ll, ul)
+    langs = make_lang_dic(languages)
+    
+    gota_df = gost2gota(gost, langs, ll, ul)
 
     if ll == 'iw':
-        gosta = remove_nikud(gosta)
+        gota_df = remove_nikud(gota_df)
 
-    # print('GOST after remove nikud:', gosta.head(5) )
-    ## Refactor: this is basically init_lipstick
-    new_lip = set_lip(gosta, flag_lexeme=True)
-    lippath = make_lippath(gost_path)
-
-    if check_lip_exists(gost_path, lippath):
-        current_lip = pd.read_csv(lippath)
-        print('LIPSTICK already exists, updating with newly found entries')
-        lipstick = add_new_gota_terms(new_lip, current_lip)
-    
-    else:
-        lipstick = new_lip
-
-    lipstick.to_csv(lippath, index=False)
-    print('Created LIPSTICK file %s' %lippath)
-
-    return lippath
+    return gota_df
 
 if __name__ == "__main__":
     """Welcome to GOST processing: GOogle-Saved Translations: 
