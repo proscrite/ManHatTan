@@ -128,9 +128,9 @@ class BaseExerciseScreen(gui.Screen):
         self.img_display.set_data(new_img)
         self.fig_canvas.draw()
     
+    def reload_lipstick(self):
+        self.lipstick = load_lipstick(self.lippath, self.modality)
+    
     def go_back(self, current_name, *args):
         self.manager.transition = gui.SlideTransition(direction="right")
         self.manager.current = "main_menu"
-
-    def reload_lipstick(self):
-        self.lipstick = load_lipstick(self.lippath, self.modality)

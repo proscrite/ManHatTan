@@ -1,8 +1,9 @@
 from mht import gui
+import os
 import pandas as pd
 import asyncio
 from mht.gui.book_processor.kivy_cadera_DfWidget import DfguiWidget, HoverBehavior
-from mht.scripts.python_scripts.bulkTranslate import find_language
+from mht.scripts.python_scripts.bulkTranslate import find_language, bulkTranslate_main
 
 from mht.gui.common import COLOR_MAP, DEFAULT_COLOR
 
@@ -104,10 +105,6 @@ class ChooseColorLangScreen(gui.Screen):
         self.main_layout.add_widget(self.left_panel)
         self.main_layout.add_widget(self.right_panel)
         self.add_widget(self.main_layout)
-
-    def on_pre_enter(self):
-        # Run language detection when entering the screen
-        self.detect_language_async()
 
     def _build_left_panel(self):
         cadera = pd.read_csv(self.cder_path, index_col=0, nrows=20)
@@ -255,11 +252,38 @@ class ChooseColorLangScreen(gui.Screen):
                 )
                 self.lang_section.add_widget(btn)
             self.lang_grid_added = True
+        
+        self.detect_language_async()
+        self.learn_lang = 'de'
 
     def select_lang(self, ulang_short):
         self.user_lang = ulang_short
         self.manager.shared_data['user_lang'] = ulang_short
-        # Proceed to next step or screen
+        self.proceed_to_show_db()
+
+    def proceed_to_show_db(self):
+        # Import here to avoid circular import
+        from mht.gui.book_processor.screen_show_DB import ShowDBScreen
+
+        print(f"Calling bulkTranslate_main with cder_path={self.cder_path}, selected_color={self.selected_color}, user_lang={self.user_lang}, learn_lang={self.learn_lang}")
+        # Detect language using asyncio and googletrans
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        gota_path = loop.run_until_complete(
+            bulkTranslate_main(self.cder_path, self.selected_color, self.user_lang, self.learn_lang)
+        )
+        loop.close()
+
+        # Add ShowDBScreen to the manager if not already present
+        if not self.manager.has_screen('show_db'):
+            def back_callback():
+                self.manager.current = 'choose_color_lang'
+            show_db_screen = ShowDBScreen(gota_path, back_callback, name='show_db')
+            self.manager.add_widget(show_db_screen)
+        else:
+            show_db_screen = self.manager.get_screen('show_db')
+
+        self.manager.current = 'show_db'
 
     def detect_language_async(self):
         # Run language detection in a thread to avoid blocking UI
@@ -287,4 +311,4 @@ class ChooseColorLangScreen(gui.Screen):
             self.lang_section.clear_widgets()
             self.lang_grid_added = False
         else:
-            self.manager.current = 'select_book'
+            self.manager.current = 'process_book'

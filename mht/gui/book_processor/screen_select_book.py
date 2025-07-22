@@ -135,15 +135,17 @@ class SelectBookScreen(gui.Screen):
         footer.add_widget(legend)
         footer.add_widget(gui.Label())  # Spacer
         exit_btn = gui.Button(
-            text="Exit",
+            text="Back",
             size_hint_x=None,
             width=120,
             size_hint_y=None,
             height=90,
             background_color=(0.3, 0.2, 0.2, 1),
-            font_size=24
+            font_size=32
         )
-        exit_btn.bind(on_release=self.exit_app)
+        # exit_btn.bind(on_release=self.exit_app)
+        exit_btn.bind(on_release=self.go_back)
+
         footer.add_widget(exit_btn)
         return footer
 
@@ -156,6 +158,7 @@ class SelectBookScreen(gui.Screen):
             self.grid.add_widget(btn)
 
     def select_book(self, path):
+        
 
         self.manager.shared_data['filename'] = path
         filepath, basename = os.path.split(path)
@@ -181,13 +184,18 @@ class SelectBookScreen(gui.Screen):
             self.manager.shared_data['cder_path'] = cder_path
 
             # Remove old choose_color screen if it exists
-            if self.manager.has_screen('choose_color'):
-                self.manager.remove_widget(self.manager.get_screen('choose_color'))
+            if self.manager.has_screen('choose_color_lang'):
+                self.manager.remove_widget(self.manager.get_screen('choose_color_lang'))
             print(f"Selected CADERA book path: {cder_path}")
             self.manager.add_widget(
-                ChooseColorLangScreen(name='choose_color', cder_path=cder_path)
+                ChooseColorLangScreen(name='choose_color_lang', cder_path=cder_path)
             )
-            self.manager.current = 'choose_color'
+            self.manager.current = 'choose_color_lang'
+
+    def go_back(self, instance): 
+        self.manager.transition = gui.SlideTransition(direction="right")
+        self.manager.current = "main_menu"
+
 
     def exit_app(self, instance):
         gui.App.get_running_app().stop()
@@ -201,11 +209,9 @@ class BookProcessorScreenManager(gui.ScreenManager):
 class BookProcessorApp(gui.App):
     def build(self):
         self.sm = BookProcessorScreenManager()
-        self.sm.add_widget(SelectBookScreen(name='select_book'))
-        # self.sm.add_widget(ChooseColorScreen(name='choose_color', cder_path=self.sm.shared_data.get('cder_path', '')))
-        # self.sm.add_widget(ChooseLangScreen(name='choose_lang'))
-        # Add more screens as needed
-        self.sm.current = 'select_book'
+        self.sm.add_widget(SelectBookScreen(name='process_book'))
+        
+        self.sm.current = 'process_book'
         return self.sm
     
 if __name__ == '__main__':
