@@ -35,7 +35,23 @@ class MainMenuScreen(gui.Screen):
     def _add_main_buttons(self):
         self.main_panel = gui.BoxLayout(orientation='horizontal', spacing=20, size_hint_y=0.7)
 
-        button_panel = gui.BoxLayout(orientation='vertical', spacing=20, size_hint_x=0.75)
+        # Change to GridLayout with 2 columns
+        button_panel = gui.GridLayout(cols=2, spacing=20, size_hint_x=0.75)
+        
+        btn_book = gui.Button(
+            text="[b]Add or update words[/b]\n[i][size=24]Process book or csv databases[/size][/i]",
+            font_size=40,
+            markup=True,
+            background_color=(0.9, 0.2, 0.2, 1),
+            color=(1, 1, 1, 1)
+        )
+        btn_team = gui.Button(
+            text="[b]View team[/b]\n[i][size=20]See your current team[/size][/i]",
+            font_size=40,
+            markup=True,
+            background_color=(0.0, 0.7, 0.7, 1),
+            color=(1, 1, 1, 1)
+        )
         btn_write = gui.Button(
             text="[b]Write Input Exercise[/b]\n[i][size=20]Type your answer in free text[/size][/i]",
             font_size=40,
@@ -58,23 +74,18 @@ class MainMenuScreen(gui.Screen):
             color=(1, 1, 1, 1)
         )
 
-        btn_book = gui.Button(
-            text="[b]Add or update words[/b]\n[i][size=24]Process book or csv databases[/size][/i]",
-            font_size=40,
-            markup=True,
-            background_color=(0.9, 0.2, 0.2, 1),
-            color=(1, 1, 1, 1)
-        )
-
         btn_book.bind(on_release=self.go_to_process_book)
+        btn_team.bind(on_release=self.view_team)
         btn_write.bind(on_release=partial(self.go_to_exercise, screen_name="write_input"))
         btn_multi.bind(on_release=partial(self.go_to_exercise, screen_name="multiple_answer"))
         btn_conj.bind(on_release=self.go_to_conjugation)
 
+        # Add buttons to grid (order as you prefer)
         button_panel.add_widget(btn_book)
         button_panel.add_widget(btn_write)
         button_panel.add_widget(btn_multi)
         button_panel.add_widget(btn_conj)
+        button_panel.add_widget(btn_team)
 
         logo = gui.Image(
             source="/Users/pabloherrero/Documents/ManHatTan/mht/gui/icons/mascott_v3.png",
@@ -124,17 +135,23 @@ class MainMenuScreen(gui.Screen):
         self.dropdown.bind(on_select=lambda instance, x: setattr(self.dropdown_button, 'text', x))
         lower_panel.add_widget(self.dropdown_button)
 
-        team_button = gui.Button(
-            text='View team', on_release=self.view_team,
-            size_hint=(0.75, 0.3), background_color=(0.0, 0.7, 0.7, 1), color=(1, 1, 1, 1),
+        settings_button = gui.Button(
+            text='Settings', on_release=self.open_settings,
+            size_hint=(0.75, 0.3), background_color=(0.3, 0.3, 0.8, 1), color=(1, 1, 1, 1),
         )
-        lower_panel.add_widget(team_button)
+        lower_panel.add_widget(settings_button)
+
         exit_button = gui.Button(
             text='Exit', on_release=self.exit,
             size_hint=(0.75, 0.3), background_color=(0.2, 0.2, 0.2, 1), color=(1, 1, 1, 1),
         )
         lower_panel.add_widget(exit_button)
         self.layout.add_widget(lower_panel)
+
+    # Placeholder for settings callback
+    def open_settings(self, instance):
+        self.manager.transition = gui.SlideTransition(direction="left")
+        self.manager.current = "settings"
 
     def go_to_exercise(self, instance, screen_name):
         modality = self.app.modality
@@ -231,8 +248,8 @@ class ManHatTan(gui.App):
         self.sm.add_widget(gui.WriteInputScreen(self.teamlippath, modality=self.modality, name="write_input"))
         self.sm.add_widget(gui.MultipleAnswerScreen(self.teamlippath, modality=self.modality, name="multiple_answer"))
         self.sm.add_widget(gui.ConjugationScreen(self.lippath, modality='dt', name="conjugation"))
-        team_screen = gui.TeamScreen(name='team', team_lip=self.team_lip, buttons_active=True)
-        self.sm.add_widget(team_screen)
+        self.sm.add_widget(gui.TeamScreen(name='team', team_lip=self.team_lip, buttons_active=True))
+        self.sm.add_widget(gui.SettingsScreen(name='settings', lipstick_path=self.lippath, team_lip_path=self.teamlippath))
 
         self.sm.current = "main_menu"
         return self.sm

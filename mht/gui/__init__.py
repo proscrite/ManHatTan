@@ -31,6 +31,7 @@ from mht.gui.screen_writeInput import WriteInputScreen
 from mht.gui.screen_multipleAnswer import MultipleAnswerScreen
 from mht.gui.screen_team_manager import TeamScreen
 from mht.gui.screen_verbConjugation import ConjugationScreen
+from mht.gui.screen_settings import SettingsScreen
 
 __all__ = [
     "ScreenManager", "Screen", "SlideTransition", "DropDown",
@@ -49,5 +50,6 @@ __all__ = [
     "MultipleAnswerScreen",
     "TeamScreen",
     "ConjugationScreen",
+    "SettingsScreen",
 ]
 
