@@ -1,0 +1,114 @@
+<HeaderCell>
+    size_hint: (None, None)
+    text_size: self.size
+    halign: "center"
+    valign: "middle"
+    height: '30dp'
+    background_normal: ''
+    background_color: 1, 1, 1, 0
+    disabled_color: (1, 1, 1, 1)
+    bg_color: 1, 1, 1, 1
+    hover_scale: 1.0
+    canvas.before:
+        PushMatrix
+        Scale:
+            origin: self.center
+            x: root.hover_scale
+            y: root.hover_scale
+        Color:
+            rgba: root.bg_color
+        Rectangle:
+            pos: self.pos
+            size: self.size
+        Color:
+            rgba: 1, 1, 1, 1
+        Line:
+            rectangle: (*self.pos, *self.size)
+            width: 2
+        PopMatrix
+<TableHeader>:
+    header: header
+    bar_width: 0
+    do_scroll: False
+    size_hint: (1, None)
+    effect_cls: "ScrollEffect"
+    height: '30dp'
+    GridLayout:
+        id: header
+        rows: 1
+        size_hint: (None, None)
+        width: self.minimum_width
+        height: self.minimum_height
+
+<ScrollCell>:
+    bg_color: [1, 1, 1, 1]
+    canvas.before:
+        Color:
+            # rgba: [0.23, 0.23, 0.23, 1] if root.is_even else [0.2, 0.2, 0.2, 1]
+            rgba: root.bg_color if hasattr(root, 'bg_color') else ([0.23, 0.23, 0.23, 1] if root.is_even else [0.2, 0.2, 0.2, 1])
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    text: root.text
+    font_size: "12dp"
+    halign: "center"
+    valign: "middle"
+    text_size: self.size
+    size_hint: 1, 1
+    height: 60
+    width: 800
+
+<TableData>:
+    rgrid: rgrid
+    scroll_type: ['bars', 'content']
+    bar_color: [0.2, 0.7, 0.9, 1]
+    bar_inactive_color: [0.2, 0.7, 0.9, .5]
+    do_scroll_x: True
+    do_scroll_y: True
+    effect_cls: "ScrollEffect"
+    viewclass: "ScrollCell"
+    RecycleGridLayout:
+        id: rgrid
+        rows: root.nrows
+        cols: root.ncols
+        size_hint: (None, None)
+        width: self.minimum_width
+        height: self.minimum_height
+
+
+<DfguiWidget>
+    panel1: data_frame_panel
+    panel2: col_select_panel
+
+    do_default_tab: False
+
+    TabbedPanelItem:
+        text: 'Data Frame'
+        on_release: root.open_panel1()
+        DataframePanel:
+            id: data_frame_panel
+    TabbedPanelItem:
+        text: 'Columns'
+        ColumnSelectionPanel:
+            id: col_select_panel
+
+
+<DataframePanel>:
+    orientation: 'vertical'
+
+<ColumnSelectionPanel>:
+    col_list: col_list
+    orientation: 'vertical'
+    ScrollView:
+        do_scroll_x: False
+        do_scroll_y: True
+        size_hint: 1, 1
+        scroll_timeout: 150
+        GridLayout:
+            id: col_list
+            padding: "10sp"
+            spacing: "5sp"
+            cols:1
+            row_default_height: '55dp'
+            row_force_default: True
+            size_hint_y: None
