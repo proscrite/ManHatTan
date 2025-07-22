@@ -1,10 +1,11 @@
 from kivy.app import App
 from mht import gui
-from mht.gui.common import COLOR_MAP, DEFAULT_COLOR
+from mht.gui.common import COLOR_MAP, DEFAULT_COLOR, FONT_HEB
 import os
 from collections import OrderedDict
 import numpy as np
 import pandas as pd
+from bidi.algorithm import get_display
 
 kv_path = os.path.join(os.path.dirname(__file__), "kivy_cadera_constructor.kv")
 gui.Builder.load_file(kv_path)
@@ -41,6 +42,8 @@ class HeaderCell(gui.Button, HoverBehavior):
     down_color = gui.ListProperty([1, 1, 1, 1])
     hover_scale = gui.NumericProperty(1.0) 
     color_name = gui.StringProperty('')
+    font_name = gui.StringProperty(FONT_HEB)
+    halign = gui.StringProperty('left')
     callback = None
 
     def __init__(self, *args, **kwargs):
@@ -89,6 +92,8 @@ class ScrollCell(gui.Label):
     colorOdd = [0.2, 0.2, 0.82, 1]
     width = gui.NumericProperty(160)
     size_hint_x = gui.ObjectProperty(None)
+    font_name = gui.StringProperty(FONT_HEB)  # Always use FONT_HEB
+    font_size = gui.NumericProperty(32)       # Double the default size
 
 class TableHeader(gui.ScrollView):
     """Fixed table header that scrolls x with the data table"""
@@ -113,7 +118,7 @@ class TableData(gui.RecycleView):
     ncols = gui.NumericProperty(None)
     rgrid = gui.ObjectProperty(None)
 
-    def __init__(self, list_dicts=[], col_width=160, *args, **kwargs):
+    def __init__(self, list_dicts=[], col_width=160, is_hebrew=False, *args, **kwargs):
         self.nrows = len(list_dicts)
         self.ncols = len(list_dicts[0])
         super(TableData, self).__init__(*args, **kwargs)
@@ -125,32 +130,31 @@ class TableData(gui.RecycleView):
                 base_color = COLOR_MAP.get(col.lower(), DEFAULT_COLOR)
                 gray_even = (0.23, 0.23, 0.23, 1)
                 gray_odd = (0.2, 0.2, 0.2, 1)
-                # Blend: 70% base color, 30% gray
                 blend = blend_colors(base_color, gray_even if is_even else gray_odd, 0.7)
-                self.data.append({'text': text, 'is_even': is_even, 'width': col_width, 'size_hint_x': None, 'bg_color': blend})
+                # Apply get_display for Hebrew
+                display_text = get_display(text) if is_hebrew else text
+                self.data.append({
+                    'text': display_text,
+                    'is_even': is_even,
+                    'width': col_width,
+                    'size_hint_x': None,
+                    'bg_color': blend,
+                    'font_size': 32,
+                })
 
     def sort_data(self):
         #TODO: Use this to sort table, rather than clearing widget each time.
         pass
 
 class Table(gui.BoxLayout):
-
-    def __init__(self, list_dicts=[], col_width=160, header_callback=None, *args, **kwargs):
-
+    def __init__(self, list_dicts=[], col_width=160, header_callback=None, is_hebrew=False, *args, **kwargs):
         super(Table, self).__init__(*args, **kwargs)
         self.orientation = "vertical"
         self.halign = "center"
-
         self.header = TableHeader(list_dicts=list_dicts, col_width=col_width, header_callback=header_callback)
-        self.table_data = TableData(list_dicts=list_dicts, col_width=col_width)
-
-        # self.table_data.bind('scroll_x', self.scroll_with_header)
-
+        self.table_data = TableData(list_dicts=list_dicts, col_width=col_width, is_hebrew=is_hebrew)
         self.add_widget(self.header)
         self.add_widget(self.table_data)
-
-    def scroll_with_header(self, obj, value):
-        self.header.scroll_x = value
 
 class DataframePanel(gui.BoxLayout):
     """
@@ -160,7 +164,7 @@ class DataframePanel(gui.BoxLayout):
         super(DataframePanel, self).__init__(**kwargs)
         self.app = App.get_running_app()
 
-    def populate_data(self, df, col_width=160, header_callback=None):
+    def populate_data(self, df, col_width=160, header_callback=None, lang_code=None):
         self.df_orig = df
         self.col_width = col_width
         self.original_columns = self.df_orig.columns[:]
@@ -169,9 +173,9 @@ class DataframePanel(gui.BoxLayout):
             'history_seen', 'lexeme_string', 'delta', 'timestamp']
         self.sort_key = None
         self._reset_mask()
-        self._generate_table(header_callback=header_callback)
+        self._generate_table(header_callback=header_callback, lang_code=lang_code)
 
-    def _generate_table(self, sort_key=None, disabled=None, header_callback=None):
+    def _generate_table(self, sort_key=None, disabled=None, header_callback=None, lang_code=None):
         self.clear_widgets()
         df = self.get_filtered_df()
         if disabled is not None:
@@ -186,7 +190,12 @@ class DataframePanel(gui.BoxLayout):
         col_data, max_len = self._prepare_column_data(df, keys)
         self._pad_columns(col_data, max_len)
         data = self._build_row_data(col_data, keys, max_len)
-        self.add_widget(Table(list_dicts=data, col_width=self.col_width, header_callback=header_callback))
+
+        # Detect Hebrew
+        is_hebrew = lang_code in ['iw', 'he']
+
+        # Pass is_hebrew to Table
+        self.add_widget(Table(list_dicts=data, col_width=self.col_width, header_callback=header_callback, is_hebrew=is_hebrew))
 
     def _prepare_column_data(self, df, keys):
         """Sort each column so non-NaN at top, NaN ('-') at bottom. Return col_data dict and max_len."""
@@ -287,7 +296,7 @@ class DfguiWidget(gui.TabbedPanel):
         super(DfguiWidget, self).__init__(**kwargs)
         self.df = df
         self.col_width = col_width
-        self.panel1.populate_data(df, col_width=col_width, header_callback=header_callback)
+        self.panel1.populate_data(df, col_width=col_width, header_callback=header_callback, lang_code=df.columns[0])
         self.panel2.populate_columns(df.columns[:])
 
     # This should be changed so that the table isn't rebuilt
