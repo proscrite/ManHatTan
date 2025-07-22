@@ -23,7 +23,7 @@ from mht.gui.common import PATH_PLAYBOOKS, PATH_GOOGLE_TRANSL, PATH_KINDLES
 
 
 from mht.gui.book_processor.kivy_select_book import BookButton
-from mht.gui.book_processor.kivy_choose_word_color import choose_color_main
+from mht.gui.book_processor.kivy_cadera_DfWidget import choose_color_main
 from mht.gui.book_processor.kivy_choose_lang import choose_lang_main
 
 class addNewBook(gui.App):

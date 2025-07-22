@@ -23,6 +23,7 @@ from kivy.properties import BooleanProperty, NumericProperty, ListProperty, Stri
 from kivy.config import Config
 from kivy.app import App
 
+from mht.gui.book_processor.screen_select_book import SelectBookScreen
 from mht.gui.screen_BaseExercise import BaseExerciseScreen
 from mht.gui.add_correctButton import CorrectionDialog
 from mht.gui.EachOption import EachOption
@@ -40,6 +41,7 @@ __all__ = [
     "StringProperty", "ObjectProperty",
     "TabbedPanel", "TabbedPanelItem", "ToggleButton",
     # Custom GUI components
+    "SelectBookScreen",
     "BaseExerciseScreen",
     "CorrectionDialog",
     "EachOption",
