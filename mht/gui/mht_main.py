@@ -57,10 +57,21 @@ class MainMenuScreen(gui.Screen):
             background_color=(0.2, 0.8, 0.4, 1),
             color=(1, 1, 1, 1)
         )
+
+        btn_book = gui.Button(
+            text="[b]Add or update words[/b]\n[i][size=24]Process book or csv databases[/size][/i]",
+            font_size=40,
+            markup=True,
+            background_color=(0.9, 0.2, 0.2, 1),
+            color=(1, 1, 1, 1)
+        )
+
+        btn_book.bind(on_release=self.go_to_process_book)
         btn_write.bind(on_release=partial(self.go_to_exercise, screen_name="write_input"))
         btn_multi.bind(on_release=partial(self.go_to_exercise, screen_name="multiple_answer"))
         btn_conj.bind(on_release=self.go_to_conjugation)
 
+        button_panel.add_widget(btn_book)
         button_panel.add_widget(btn_write)
         button_panel.add_widget(btn_multi)
         button_panel.add_widget(btn_conj)
@@ -138,6 +149,18 @@ class MainMenuScreen(gui.Screen):
         self.manager.transition = gui.SlideTransition(direction="left")
         self.manager.current = "conjugation"
 
+    def go_to_process_book(self, instance):
+        self.manager.transition = gui.SlideTransition(direction="left" )
+        
+        # Remove old choose_color screen if it exists
+        if self.manager.has_screen('process_book'):
+            self.manager.remove_widget(self.manager.get_screen('process_book'))
+
+        self.manager.add_widget(
+            gui.SelectBookScreen(name='process_book')
+        )
+        self.manager.current = "process_book"
+
     def view_team(self, instance):
         self.manager.transition = gui.SlideTransition(direction="left")
         self.manager.current = "team"
@@ -151,6 +174,12 @@ class MainMenuScreen(gui.Screen):
     def exit(self, instance):
         print('Exiting')
         self.app.stop(self)
+
+class MhtScreenManager(gui.ScreenManager):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.shared_data = {}  # Dict to pass data between screens
+
 
 class ManHatTan(gui.App):
     def __init__(self, lippath : str = LIPSTICK_PATH, modality : str = 'random'):
@@ -197,7 +226,7 @@ class ManHatTan(gui.App):
             self.word_ll, self.word_ul, self.iqu, self.nid = set_question(self.teamlippath)
             self.flag_refresh = False
         
-        self.sm = gui.ScreenManager()
+        self.sm = MhtScreenManager()
         self.sm.add_widget(MainMenuScreen(self.teamlippath, name="main_menu"))
         self.sm.add_widget(gui.WriteInputScreen(self.teamlippath, modality=self.modality, name="write_input"))
         self.sm.add_widget(gui.MultipleAnswerScreen(self.teamlippath, modality=self.modality, name="multiple_answer"))
