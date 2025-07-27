@@ -22,9 +22,10 @@ class SettingsScreen(gui.Screen):
         layout = gui.BoxLayout(orientation='vertical', padding=20, spacing=10, size_hint=(1, None))
         layout.height = 350  # Adjust as needed
 
+        layout.add_widget(Widget(size_hint_y=None, height=20))  # Spacer
         title = gui.Label(text="Settings", font_size=60, size_hint_y=None, height=60)
         layout.add_widget(title)
-        layout.add_widet(Widget(size_hint_y=None, height=20))  # Spacer
+        layout.add_widget(Widget(size_hint_y=None, height=20))  # Spacer
 
         # 2x2 grid for settings buttons
         grid = gui.GridLayout(cols=2, rows=3, spacing=20, size_hint_y=None, height=220)
@@ -65,6 +66,15 @@ class SettingsScreen(gui.Screen):
             height=140,
             on_release=self.set_difficulty
         )
+        btn_rebag = gui.Button(
+            text="Rebagging Frequency",
+            font_size=40,
+            background_color=(0.2, 0.7, 0.6, 1),
+            color=(1, 1, 1, 1),
+            size_hint_y=None,
+            height=140,
+            on_release=self.select_rebagging_frequency
+        )
         back_btn = gui.Button(
             text="Back to Main Menu",
             font_size=40,
@@ -79,6 +89,7 @@ class SettingsScreen(gui.Screen):
         grid.add_widget(btn_edit)
         grid.add_widget(btn_sched)
         grid.add_widget(btn_diff)
+        grid.add_widget(btn_rebag)
         grid.add_widget(back_btn)
 
         layout.add_widget(grid)
@@ -98,6 +109,11 @@ class SettingsScreen(gui.Screen):
 
     def set_difficulty(self, instance):
         print("Difficulty Level pressed (placeholder)")
+
+    def select_rebagging_frequency(self, instance):
+        print("Rebagging Frequency pressed (placeholder)")
+        # Here you would implement the logic to select the rebagging frequency, e.g., open a dialog
+        # or redirect to another screen where the user can set the frequency.
 
     def go_back(self, instance):
         """Go back to the main menu."""
