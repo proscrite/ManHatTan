@@ -26,12 +26,10 @@ class MultipleAnswerScreen(gui.BaseExerciseScreen):
         correction = gui.CorrectionDialog(self.answer, self.question)
         self.optMenu.add_widget(correction)
         self.upper_panel.add_widget(self.optMenu)
-        self.box.add_widget(self.upper_panel)
-        back_btn = gui.Button(text="Back to Menu", size_hint=(1, 0.1))
-        back_btn.bind(on_release=self.go_back)
-
+        
         # Animated panel (right column) from the base class
-        self.upper_panel.add_widget(self.animated_container)
+        self.upper_panel.add_widget(self.get_right_panel_widget())
+        self.box.add_widget(self.upper_panel)
         
         # Answer buttons (center column)
         # options = rnd_options(self.lippath, iquest=self.iqu, modality=self.modality)
@@ -40,6 +38,8 @@ class MultipleAnswerScreen(gui.BaseExerciseScreen):
         shufOpts = shuffle_dic(options)
         self.load_answers(shufOpts)
         
+        back_btn = gui.Button(text="Back to Menu", size_hint=(1, 0.1))
+        back_btn.bind(on_release=self.go_back)
         self.box.add_widget(back_btn)
         self.add_widget(self.box)
         
@@ -108,3 +108,11 @@ class MultipleAnswerScreen(gui.BaseExerciseScreen):
         if hasattr(self, 'answer_popup') and self.answer_popup:
             self.answer_popup.dismiss()
             self.answer_popup = None
+    
+    def get_top_widgets(self):
+        # By default, no extra widgets
+        return []
+    
+    def get_right_panel_widget(self):
+        # By default, return animated_container
+        return self.animated_container

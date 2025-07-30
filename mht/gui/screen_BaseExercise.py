@@ -49,16 +49,20 @@ class BaseExerciseScreen(gui.Screen):
             self.question_displ = self.question
             self.answer_displ = self.answer
         qentry = self.lipstick.loc[self.word_ul].copy()
-        
         print(f"Initializing BaseExerciseScreen with question: {self.question_displ}, answer: {self.answer_displ}, nid: {self.nid}")
         entry_stats = load_pkmn_stats(qentry)
         n_cracks = qentry.get('history_correct', 0) % 6
-        self.fig, self.img_display, self.anim = plot_combat_stats(entry_stats, self.nframe, self.nid, self.question_displ, n_cracks = n_cracks)
-        self.fig_canvas = FigureCanvasKivyAgg(self.fig)
-        from kivy.uix.boxlayout import BoxLayout
-        container = BoxLayout()
-        container.add_widget(self.fig_canvas)
-        self.animated_container = container
+
+        # Only create animated_container if not ClawScreen
+        if self.__class__.__name__ != "ClawScreen":
+            self.fig, self.img_display, self.anim = plot_combat_stats(entry_stats, self.nframe, self.nid, self.question_displ, n_cracks = n_cracks)
+            self.fig_canvas = FigureCanvasKivyAgg(self.fig)
+            from kivy.uix.boxlayout import BoxLayout
+            container = BoxLayout()
+            container.add_widget(self.fig_canvas)
+            self.animated_container = container
+        else:
+            self.animated_container = None
 
     def build_ui(self):
         # This remains as before, but is only called from on_enter
