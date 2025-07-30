@@ -31,18 +31,22 @@ def claw_exercise(lippath: str):
     word_ul = sampled_entry['word_ul'].values[0]
     lexeme_string = sampled_entry['lexeme_string']
 
-    # Try generating the sentence in Hebrew
-    he_sentence = gen_multilang_sentence(word_ll, lang='he', max_attempts=5, max_new_tokens=30)
-    if '(Model did not use the phrase. Try again.)' in he_sentence:
-        print("Failed to generate a Hebrew sentence. Attempting to generate in English and translating instead.")
-        en_sentence = gen_en_sentence(word_ul)
-        print(f"Generated English sentence: {en_sentence}")
-        flag_success, cloze_sentence, translation = claw_english_processing(word_ll, word_ul, en_sentence, lip)
-    else:
-        print(f"Generated Hebrew sentence: {he_sentence}")
+    #Try generating the sentence in Hebrew
+    # he_sentence = gen_multilang_sentence(word_ll, lang='he', max_attempts=5, max_new_tokens=30)
+    # if '(Model did not use the phrase. Try again.)' in he_sentence:
+    #     print("Failed to generate a Hebrew sentence. Attempting to generate in English and translating instead.")
+        # en_sentence = gen_en_sentence(word_ul)
+        # print(f"Generated English sentence: {en_sentence}")
+        # flag_success, cloze_sentence, translation = claw_english_processing(word_ll, word_ul, en_sentence, lip)
+    # else:
+        # print(f"Generated Hebrew sentence: {he_sentence}")
         # Process the Hebrew sentence
-        flag_success, cloze_sentence, translation = claw_hebrew_processing(word_ll, word_ul, he_sentence, lip)
+        # flag_success, cloze_sentence, translation = claw_hebrew_processing(word_ll, word_ul, he_sentence, lip)
 
+    en_sentence = gen_en_sentence(word_ul)
+    print(f"Generated English sentence: {en_sentence}")
+    flag_success, cloze_sentence, translation = claw_english_processing(word_ll, word_ul, en_sentence, lip)
+ 
     # Process the sentences
     if flag_success:
         print(f"Successfully processed the sentence: {cloze_sentence}")
