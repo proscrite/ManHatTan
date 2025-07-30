@@ -4,6 +4,8 @@ from googletrans import Translator
 import pandas as pd
 import logging
 logging.getLogger("stanza").setLevel(logging.ERROR)
+import warnings
+warnings.filterwarnings("ignore", category=FutureWarning)
 
 
 # Extracts the first sentence from a text that contains a specific word.
