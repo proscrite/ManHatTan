@@ -73,12 +73,20 @@ class MainMenuScreen(gui.Screen):
             background_color=(0.2, 0.8, 0.4, 1),
             color=(1, 1, 1, 1)
         )
+        btn_claw = gui.Button(
+            text="[b]Cloze GPT Exercise[/b]\n[i][size=20]Fill in the blank using AI-generated sentences[/size][/i]",
+            font_size=40,
+            markup=True,
+            background_color=(0.7, 0.3, 0.8, 1),  # Example: purple shade
+            color=(1, 1, 1, 1)
+        )
 
         btn_book.bind(on_release=self.go_to_process_book)
         btn_team.bind(on_release=self.view_team)
         btn_write.bind(on_release=partial(self.go_to_exercise, screen_name="write_input"))
         btn_multi.bind(on_release=partial(self.go_to_exercise, screen_name="multiple_answer"))
         btn_conj.bind(on_release=self.go_to_conjugation)
+        btn_claw.bind(on_release=self.go_to_claw)
 
         # Add buttons to grid (order as you prefer)
         button_panel.add_widget(btn_book)
@@ -86,6 +94,7 @@ class MainMenuScreen(gui.Screen):
         button_panel.add_widget(btn_multi)
         button_panel.add_widget(btn_conj)
         button_panel.add_widget(btn_team)
+        button_panel.add_widget(btn_claw)
 
         logo = gui.Image(
             source="/Users/pabloherrero/Documents/ManHatTan/mht/gui/icons/mascott_v3.png",
@@ -165,6 +174,14 @@ class MainMenuScreen(gui.Screen):
     def go_to_conjugation(self, instance):
         self.manager.transition = gui.SlideTransition(direction="left")
         self.manager.current = "conjugation"
+
+    def go_to_claw(self, instance):
+        if not self.manager.has_screen("claw"):
+            from mht.gui.screen_claw import ClawScreen  # Import here to avoid loading at startup
+            claw_screen = ClawScreen(self.lipstick_path, modality='rt', name="claw")
+            self.manager.add_widget(claw_screen)
+        self.manager.transition = gui.SlideTransition(direction="left")
+        self.manager.current = "claw"
 
     def go_to_process_book(self, instance):
         self.manager.transition = gui.SlideTransition(direction="left" )
