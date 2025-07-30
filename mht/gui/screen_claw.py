@@ -14,20 +14,30 @@ class ClawScreen(gui.MultipleAnswerScreen):
         self.lipstick_path = lipstick_path
         
         self.cloze_sentence = None
-        self.sampled_entry = None
         self.translation = None 
-        # Initialize the cloze sentence, sampled entry, and translation
-        # This will be set after the exercise is run
-        self._initialize_claw_exercise()
-        self.cloze_sentence, self.sampled_entry, self.translation = claw_exercise(lipstick_path)  # Call the claw_exercise function to initialize
+        
+    def init_exercise(self):
+        super().init_exercise()  # Sets self.word_ll, self.word_ul, etc.
+        print(f"ClawScreen: self.word_ll after super().init_exercise() = {self.word_ll}")
+        # Generate cloze sentence for the sampled word
+        result = claw_exercise(self.lipstick_path, word_ll=self.word_ll, word_ul=self.word_ul)
+        if result:
+            self.cloze_sentence, self.translation = result
+            self.cloze_sentence = get_display(self.cloze_sentence) if self.rtl_flag else self.cloze_sentence
+        else:
+            self.cloze_sentence, self.translation = "(No cloze sentence generated)", None
 
     def build_ui(self):
-        # Need to write the cloze sentence in a big centered label. 
-        self.cloze_label = gui.Label(text=self.cloze_sentence, font_size=24, halign='center', valign='middle')
-        self.box = gui.BoxLayout(orientation='vertical')
-        self.box.add_widget(self.cloze_label)
+        self.cloze_label = gui.Label(
+            text=self.cloze_sentence,
+            font_name=FONT_HEB,
+            font_size=70,
+            halign='center',
+            valign='middle',
+            size_hint_y=0.18,
+        )
         super().build_ui()
-        # --- Add Bypass Button ---
+
         hallucinate_btn = gui.Button(text='Hallucination', background_color=(0.8, 0.5, 0.2, 1))
         hallucinate_btn.bind(on_release=self.bypass_sentence)
         self.optMenu.add_widget(hallucinate_btn)
@@ -57,3 +67,10 @@ class ClawScreen(gui.MultipleAnswerScreen):
 
         if temp_screen:
             manager.remove_widget(temp_screen)
+
+    def get_right_panel_widget(self): # type: ignore
+        return self.cloze_label
+
+    def update(self, dt):
+        # No animation for ClawScreen
+        pass
