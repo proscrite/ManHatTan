@@ -27,16 +27,28 @@ class ClawScreen(gui.MultipleAnswerScreen):
         else:
             self.cloze_sentence, self.translation = "(No cloze sentence generated)", None
 
+        self.fig_canvas, self.img_display, self.anim = plot_pkmn_animation(self.nid, self.nframe, n_cracks=0)
+
     def build_ui(self):
         self.cloze_label = gui.Label(
             text=self.cloze_sentence,
             font_name=FONT_HEB,
-            font_size=70,
+            font_size=60,
             halign='center',
             valign='middle',
-            size_hint_y=0.18,
+            size_hint=(0.7, 1),  # Take 60% of right_box width
+            shorten=False
         )
+        # Bind text_size to label width for wrapping
+        self.cloze_label.bind(width=lambda instance, value: setattr(instance, 'text_size', (value, None)))
+
         super().build_ui()
+        self.upper_panel.remove_widget(self.get_right_panel_widget())
+        right_box = gui.BoxLayout(orientation='horizontal')
+        right_box.add_widget(self.cloze_label)
+        self.fig_canvas.size_hint = (0.3, 1)  # Set size_hint directly
+        right_box.add_widget(self.fig_canvas)
+        self.upper_panel.add_widget(right_box)
 
         hallucinate_btn = gui.Button(text='Hallucination', background_color=(0.8, 0.5, 0.2, 1))
         hallucinate_btn.bind(on_release=self.bypass_sentence)
@@ -71,6 +83,6 @@ class ClawScreen(gui.MultipleAnswerScreen):
     def get_right_panel_widget(self): # type: ignore
         return self.cloze_label
 
-    def update(self, dt):
+    # def update(self, dt):
         # No animation for ClawScreen
-        pass
+        # pass

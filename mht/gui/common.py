@@ -420,3 +420,15 @@ def load_pkmn_stats(qentry):
     entry_stats['level'] = qentry['history_correct'] + 10
     return entry_stats
 
+def plot_pkmn_animation(nid, nframe=0, n_cracks=0):
+    """
+    Create a matplotlib figure with only the animated image for ClawScreen.
+    Returns the FigureCanvasKivyAgg, im_obj, and anim array.
+    """
+    fig = plt.figure(figsize=(6, 4))
+    fig.patch.set_facecolor("black")
+    ax_im = fig.add_subplot(111)
+    im_obj, anim = load_pkmn_animation(ax_im, nframe, nid, n_cracks)
+    ax_im.axis('off')
+    return FigureCanvasKivyAgg(fig), im_obj, anim
+
