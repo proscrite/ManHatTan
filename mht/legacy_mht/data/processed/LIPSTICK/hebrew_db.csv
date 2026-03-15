@@ -1,0 +1,295 @@
+p_recall,n_id,timestamp,delta,user_id,learning_language,ui_language,word_ll,word_ul,lexeme_string,history_seen,history_correct,session_seen,session_correct,p_pred,mdt_history,mdt_correct,mrt_history,mrt_correct,wdt_history,wdt_correct,wrt_history,wrt_correct,speed,rebag
+0.714,190,1743319778,0,pablo,iw,en,מלגה,scholarship,מלגה/מלגה<NOUN>Fem|Sing|,7,5,0,0,,5,5,0,0,2,0,0,0,0.1459,True
+0.857,98,1744291702,971924,pablo,iw,en,כונה,intention,כונה/כונה<VERB>Masc|PUAL|Sing|3|Past|Pass|,7,6,0,0,,4,4,0,0,2,2,0,0,0.0835,True
+1.0,501,1744182216,862438,pablo,iw,en,מגבת,towel,"מגבת/גיבת<VERB>Fem|PAAL|Sing|1,2,3|Part|Act|",6,6,0,0,,2,2,0,0,4,4,0,0,0.1115,True
+0.95,280,1747120372,3800594,pablo,iw,en,להגיע,to arrive,להגיע/הגיע<VERB>HIFIL|Inf|Act|,20,19,0,0,,13,12,0,0,5,5,0,0,0.1518,True
+1.0,390,1744122447,802669,pablo,iw,en,ציון,Grade,ציון/ציון<PROPN>,6,6,0,0,,6,6,0,0,0,0,0,0,0.1102,True
+1.0,595,1743320567,789,pablo,iw,en,מסך,screen,מסך/מסך<NOUN>Masc|Sing|,5,5,0,0,,3,3,0,0,2,2,0,0,0.1117,True
+1.0,511,1749393525,248626,pablo,iw,en,יצור,creature,יצור/יצור<NOUN>Masc|Sing|,5,5,0,0,0.0,0,0,5,5,0,0,0,0,0.1122,True
+1.0,335,1749144899,0,pablo,iw,en,מפלצת,monster,מפלצת/מפלצה<NOUN>Fem|Sing|,5,5,0,0,0.0,2,2,0,0,3,3,0,0,0.0734,True
+0.714,170,1749393504,248605,pablo,iw,en,משרת,servant,"משרת/שירת<VERB>Masc|PIEL|Sing|1,2,3|Part|Act|",7,5,0,0,0.0,0,0,5,5,2,0,0,0,0.0819,True
+1.0,215,1750763813,1618914,pablo,iw,en,קוסם,magician,קוסם/קוסם<NOUN>Masc|Sing|,5,5,0,0,0.0,0,0,5,5,0,0,0,0,0.1016,True
+0.833,532,1750862878,1717979,pablo,iw,en,גיבור,a hero,גיבור/גיבור<NOUN>Masc|Sing|,6,5,0,0,0.0,0,0,5,5,1,0,0,0,0.0557,True
+0.833,574,1749296891,151992,pablo,iw,en,קסדה,helmet,קסדה/קסדה<NOUN>Fem|Sing|,6,5,0,0,0.0,4,3,2,2,0,0,0,0,0.188,True
+0.714,140,1750928226,0,pablo,iw,en,שריון,armor,שריון/שריון<NOUN>Masc|Sing|,7,5,0,0,0.0,0,0,7,5,0,0,0,0,0.1429,True
+0.833,519,1750928302,76,pablo,iw,en,כשוף,incantation,"כ/כ<ADP>,caseשוף/שוף<NOUN>Masc|Sing|",6,5,0,0,0.0,0,0,3,3,3,2,0,0,0.1608,True
+0.857,127,1750935082,6856,pablo,iw,en,מכשפה,witch,מכשפה/מכשפה<NOUN>Fem|Sing|,7,6,0,0,0.0,0,0,6,5,1,1,0,0,0.1197,True
+1.0,203,1750950417,22191,pablo,iw,en,חומה,wall,חומה/חומה<NOUN>Fem|Sing|,5,5,0,0,0.0,0,0,5,5,0,0,0,0,0.1242,True
+0.833,415,1750935443,7217,pablo,iw,en,לוחם,fighter,לוחם/לוחם<NOUN>Masc|Sing|,6,5,0,0,0.0,0,0,4,4,2,1,0,0,0.1709,True
+1.0,13,1750935448,7222,pablo,iw,en,חץ,arrow,חץ/חץ<NOUN>Masc|Sing|,5,5,0,0,0.0,0,0,5,5,0,0,0,0,0.0434,True
+1.0,273,1750958435,725,pablo,iw,en,אביר,knight,אביר/אביר<NOUN>Masc|Sing|,5,5,0,0,0.0,2,2,2,2,1,1,0,0,0.0319,True
+0.714,513,1750958428,718,pablo,iw,en,קשת,arch,קשת/קשת<NOUN>Fem|Sing|,7,5,0,0,0.0,1,1,3,3,2,1,1,0,0.1701,True
+1.0,396,1750957710,0,pablo,iw,en,ממלכה,kingdom,ממלכה/ממלכה<NOUN>Fem|Sing|,5,5,0,0,0.0,0,0,2,2,2,2,1,1,0.1308,True
+0.556,374,1751011689,53979,pablo,iw,en,חרבה,Sword,חרבה/חרבה<NOUN>Fem|Sing|,9,5,0,0,0.0,2,2,3,3,3,0,1,0,0.1468,True
+0.833,427,1751013895,56185,pablo,iw,en,אגדה,legend,אגדה/אגדה<NOUN>Fem|Sing|,6,5,0,0,0.0,2,2,1,1,2,1,1,1,0.1798,True
+0.833,109,1750958165,455,pablo,iw,en,מגבון,Wipe,מגבון/מגבון<NOUN>Masc|Sing|,6,5,0,0,0.0,1,1,3,3,1,0,1,1,0.0633,True
+0.0,234,1746629700,0,pablo,iw,en,צלחית,saucer,צלחית/צלחית<ADV>,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,355,1746629700,0,pablo,iw,en,המלצה,recommendation,"ה/ה<DET>Def|Art|,detמלצה/מלץ<NOUN>Fem|Sing|",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,501,1746629700,0,pablo,iw,en,מעריץ,admires,"מעריץ/העריץ<VERB>Masc|HIFIL|Sing|1,2,3|Part|Act|",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,201,1746629700,0,pablo,iw,en,מפלגה,party,מפלגה/מפלגה<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,550,1746629700,0,pablo,iw,en,שביתה,strike,שביתה/שביתה<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,123,1746629700,0,pablo,iw,en,איום,threat,איום/איום<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,193,1746629700,0,pablo,iw,en,אשמה,guilt,אשמה/אשמה<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,54,1746629700,0,pablo,iw,en,שוחד,bribe,שוחד/שוחד<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,543,1746629700,0,pablo,iw,en,מושל,governor,מושל/מושל<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,222,1746629700,0,pablo,iw,en,מועמד,candidate,מועמד/מועמד<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,341,1746629700,0,pablo,iw,en,מעצר,arrest,מעצר/מעצר<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,431,1746629700,0,pablo,iw,en,נאום,speech,נאום/נאום<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,311,1746629700,0,pablo,iw,en,שחיתות,corruption,שחיתות/שחיתות<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,175,1746629700,0,pablo,iw,en,אלימות,violence,אלימות/אלימות<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,198,1746629700,0,pablo,iw,en,בחירות,elections,"ב/ב<ADP>,caseחירות/חירות<NOUN>Fem|Sing|",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,50,1746629700,0,pablo,iw,en,מנהיג,leader,מנהיג/מנהיג<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,498,1746629700,0,pablo,iw,en,פשע,crime,פשע/פשע<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,451,1746629700,0,pablo,iw,en,מדיניות,policy,מדיניות/מדיניות<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,118,1746629700,0,pablo,iw,en,כלכלה,economy,כלכלה/כלכלה<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,32,1746629700,0,pablo,iw,en,זכות,Right,זכות/זכות<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,377,1746629700,0,pablo,iw,en,מיסים,Taxes,מיסים/מס<NOUN>Masc|Plur|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,29,1746629700,0,pablo,iw,en,ביטחון,confidence,"ב/ב<ADP>,markיטחון/טחן<VERB>Masc|PAAL|Sing|3|Fut|Act|",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,155,1746629700,0,pablo,iw,en,חוק,law,חוק/חוק<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,361,1746629700,0,pablo,iw,en,אוהד,Fan,אוהד/אוהד<PROPN>,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,258,1746629700,0,pablo,iw,en,התקפה,attack,התקפה/התקפה<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,147,1746629700,0,pablo,iw,en,שוער,goalie,שוער/שוער<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,120,1746629700,0,pablo,iw,en,צעד,step,צעד/צעד<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,302,1746629700,0,pablo,iw,en,בעיטה,kick,בעיטה/בעיטה<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,128,1746629700,0,pablo,iw,en,ארד,bronze,ארד/ארד<PROPN>,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,228,1746629700,0,pablo,iw,en,מאמן,coach,מאמן/מאמן<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,339,1746629700,0,pablo,iw,en,אליפות,championship,אליפות/אליפות<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,316,1746629700,0,pablo,iw,en,כדורעף,Volleyball,"כ/כ<ADP>,caseדורעף/דורעף<PROPN>",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,408,1746629700,0,pablo,iw,en,מחבט,racket,מחבט/מחבט<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,138,1746629700,0,pablo,iw,en,מבקיע,scores,"מבקיע/הבקיע<VERB>Masc|HIFIL|Sing|1,2,3|Part|Act|",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,393,1746629700,0,pablo,iw,en,תיקו,draw,תיקו/תיקו<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,480,1746629700,0,pablo,iw,en,פסקול,sound track,פסקול/פסקול<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,231,1746629700,0,pablo,iw,en,הופעה,performance,"ה/ה<DET>Def|Art|,detופעה/ופעה<NOUN>Fem|Sing|",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,440,1746629700,0,pablo,iw,en,מפוחית,harmonica,מפוחית/מפוחית<PROPN>,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,318,1746629700,0,pablo,iw,en,חצוצרה,trumpet,חצוצרה/חצוצרה<PROPN>,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,243,1746629700,0,pablo,iw,en,מנגינה,tune,מנגינה/מנגינה<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,235,1746629700,0,pablo,iw,en,רמקול,speaker,רמקול/רמקול<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,582,1746629700,0,pablo,iw,en,מיקרופון,microphone,מיקרופון/מיקרופון<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,439,1746629700,0,pablo,iw,en,מתופף,drummer,"מתופף/התופף<VERB>Masc|PUAL|Sing|1,2,3|Part|Pass|",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,490,1746629700,0,pablo,iw,en,להקה,band,להקה/להקה<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,390,1746629700,0,pablo,iw,en,כינור,violin,כינור/כינור<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,250,1746629700,0,pablo,iw,en,תת קרקעי,underground,"תת/תת<ADV>Yes|,compound:affixקרקעי/קרקעי<ADJ>Masc|Sing|",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,481,1746629700,0,pablo,iw,en,לצפות,expect,לצפות/לצפות<VERB>Inf|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,7,1746629700,0,pablo,iw,en,לתלות,hang,לתלות/תלה<VERB>PAAL|Inf|Act|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,115,1746629700,0,pablo,iw,en,לבכות,cry,לבכות/לבכות<VERB>Inf|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,554,1746629700,0,pablo,iw,en,לדחות,reject,לדחות/דחה<VERB>PAAL|Inf|Act|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,412,1746629700,0,pablo,iw,en,לטעות,mistake,לטעות/טעה<VERB>PAAL|Inf|Act|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,246,1746629700,0,pablo,iw,en,לבנות,build,לבנות/בנה<VERB>PAAL|Inf|Act|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,570,1746629700,0,pablo,iw,en,לקרות,happen,לקרות/לקרות<VERB>Inf|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,527,1746629700,0,pablo,iw,en,להבטיח,ensure,להבטיח/הבטיח<VERB>HIFIL|Inf|Act|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,46,1746629700,0,pablo,iw,en,לדרוש,demand,לדרוש/דרש<VERB>PAAL|Inf|Act|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,312,1746629700,0,pablo,iw,en,רשות,permission,רשות/רשות<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,352,1746629700,0,pablo,iw,en,עמדה,position,עמדה/עמדה<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,304,1746629700,0,pablo,iw,en,מציאות,reality,מציאות/מציאות<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,102,1746629700,0,pablo,iw,en,בעדיפות,priority,בעדיפות/בעדיפות<ADV>,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,370,1746629700,0,pablo,iw,en,בטוי,expression,בטוי/ביטוי<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,417,1746629700,0,pablo,iw,en,השלכות,consequences,"ה/ה<DET>Def|Art|,detשלכות/שלכת<NOUN>Fem|Sing|",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,220,1746629700,0,pablo,iw,en,הפתעה,surprise,הפתעה/הפתעה<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,456,1746629700,0,pablo,iw,en,חיוך,smile,חיוך/חיוך<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,227,1746629700,0,pablo,iw,en,לזרום,stream,לזרום/זרם<VERB>PAAL|Inf|Act|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,223,1746629700,0,pablo,iw,en,להישאר,stay,להישאר/נשאר<VERB>NIFAL|Inf|Mid|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,63,1746629700,0,pablo,iw,en,להתנהג,behave,להתנהג/התנהג<VERB>HITPAEL|Inf|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,95,1746629700,0,pablo,iw,en,טובה,favor,טובה/טוב<ADJ>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,418,1746629700,0,pablo,iw,en,אוהל,tent,אוהל/אוהל<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,436,1746629700,0,pablo,iw,en,פחד,fear,פחד/פחד<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,504,1746629700,0,pablo,iw,en,מסורת,tradition,מסורת/מסורת<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,43,1746629700,0,pablo,iw,en,גישה,approach,גישה/גישה<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,283,1746629700,0,pablo,iw,en,מקלט,shelter,מקלט/מקלט<PROPN>,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,84,1746629700,0,pablo,iw,en,סכנה,danger,סכנה/סכנה<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,290,1746629700,0,pablo,iw,en,שנאה,hatred,שנאה/שנאה<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,206,1746629700,0,pablo,iw,en,הרפתקה,adventure,הרפתקה/הרפתקה<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,56,1746629700,0,pablo,iw,en,חתימה,signature,חתימה/חתימה<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,446,1746629700,0,pablo,iw,en,אחריות,responsability,אחריות/אחריות<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,191,1746629700,0,pablo,iw,en,עמדה,position,עמדה/עמדה<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,443,1746629700,0,pablo,iw,en,סמל,symbol,סמל/סמל<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,327,1746629700,0,pablo,iw,en,ספק,doubt,ספק/ספק<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,263,1746629700,0,pablo,iw,en,פקודה,command,פקודה/פקודה<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,72,1746629700,0,pablo,iw,en,השקפה,view,השקפה/השקפה<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,1,1746629700,0,pablo,iw,en,שליטה,control,שליטה/שליטה<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,151,1746629700,0,pablo,iw,en,להתעלם,to ignore,"ל/ל<ADP>,caseהתעלם/התעלם<VERB>Masc|HITPAEL|Sing|3|Past|",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,366,1746629700,0,pablo,iw,en,מערכת,system,מערכת/מערכת<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,96,1746629700,0,pablo,iw,en,מבנה,structure,מבנה/מבנה<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,387,1746629700,0,pablo,iw,en,המצב,situation,המצב/המצב<PROPN>,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,539,1746629700,0,pablo,iw,en,אישי,personal,אישי/אישי<ADJ>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,410,1746629700,0,pablo,iw,en,רשימה,list,רשימה/רשימה<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,133,1746629700,0,pablo,iw,en,השפעה,influence,"ה/ה<DET>Def|Art|,detשפעה/שפעה<NOUN>Fem|Sing|",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,337,1746629700,0,pablo,iw,en,מרשימים,impressive,מרשימים/מרשים<ADJ>Masc|Plur|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,487,1746629700,0,pablo,iw,en,קצה,edge,קצה/קצה<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,52,1746629700,0,pablo,iw,en,פקודה,command,פקודה/פקודה<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,425,1746629700,0,pablo,iw,en,התחלה,beginning,התחלה/התחלה<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,300,1746629700,0,pablo,iw,en,החושך,darkness,"ה/ה<DET>Def|Art|,detחושך/חושך<NOUN>Masc|Sing|",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,261,1746629700,0,pablo,iw,en,החלטה,decision,"ה/ה<DET>Def|Art|,detחלטה/חלטה<NOUN>Fem|Sing|",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,74,1746629700,0,pablo,iw,en,פרס,reward,פרס/פרס<PROPN>,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,270,1746629700,0,pablo,iw,en,נושא,subject,נושא/נושא<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,86,1746629700,0,pablo,iw,en,מנוחה,rest,מנוחה/מנוחה<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,535,1746629700,0,pablo,iw,en,הצלחה,success,הצלחה/הצלחה<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,296,1746629700,0,pablo,iw,en,קול,voice,קול/קול<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,240,1746629700,0,pablo,iw,en,בחירה,choice,בחירה/בחירה<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,331,1746629700,0,pablo,iw,en,ענין,matter,ענין/עניין<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,245,1746629700,0,pablo,iw,en,כישלון,failure,כישלון/כישלון<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,494,1746629700,0,pablo,iw,en,תפקיד,role,תפקיד/תפקיד<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,360,1746629700,0,pablo,iw,en,משבר,crisis,משבר/משבר<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,353,1746629700,0,pablo,iw,en,הזדמנות,opportunity,הזדמנות/הזדמנות<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,517,1746629700,0,pablo,iw,en,ההגנה,defense,ההגנה/ההגנה<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,204,1746629700,0,pablo,iw,en,תור,turn,תור/תור<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,144,1746629700,0,pablo,iw,en,תגובה,comment,תגובה/תגובה<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,529,1746629700,0,pablo,iw,en,הסכם,agreement,"ה/ה<DET>Def|Art|,detסכם/סכם<NOUN>Masc|Sing|",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,406,1746629700,0,pablo,iw,en,תקוה,hope,תקוה/תקוה<PROPN>,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,580,1746629700,0,pablo,iw,en,חטוף,secuestrado,חטוף/חטוף<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,363,1746629700,0,pablo,iw,en,נקודת מבט,perspective,"נקודת/נקודה<NOUN>Cons|Fem|Sing|מבט/מבט<NOUN>Masc|Sing|,compound:smixut",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,158,1746629700,0,pablo,iw,en,מערב,west,מערב/מערב<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,495,1746629700,0,pablo,iw,en,מזרח,east,מזרח/מזרח<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,21,1746629700,0,pablo,iw,en,דרום,south,דרום/דרום<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,10,1746629700,0,pablo,iw,en,צפון,north,צפון/צפון<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,244,1746629700,0,pablo,iw,en,רמה,level,רמה/רמה<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,218,1746629700,0,pablo,iw,en,שליטה,control,שליטה/שליטה<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,422,1746629700,0,pablo,iw,en,שיחה,conversation,שיחה/שיחה<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,382,1746629700,0,pablo,iw,en,חלק,part,חלק/חלק<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,298,1746629700,0,pablo,iw,en,קבוצה,group,קבוצה/קבוצה<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,488,1746629700,0,pablo,iw,en,שינוי,change,שינוי/שינוי<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,152,1746629700,0,pablo,iw,en,מקרה,case,מקרה/מקרה<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,489,1746629700,0,pablo,iw,en,משמעות,meaning,משמעות/משמעות<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,4,1746629700,0,pablo,iw,en,סוג,kind,סוג/סוג<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,551,1746629700,0,pablo,iw,en,מדהים,Amazing,"מדהים/הדהים<VERB>Masc|HIFIL|Sing|1,2,3|Part|Act|",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,278,1746629700,0,pablo,iw,en,להתאחד,unite,להתאחד/התאחד<VERB>HITPAEL|Inf|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,562,1746629700,0,pablo,iw,en,טהור,pure,טהור/טהור<ADJ>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,177,1746629700,0,pablo,iw,en,נדיר,rare,נדיר/נדיר<ADJ>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,433,1746629700,0,pablo,iw,en,נפלא,wonderful,נפלא/נפלא<ADJ>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,239,1746629700,0,pablo,iw,en,מרתקת,fascinating,מרתקת/מרתק<ADJ>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,564,1746629700,0,pablo,iw,en,טעם,taste,"ט/ט<ADP>,caseה_/ה<DET>Def|Art|,detעם/עם<NOUN>Masc|Sing|",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,351,1746629700,0,pablo,iw,en,מוזר,strange,מוזר/מוזר<ADJ>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,559,1746629700,0,pablo,iw,en,טרי,fresh,טרי/טרי<ADJ>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,380,1746629700,0,pablo,iw,en,בודד,lonely,בודד/בודד<ADJ>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,486,1746629700,0,pablo,iw,en,צר,narrow,צר/צר<ADJ>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,69,1746629700,0,pablo,iw,en,רחב,wide,רחב/רחב<ADJ>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,187,1746629700,0,pablo,iw,en,מסורתי,traditional,מסורתי/מסורתי<ADJ>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,241,1746629700,0,pablo,iw,en,חכם,smart,"חכ_/חכ<NOUN>Def|Masc|Sing|_של_/של<ADP>,case:gen_הם/הוא<PRON>Gen|Masc|Plur|3|Prs|,nmod:poss",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,79,1746629700,0,pablo,iw,en,מכוער,ugly,מכוער/מכוער<ADJ>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,37,1746629700,0,pablo,iw,en,טיפש,Stupid,טיפש/טיפש<ADJ>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,345,1746629700,0,pablo,iw,en,מטומטם,dumb,"מטומטם/טומט<VERB>Masc|PUAL|Sing|1,2,3|Part|Pass|",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,165,1746629700,0,pablo,iw,en,מיד,immediately,מיד/מייד<ADV>,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,129,1746629700,0,pablo,iw,en,היחיד,the only,היחיד/היחיד<VERB>Masc|HIFIL|Sing|3|Past|Act|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,325,1746629700,0,pablo,iw,en,רשמי,official,רשמי/רשמי<ADJ>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,566,1746629700,0,pablo,iw,en,להשתמש,to use,להשתמש/השתמש<VERB>HITPAEL|Inf|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,333,1746629700,0,pablo,iw,en,להתבלבל,get confused,להתבלבל/התבלבל<VERB>HITPAEL|Inf|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,324,1746629700,0,pablo,iw,en,להתעמל,Exercising,להתעמל/התעמל<VERB>HITPAEL|Inf|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,381,1746629700,0,pablo,iw,en,להתנצל,to apologize,להתנצל/התנצל<VERB>HITPAEL|Inf|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,207,1746629700,0,pablo,iw,en,צות,crew,צות/צות<PROPN>,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,111,1746629700,0,pablo,iw,en,להתייעץ,to consult,"ל/ל<ADP>,caseהתייעץ/התייעץ<VERB>Masc|HITPAEL|Sing|3|Past|",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,225,1746629700,0,pablo,iw,en,להתכונן,Get ready,"ל/ל<ADP>,caseהתכונן/התכונן<VERB>Masc|HITPAEL|Sing|3|Past|",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,349,1746629700,0,pablo,iw,en,להצטרף,to join,"ל/ל<ADP>,caseהצטרף/הצטרף<VERB>Masc|HITPAEL|Sing|3|Past|",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,100,1746629700,0,pablo,iw,en,מסתיים,ends,"מסתיים/הסתיים<VERB>Masc|HITPAEL|Sing|1,2,3|Part|",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,19,1746629700,0,pablo,iw,en,להתמודד,to cope,להתמודד/התמודד<VERB>HITPAEL|Inf|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,568,1746629700,0,pablo,iw,en,להתאמן,to train,להתאמן/התאמן<VERB>HITPAEL|Inf|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,174,1746629700,0,pablo,iw,en,להשתכר,get drunk,להשתכר/השתכר<VERB>HITPAEL|Inf|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,336,1746629700,0,pablo,iw,en,להשתנות,change,"ל/ל<ADP>,caseהשתנות/השתנה<NOUN>Fem|Sing|",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,299,1746629700,0,pablo,iw,en,להתחבא,hide,להתחבא/התחבא<VERB>HITPAEL|Inf|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,190,1746629700,0,pablo,iw,en,להתאושש,to recover,להתאושש/התאושש<VERB>HITPAEL|Inf|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,438,1746629700,0,pablo,iw,en,להתגעגע,to miss,להתגעגע/התגעגע<VERB>HITPAEL|Inf|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,458,1746629700,0,pablo,iw,en,להזדקן,to get old,"ל/ל<ADP>,caseהזדקן/הזדקן<VERB>Masc|HITPAEL|Sing|3|Past|",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,540,1746629700,0,pablo,iw,en,להתקר,get cold,להתקר/התקר<VERB>HITPAEL|Inf|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,41,1746629700,0,pablo,iw,en,להתחמם,warm up,"ל/ל<ADP>,caseהתחם_/התחם<NOUN>Def|Masc|Sing|_של_/של<ADP>,case:gen_הם/הוא<PRON>Gen|Masc|Plur|3|Prs|,nmod:poss",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,556,1746629700,0,pablo,iw,en,התמחות,specialization,"ה/ה<DET>Def|Art|,detתמחות/תמחות<NOUN>Fem|Sing|",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,320,1746629700,0,pablo,iw,en,להתחנך,be educated,להתחנך/התחנך<VERB>HITPAEL|Inf|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,515,1746629700,0,pablo,iw,en,להתחנן,to beg,להתחנן/התחנן<VERB>HITPAEL|Inf|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,577,1746629700,0,pablo,iw,en,להתגלח,shave,להתגלח/התגלח<VERB>HITPAEL|Inf|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,403,1746629700,0,pablo,iw,en,להתחזק,get strong,להתחזק/התחזק<VERB>HITPAEL|Inf|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,524,1746629700,0,pablo,iw,en,אפשר,possible,אפשר/אפשר<AUX>Mod|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,384,1746629700,0,pablo,iw,en,קופסה,box,קופסה/קופסה<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,66,1746629700,0,pablo,iw,en,פעמון,bell,פעמון/פעמון<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,484,1746629700,0,pablo,iw,en,מטריה,umbrella,מטריה/מטריה<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,378,1746629700,0,pablo,iw,en,מספריים,scissors,מספריים/מספרי<ADJ>Masc|Plur|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,200,1746629700,0,pablo,iw,en,מסכים,agree,"מסכים/הסכים<VERB>Masc|HIFIL|Sing|1,2,3|Part|Act|",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,173,1746629700,0,pablo,iw,en,מחקר,research,מחקר/מחקר<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,492,1746629700,0,pablo,iw,en,הרצאה,lecture,"ה/ה<DET>Def|Art|,detרצאה/רצאה<NOUN>Fem|Sing|",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,238,1746629700,0,pablo,iw,en,מסיים,finishing,"מסיים/סיים<VERB>Masc|PIEL|Sing|1,2,3|Part|Act|",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,357,1746629700,0,pablo,iw,en,סכין,knife,"סכין/סכין<NOUN>Fem,Masc|Sing|",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,27,1746629700,0,pablo,iw,en,בית הקולנוע,the cinema,"בית/בית<NOUN>Cons|Masc|Sing|הקולנוע/הקולנוע<PROPN>,compound:smixut",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,328,1746629700,0,pablo,iw,en,חייב,have to,"חייב/חייב<AUX>Masc|Sing|1,2,3|Mod|",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,493,1746629700,0,pablo,iw,en,גדר,fence,גדר/גדר<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,285,1746629700,0,pablo,iw,en,אבקה,powder,אבקה/אבקה<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,251,1746629700,0,pablo,iw,en,רצפה,floor,רצפה/רצפה<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,386,1746629700,0,pablo,iw,en,מחבת,pan,מחבת/מחבה<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,449,1746629700,0,pablo,iw,en,עצם,object,"עם_/עם<NOUN>Def|Masc|Sing|_של_/של<ADP>,case:gen_הם/הוא<PRON>Gen|Masc|Plur|3|Prs|,nmod:poss",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,385,1746629700,0,pablo,iw,en,חפץ,object,חפץ/חפץ<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,371,1746629700,0,pablo,iw,en,שורשים,roots,שורשים/שורש<NOUN>Masc|Plur|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,485,1746629700,0,pablo,iw,en,בריכה,pool,בריכה/בריכה<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,146,1746629700,0,pablo,iw,en,גלגל,wheel,גלגל/גלגל<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,236,1746629700,0,pablo,iw,en,קופסא,box,קופסא/קופסא<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,172,1746629700,0,pablo,iw,en,מצעים,bedding,מצעים/מצע<NOUN>Masc|Plur|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,252,1746629700,0,pablo,iw,en,לאבד,lose,לאבד/איבד<VERB>PIEL|Inf|Act|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,276,1746629700,0,pablo,iw,en,סל,basket,סל/סל<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,104,1746629700,0,pablo,iw,en,ארנק,wallet,ארנק/ארנק<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,588,1746629700,0,pablo,iw,en,נייר,paper,נייר/נייר<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,585,1746629700,0,pablo,iw,en,סוללה,battery,סוללה/סוללה<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,116,1746629700,0,pablo,iw,en,שעון,clock,"ש/ש<SCONJ>,markעון/ען<VERB>Masc|PAAL|Sing|2|Past|Act|",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,369,1746629700,0,pablo,iw,en,לשבור,to break,לשבור/שבר<VERB>PAAL|Inf|Act|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,548,1746629700,0,pablo,iw,en,להאמין,to believe,"ל/ל<ADP>,caseהאמין/האמין<VERB>Masc|HIFIL|Sing|3|Past|Act|",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,81,1746629700,0,pablo,iw,en,לגנוב,steal,לגנוב/גנב<VERB>PAAL|Inf|Act|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,23,1746629700,0,pablo,iw,en,קוף,monkey,קוף/קוף<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,265,1746629700,0,pablo,iw,en,להקשיב,to listen,להקשיב/הקשיב<VERB>HIFIL|Inf|Act|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,531,1746629700,0,pablo,iw,en,להראות,to show,להראות/להראות<VERB>Inf|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,77,1746629700,0,pablo,iw,en,להחליט,to decide,להחליט/החליט<VERB>HIFIL|Inf|Act|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,322,1746629700,0,pablo,iw,en,נחש,snake,נחש/נחש<PROPN>,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,447,1746629700,0,pablo,iw,en,עכביש,spider,עכביש/עכביש<PROPN>,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,287,1746629700,0,pablo,iw,en,לסיים,to finish,לסיים/סיים<VERB>PIEL|Inf|Act|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,293,1746629700,0,pablo,iw,en,לחכות,to wait,לחכות/חיכה<VERB>PIEL|Inf|Act|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,522,1746629700,0,pablo,iw,en,לשקר,to lie,לשקר/שיקר<VERB>PIEL|Inf|Act|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,401,1746629700,0,pablo,iw,en,בזבז,wasted,בזבז/בזבז<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,546,1746629700,0,pablo,iw,en,לבזבז,spend,לבזבז/בזבז<VERB>PIEL|Inf|Act|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,359,1746629700,0,pablo,iw,en,לנצח,to win,לנצח/ניצח<VERB>PIEL|Inf|Act|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,60,1746629700,0,pablo,iw,en,אנחנו מנצחים,we win,"אנחנו/הוא<PRON>Fem,Masc|Plur|1|Prs|,nsubjמנצחים/מנצח<VERB>Masc|PIEL|Plur|1,2,3|Part|Act|",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,213,1746629700,0,pablo,iw,en,להתלונן,to complain,"ל/ל<ADP>,caseהתלונן/התלונן<VERB>Masc|HITPAEL|Sing|3|Past|",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,132,1746629700,0,pablo,iw,en,נפש,soul,נפש/נפש<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,399,1746629700,0,pablo,iw,en,חוצפה,gall,חוצפה/חוצפה<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,313,1746629700,0,pablo,iw,en,דאגה,worry,דאגה/דאגה<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,88,1746629700,0,pablo,iw,en,מערכת יחסים,relationship,"מערכת/מערכת<NOUN>Cons|Fem|Sing|יחסים/יחסים<NOUN>Masc|Plur|,compound:smixut",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,114,1746629700,0,pablo,iw,en,נופים,Views,נופים/נוף<NOUN>Masc|Plur|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,167,1746629700,0,pablo,iw,en,צעצועים,toys,"צעצוע_/צעצוע<NOUN>Def|Masc|Sing|_של_/של<ADP>,case:gen_הם/הוא<PRON>Gen|Masc|Plur|3|Prs|,nmod:poss",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,216,1746629700,0,pablo,iw,en,משקפי שמש,Sunglasses,"משקפי/משקף<NOUN>Cons|Masc|Plur|שמש/שמש<PROPN>,compound:smixut",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,459,1746629700,0,pablo,iw,en,מטריה,Umbrella,מטריה/מטריה<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,420,1746629700,0,pablo,iw,en,סולם,ladder,"סול_/סול<NOUN>Def|Masc|Sing|_של_/של<ADP>,case:gen_הם/הוא<PRON>Gen|Masc|Plur|3|Prs|,nmod:poss",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,441,1746629700,0,pablo,iw,en,תרופה,Medication,"תרוף_/תרוף<NOUN>Def|Masc|Sing|_של_/של<ADP>,case:gen_היא/הוא<PRON>Gen|Fem|Sing|3|Prs|,nmod:poss",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,92,1746629700,0,pablo,iw,en,תכשיט,jewelry,תכשיט/תכשיט<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,307,1746629700,0,pablo,iw,en,חומרי בניין,construction materials,"חומרי/חומר<NOUN>Cons|Masc|Plur|בניין/בניין<NOUN>Masc|Sing|,compound:smixut",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,137,1746629700,0,pablo,iw,en,חיטה מלאה,whole wheat,"חיטה/חיטה<NOUN>Fem|Sing|מלאה/מלא<ADJ>Fem|Sing|,amod",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,587,1746629700,0,pablo,iw,en,אני מלטף,I caress,"אני/הוא<PRON>Fem,Masc|Sing|1|Prs|,nsubjמלטף/ליטף<VERB>Masc|PIEL|Sing|1,2,3|Part|Act|",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,309,1746629700,0,pablo,iw,en,אני סולח,I forgive,"אני/הוא<PRON>Fem,Masc|Sing|1|Prs|,nsubjסולח/סלח<VERB>Masc|PAAL|Sing|1,2,3|Part|Act|",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,142,1746629700,0,pablo,iw,en,יחסית,relatively,יחסית/יחסית<ADV>,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,455,1746629700,0,pablo,iw,en,משחת שיניים,toothpaste,"משחת/משחה<NOUN>Cons|Fem|Sing|שיניים/שן<NOUN>Fem|Plur|,compound:smixut",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,58,1746629700,0,pablo,iw,en,להבריש,brush,להבריש/הבריש<VERB>HIFIL|Inf|Act|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,434,1746629700,0,pablo,iw,en,מברשת שנים,toothbrush,"מברשת/מברשת<NOUN>Cons|Fem|Sing|שנים/שנה<NOUN>Fem|Plur|,compound:smixut",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,249,1746629700,0,pablo,iw,en,רטוב,wet,רטוב/רטוב<ADJ>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,211,1746629700,0,pablo,iw,en,יבש,dry,יבש/יבש<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,479,1746629700,0,pablo,iw,en,מלוכלך,dirty,מלוכלך/מלוכלך<ADJ>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,108,1746629700,0,pablo,iw,en,נקי,net,נקי/נקי<ADJ>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,383,1746629700,0,pablo,iw,en,רוחץ,bathing,"רוחץ/רחץ<VERB>Masc|PAAL|Sing|1,2,3|Part|Act|",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,506,1746629700,0,pablo,iw,en,מכבס,washer,"מכבס/כיבס<VERB>Masc|PIEL|Sing|1,2,3|Part|Act|",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,347,1746629700,0,pablo,iw,en,מעיר,wakes up,מעיר/מעיר<ADV>,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,161,1746629700,0,pablo,iw,en,מתעורר,Wake up,"מתעורר/התעורר<VERB>Masc|HITPAEL|Sing|1,2,3|Part|",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,16,1746629700,0,pablo,iw,en,נסיך,prince,נסיך/נסיך<PROPN>,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,482,1746629700,0,pablo,iw,en,התרעה,warning,"ה/ה<DET>Def|Art|,detתרעה/תרעה<NOUN>Fem|Sing|",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,98,1746629700,0,pablo,iw,en,פצצה,bomb,פצצה/פצצה<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,83,1746629700,0,pablo,iw,en,מטפל,Therapist,"מטפל/טיפל<VERB>Masc|PIEL|Sing|1,2,3|Part|Act|",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,509,1746629700,0,pablo,iw,en,אני מטלפן,I phone,"אני/הוא<PRON>Fem,Masc|Sing|1|Prs|,nsubjמטלפן/טלפן<VERB>Masc|PIEL|Sing|1,2,3|Part|Act|",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,379,1746629700,0,pablo,iw,en,רכבת,a train,רכבת/רכבת<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,338,1746629700,0,pablo,iw,en,בצל,Onion,בצל/בצל<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,209,1746629700,0,pablo,iw,en,בגלל,Because,בגלל/בגלל<ADP>,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,255,1746629700,0,pablo,iw,en,מעבדה,laboratory,מעבדה/מעבדה<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,48,1746629700,0,pablo,iw,en,חתיך,Handsome,חתיך/חתיך<ADJ>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,483,1746629700,0,pablo,iw,en,מופרע,disturbed,"מופרע/הופרע<VERB>Masc|HUFAL|Sing|1,2,3|Part|Pass|",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,194,1746629700,0,pablo,iw,en,שונא,hate,"שונא/שנא<VERB>Masc|PAAL|Sing|1,2,3|Part|Act|",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,145,1746629700,0,pablo,iw,en,מודע,aware,מודע/מודע<ADJ>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,491,1746629700,0,pablo,iw,en,לפחות,at least,לפחות/לפחות<ADV>,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,590,1746629700,0,pablo,iw,en,מעצבן,annoying,"מעצב_/מעצב<NOUN>Def|Masc|Sing|_של_/של<ADP>,case:gen_הן/הוא<PRON>Gen|Fem|Plur|3|Prs|,nmod:poss",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,343,1746629700,0,pablo,iw,en,אל,to,אל/אל<PROPN>,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,557,1746629700,0,pablo,iw,en,בעיקר,Mainly,בעיקר/בעיקר<ADV>,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,442,1746629700,0,pablo,iw,en,בשבילך,for you,"בשביל_/בשביל<ADP>,case_אתה/הוא<PRON>Masc|Sing|2|Prs|",0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,280,1746629700,0,pablo,iw,en,נרגילה,hookah,נרגילה/נרגילה<NOUN>Fem|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,90,1746629700,0,pablo,iw,en,צבא,Army,צבא/צבא<NOUN>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,572,1746629700,0,pablo,iw,en,חמוד,Cute,חמוד/חמוד<ADJ>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,163,1746629700,0,pablo,iw,en,ביקשת,you asked,ביקשת/ביקש<VERB>Masc|PIEL|Sing|1|Past|Act|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,150,1746629700,0,pablo,iw,en,להתקלח,shower,להתקלח/התקלח<VERB>HITPAEL|Inf|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+0.0,561,1746629700,0,pablo,iw,en,חצוף,insolent,חצוף/חצוף<ADJ>Masc|Sing|,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0.0,False
+1.0,719,1750764918,1628823,pablo,iw,en,בדיחה,joke,בדיחה/בדיחה<NOUN>Fem|Sing|,5,5,0,0,0.0,0,0,5,5,0,0,0,0,0.3267,False
+1.0,722,1750766005,1629910,pablo,iw,en,משאית,truck,משאית/משאית<NOUN>Fem|Sing|,5,5,0,0,0.0,0,0,5,5,0,0,0,0,0.2399,False

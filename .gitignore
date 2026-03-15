@@ -8,12 +8,13 @@
 *.pdf
 *.sh~
 /dump_folder/*
-mht/mht/legacy_mht/gui/Graphics/*
-mht/mht/legacy_mht/gui/Graphics
-mht/mht/legacy_mht/gui/__pycache__/*.pyc
+mht/legacy_mht/gui/Graphics/*
+mht/legacy_mht/gui/Graphics
+mht/legacy_mht/gui/__pycache__/*.pyc
 mht/gui/__pycache__/*.pyc
 *.pyc
 mht/legacy_mht/scripts/applescripts/*
+mht/legacy_mht/scripts/applescripts
 *scpt
 **/.ipynb_checkpoints/*-checkpoint.ipynb
 **/learning_traces.13m.csv
@@ -23,5 +24,5 @@ mht/legacy_mht/gui/icons/*.png
 mht/legacy_mht/**/data/processed/he_vectors/*
 mht/legacy_mht/**/data/processed/he_vectors/** */
 mht/legacy_mht/**/data/processed/EGGs/*.eggs
-.vscode/launch.json
-mht/mht/legacy_mht/gui/Graphics/Battlebacks/battlebgAgatha.png
+mht/legacy_mht/data/processed/vectors_lip/vectors_heb_lip.npz
+mht/legacy_mht/data/processed/he_vectors/*

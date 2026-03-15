@@ -1,0 +1,67 @@
+p_recall,timestamp,delta,user_id,learning_language,ui_language,word_ll,word_ul,lexeme_string,history_seen,history_correct,session_seen,session_correct,p_pred
+0.0,1590947078,0,pablo,de,en,ungebührliche Auflehnung,undue defiance,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,Remis,draw,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,eine abermalige Partie,but a repeated batch,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,eine naive Ausflucht,is a naive subterfuge,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,Hochmut gedemütigt,pride humiliation,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,die verwegensten Hypothesen,the boldest hypotheses,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,ihm unsere Bitte zu unterbreiten,to submit our request,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,eine Ecke mit enragierten Schachspielern,a corner with enragierten chess players,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,Abt,Abt,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,kein Hehl,no secret,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,heiserer Stimme,hoarsely,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,Erniedrigungen Martern Torturen die ich dor,degrading tortures tortures I dor,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,Verzeihen Sie die Blamage,Forgive the disgrace,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,wie jede richtige Turnierpartie für uns Laien,like any real tournament game for us laymen,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,plötzlichen Eifer,sudden zeal,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,die Zahlen 1 bis 8 für die Querreihen,the numbers  to  for the transverse rows,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,würgen an meinen Gedanken,choke on my mind,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,das entsetzliche Dasselbe,the terrible Same,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,die Marter des Fragens,the torture of questioning,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,Leugnete ich zuviel ab,Denied I too much from,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,mit ehernem Stichel eingegraben,buried with brazen stylus,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,bis einem die Schläfen schmerzten,to a temples ached,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,die Seele mürbe zu machen,the soul tenderized to make,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,Anfangs amüsierte mich diese ehrgeizige Verbis,At first amused me this ambitious verbs,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,das Feld von Figuren entblößte,the field of figures bared,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,argwöhnten,suspected,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,Schande,shame,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,Dilettant im schönsten Sinne des Wortes,Dilettant in the best sense of the word,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,das kostet ihn zwei Tempi einen Bauern und da,which cost him two tempi a farmer and there,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,eine blendende Karriere von vornherein zu weis,to prophesy a brilliant career from the outset,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,Figuren wie Hebel vorschoben,vorschoben  characters like lever,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,ein Gall vielleicht die Gehirne solcher Schach,is a Gall perhaps the brains of such chess,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,halbwüchsigen,adolescent,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,widerspenstig,unruly,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,stur,stubborn,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,schmauchend,puffing,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,Famulus,Famulus,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,Er spielte zäh langsam,He played tough slowly,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,Rückständigkeit,backwardness,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,seine dicken Nüstern noch breiter dehnten,his thick nostrils stretched even wider,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,im belanglosesten Spiel eine Niederlage,in belanglosesten game defeat,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,sofern man den Zuschuß für ein Jahr leiste,is provided the grant for one year strip,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,der Einbruch eines völlig Unbekannten in die r,the slump of a totally unknown in the r,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,sein ärmliches Eckchen Unsterblichkeit,be impoverished corner immortality,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1591178458,231380,pablo,de,en,außerstande,unable,lernt/lernen<vblex><pri><p3><sg>,1,0,0,0,0
+0.0,1590947078,0,pablo,de,en,Schädeln,skulls,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,die übliche Geschäftigkeit und Bewegung der le,the usual bustle and movement of the le,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,kam er schon gegen den besten Spieler auf Remis,he already came against the best players in draw,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1591180838,233760,pablo,de,en,gegen den kaltschnäuzigen Gegner,against the hard-nosed opponents,lernt/lernen<vblex><pri><p3><sg>,1,0,0,0,0
+0.0,1590947078,0,pablo,de,en,treppauf und treppab,upstairs and downstairs,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,um ihren Freunden das Geleit zu geben,to their friends to give the convoy,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,man ihm hätte im Trab nachlaufen müssen,you would have to scramble after him at a trot,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,Zöglings,pupil,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,Gaudium,Gaudium,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,Kühnheit,boldness,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,den Eitelkeitskoller kriegen,get the Eitelkeitskoller,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,in seinem vermauerten Gehirn,in his walled brain,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,Neugierde,Curiosity,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,seine peripatetische Deckrunde,his peripatetic deck Round,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.0,1590947078,0,pablo,de,en,Aber wie sollte ein so rascher Ruhm nicht ein,But how could a such a rapid fame,lernt/lernen<vblex><pri><p3><sg>,0,0,0,0,0
+0.5,1591009088,62010,pablo,de,en,redlich,honestly,lernt/lernen<vblex><pri><p3><sg>,2,1,0,0,0
+1.0,1604913983,13966905,pablo,de,en,seinen Balzschrei nachahmen,imitate his  Balzschrei,lernt/lernen<vblex><pri><p3><sg>,1,1,0,0,0
+1.0,1591199513,252435,pablo,de,en,ausweichen,dodge,lernt/lernen<vblex><pri><p3><sg>,1,1,0,0,0
+1.0,1591191035,243957,pablo,de,en,Für Schach ist nun wie für die Liebe ein Par,For chess is now a par as for love,lernt/lernen<vblex><pri><p3><sg>,1,1,0,0,0
+1.0,1591015173,68095,pablo,de,en,eines einträglichen Sports,of a lucrative Sports,lernt/lernen<vblex><pri><p3><sg>,1,1,0,0,0
+1.0,1591006378,59300,pablo,de,en,unwillkürlich,involuntarily,lernt/lernen<vblex><pri><p3><sg>,1,1,0,0,0

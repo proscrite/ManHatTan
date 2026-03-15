@@ -1,0 +1,1058 @@
+Using pip 25.2 from /Users/pabloherrero/dev/kivy_venv/lib/python3.9/site-packages/pip (python 3.9)
+Non-user install because user site-packages disabled
+Disabling truststore because Python version isn't 3.10+
+Created temporary directory: /private/var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/pip-build-tracker-mf3ymw8y
+Initialized build tracking at /private/var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/pip-build-tracker-mf3ymw8y
+Created build tracker: /private/var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/pip-build-tracker-mf3ymw8y
+Entered build tracker: /private/var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/pip-build-tracker-mf3ymw8y
+Created temporary directory: /private/var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/pip-install-lb8qts2w
+Created temporary directory: /private/var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/pip-ephem-wheel-cache-zedh88qi
+Obtaining file:///Users/pabloherrero/dev/kivy
+  Added file:///Users/pabloherrero/dev/kivy to build tracker '/private/var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/pip-build-tracker-mf3ymw8y'
+  Checking if build backend supports build_editable: started
+  Running command Checking if build backend supports build_editable
+  Checking if build backend supports build_editable: finished with status 'done'
+  Created temporary directory: /private/var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/pip-modern-metadata-6gzcuh_5
+  Preparing editable metadata (pyproject.toml): started
+  Running command Preparing editable metadata (pyproject.toml)
+  [[1;32mINFO[0m   ] [Logger      ] Record log in /Users/pabloherrero/.kivy/logs/kivy_25-07-31_33.txt
+  [[1;32mINFO[0m   ] [Kivy        ] v3.0.0.dev0
+  [[1;32mINFO[0m   ] [Kivy        ] Installed at "/Users/pabloherrero/dev/kivy/kivy/__init__.py"
+  [[1;32mINFO[0m   ] [Python      ] v3.9.23 (main, Jun  3 2025, 18:47:52)
+  [Clang 17.0.0 (clang-1700.0.13.3)]
+  [[1;32mINFO[0m   ] [Python      ] Interpreter at "/Users/pabloherrero/dev/kivy_venv/bin/python"
+  [[1;32mINFO[0m   ] [Logger      ] Purge log fired. Processing...
+  [[1;32mINFO[0m   ] [Logger      ] Purge finished!
+   /Users/pabloherrero/dev/kivy_venv/lib/python3.9/site-packages/setuptools/dist.py:759: SetuptoolsDeprecationWarning: License classifiers are deprecated.
+   !!
+
+           ********************************************************************************
+           Please consider removing the following classifiers in favor of a SPDX license expression:
+
+           License :: OSI Approved :: MIT License
+
+           See https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#license for details.
+           ********************************************************************************
+
+   !!
+     self._finalize_license_expression()
+  [[1;32mINFO[0m   ] running dist_info
+  [[1;32mINFO[0m   ] creating /private/var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/pip-modern-metadata-6gzcuh_5/Kivy.egg-info
+  [[1;32mINFO[0m   ] writing /private/var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/pip-modern-metadata-6gzcuh_5/Kivy.egg-info/PKG-INFO
+  [[1;32mINFO[0m   ] writing dependency_links to /private/var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/pip-modern-metadata-6gzcuh_5/Kivy.egg-info/dependency_links.txt
+  [[1;32mINFO[0m   ] writing requirements to /private/var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/pip-modern-metadata-6gzcuh_5/Kivy.egg-info/requires.txt
+  [[1;32mINFO[0m   ] writing top-level names to /private/var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/pip-modern-metadata-6gzcuh_5/Kivy.egg-info/top_level.txt
+  [[1;32mINFO[0m   ] writing manifest file '/private/var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/pip-modern-metadata-6gzcuh_5/Kivy.egg-info/SOURCES.txt'
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/properties.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/_event.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/_metrics.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/_event.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/common.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vbo.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/buffer.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/cgl.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/common.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/config.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/gl_redirect.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vertex.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/context_instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/transformation.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/texture.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/compiler.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/shader.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/../_event.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/context_instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/transformation.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vbo.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/buffer.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/cgl.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/common.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/config.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/gl_redirect.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vertex.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/compiler.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/shader.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/texture.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/../_event.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/transformation.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vbo.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/buffer.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/cgl.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/common.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/config.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/gl_redirect.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vertex.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/context_instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/texture.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/compiler.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/shader.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/../_event.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/config.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/opcodes.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/transformation.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/context.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vbo.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/buffer.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/cgl.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/common.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/gl_redirect.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vertex.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/context_instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/texture.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/compiler.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/shader.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/../_event.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/config.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/opcodes.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/cgl.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/common.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/gl_redirect.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vbo.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/buffer.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vertex.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/context_instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/transformation.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/texture.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/compiler.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/shader.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/../_event.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/config.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/opcodes.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/cgl.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/common.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/gl_redirect.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/context.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vbo.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/buffer.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vertex.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/context_instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/transformation.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/texture.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/compiler.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/shader.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/../_event.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/config.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/common.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/cgl.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/gl_redirect.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/opengl_utils_def.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/cgl.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/common.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/config.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/gl_redirect.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/config.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/common.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/cgl.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/gl_redirect.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vertex.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/transformation.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/context.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vbo.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/buffer.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/context_instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/texture.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/compiler.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/shader.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/../_event.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/gl_debug_logger.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/config.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/opcodes.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/cgl.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/common.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/gl_redirect.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/gl_debug_logger.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vbo.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/buffer.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vertex.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/context_instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/transformation.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/texture.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/compiler.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/shader.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/../_event.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/config.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/opcodes.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/cgl.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/common.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/gl_redirect.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/config.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/common.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/opengl_utils_def.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/context.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vbo.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/buffer.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/cgl.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/gl_redirect.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vertex.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/context_instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/transformation.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/texture.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/compiler.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/shader.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/../_event.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/opengl_utils.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/img_tools.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/gl_debug_logger.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/config.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/common.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/context.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vbo.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/buffer.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/cgl.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/gl_redirect.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vertex.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/context_instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/transformation.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/texture.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/compiler.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/shader.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/../_event.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/gl_debug_logger.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/config.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/common.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/cgl.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/gl_redirect.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/config.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/common.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vbo.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/buffer.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/cgl.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/gl_redirect.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vertex.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/context_instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/transformation.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/texture.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/compiler.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/shader.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/../_event.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vertex_instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vertex_instructions_line.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/stencil_instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/cgl.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/common.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/config.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/gl_redirect.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/cgl.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/common.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/config.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/gl_redirect.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/cgl.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/common.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/config.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/gl_redirect.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/cgl.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/common.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/config.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/gl_redirect.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/cgl.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/common.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/config.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/gl_redirect.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/config.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/common.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/texture.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/cgl.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/gl_redirect.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vbo.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/buffer.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vertex.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/context_instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/transformation.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/compiler.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/shader.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/../_event.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vertex_instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/tesselator.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/fbo.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/cgl.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/common.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/config.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/gl_redirect.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vbo.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/buffer.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vertex.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/context_instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/transformation.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/texture.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/compiler.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/shader.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/../_event.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/instructions.pyx won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/opcodes.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/context.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vertex_instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/lib/pango/pangoft2.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/lib/pango/pangoft2.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/lib/gstplayer/_gstplayer.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] reading manifest file '/private/var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/pip-modern-metadata-6gzcuh_5/Kivy.egg-info/SOURCES.txt'
+  [[1;32mINFO[0m   ] reading manifest template 'MANIFEST.in'
+  [[1;33mWARNING[0m] [warning     ] no files found matching '*.txt' under directory 'kivy/tools'
+  [[1;33mWARNING[0m] [warning     ] no files found matching '*.bat' under directory 'kivy/tools'
+  [[1;33mWARNING[0m] [warning     ] no files found matching '*.pyd' under directory 'kivy'
+  [[1;33mWARNING[0m] [warning     ] no files found matching '*.m' under directory 'kivy'
+  [[1;32mINFO[0m   ] adding license file 'LICENSE'
+  [[1;32mINFO[0m   ] adding license file 'AUTHORS'
+  [[1;32mINFO[0m   ] writing manifest file '/private/var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/pip-modern-metadata-6gzcuh_5/Kivy.egg-info/SOURCES.txt'
+  [[1;32mINFO[0m   ] creating '/private/var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/pip-modern-metadata-6gzcuh_5/kivy-3.0.0.dev0.dist-info'
+  ###############################################
+  WARNING: KIVY_DEPS_ROOT is not set, using system provided SDL
+  which is not recommended as it may be incompatible with Kivy.
+  Please build dependencies from source via the provided script
+  and set KIVY_DEPS_ROOT to the root of the dependencies directory.
+  ###############################################
+  Environ change use_pangoft2 -> True
+  Current directory is: /Users/pabloherrero/dev/kivy
+  Source and initial build directory is: /Users/pabloherrero/dev/kivy
+  Python path is:
+  /Users/pabloherrero/dev/kivy
+  /Users/pabloherrero/dev/kivy/~/Documents/ManHatTan
+  /Users/pabloherrero/sabat/sabatsw
+  /opt/homebrew/Cellar/python@3.9/3.9.23/Frameworks/Python.framework/Versions/3.9/lib/python39.zip
+  /opt/homebrew/Cellar/python@3.9/3.9.23/Frameworks/Python.framework/Versions/3.9/lib/python3.9
+  /opt/homebrew/Cellar/python@3.9/3.9.23/Frameworks/Python.framework/Versions/3.9/lib/python3.9/lib-dynload
+  /Users/pabloherrero/dev/kivy_venv/lib/python3.9/site-packages
+  /Users/pabloherrero/dev/kivy_venv/lib/python3.9/site-packages/setuptools/_vendor
+  /Users/pabloherrero/dev/kivy/kivy/modules
+  /Users/pabloherrero/.kivy/mods
+
+
+  Found Cython at /Users/pabloherrero/dev/kivy_venv/lib/python3.9/site-packages/Cython/__init__.py
+  Detected supported Cython version 3.0.10
+  User distribution detected, avoid portable command.
+  Using this graphics system: OpenGL ES 2
+  GStreamer framework not found, fallback on pkg-config
+  GStreamer found via pkg-config
+  Missing framework /Library/Frameworks/SDL3.framework
+  Missing framework /Library/Frameworks/SDL3_ttf.framework
+  Missing framework /Library/Frameworks/SDL3_image.framework
+  Missing framework /Library/Frameworks/SDL3_mixer.framework
+  SDL3 frameworks not found, fallback on pkg-config
+  WARNING: A problem occurred while running pkg-config --libs --cflags sdl3 sdl3-ttf sdl3-image sdl3-mixer (code 1)
+
+  b"Package sdl3-mixer was not found in the pkg-config search path.\nPerhaps you should add the directory containing `sdl3-mixer.pc'\nto the PKG_CONFIG_PATH environment variable\nPackage 'sdl3-mixer' not found\n"
+
+  Xcode detected at b'/Applications/Xcode.app/Contents/Developer', and using OS X15.5 sdk
+  Pango: pangoft2 found via pkg-config
+  {'libraries': ['pangoft2-1.0', 'pango-1.0', 'fontconfig', 'harfbuzz', 'freetype', 'gobject-2.0', 'glib-2.0', 'intl'], 'include_dirs': ['/Users/pabloherrero/dev/kivy/kivy/include', '/opt/homebrew/Cellar/pango/1.56.4/include/pango-1.0', '/opt/homebrew/Cellar/glib/2.84.3/include', '/opt/homebrew/Cellar/fribidi/1.0.16/include/fribidi', '/opt/homebrew/Cellar/cairo/1.18.4/include/cairo', '/opt/homebrew/Cellar/fontconfig/2.16.0/include', '/opt/homebrew/Cellar/libxext/1.3.6/include', '/opt/homebrew/Cellar/xorgproto/2024.1/include', '/opt/homebrew/Cellar/libxrender/0.9.12/include', '/opt/homebrew/Cellar/libx11/1.8.12/include', '/opt/homebrew/Cellar/libxcb/1.17.0/include', '/opt/homebrew/Cellar/libxau/1.0.12/include', '/opt/homebrew/Cellar/libxdmcp/1.1.5/include', '/opt/homebrew/Cellar/pixman/0.46.4/include/pixman-1', '/opt/homebrew/Cellar/harfbuzz/11.3.3/include/harfbuzz', '/opt/homebrew/opt/freetype/include/freetype2', '/opt/homebrew/opt/libpng/include/libpng16', '/opt/homebrew/Cellar/graphite2/1.3.14/include', '/opt/homebrew/Cellar/glib/2.84.3/include/glib-2.0', '/opt/homebrew/Cellar/glib/2.84.3/lib/glib-2.0/include', '/opt/homebrew/opt/gettext/include', '/opt/homebrew/Cellar/pcre2/10.45/include', '/Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk/usr/include/ffi'], 'library_dirs': ['/opt/homebrew/Cellar/pango/1.56.4/lib', '/opt/homebrew/Cellar/fontconfig/2.16.0/lib', '/opt/homebrew/Cellar/harfbuzz/11.3.3/lib', '/opt/homebrew/opt/freetype/lib', '/opt/homebrew/Cellar/glib/2.84.3/lib', '/opt/homebrew/opt/gettext/lib'], 'extra_link_args': ['-F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks'], 'extra_compile_args': ['-F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks'], 'depends': ['lib/pango/pangoft2.pxi', 'lib/pango/pangoft2.h']}
+  Building extensions in parallel using 4 cores
+  Preparing editable metadata (pyproject.toml): finished with status 'done'
+  Source in /Users/pabloherrero/dev/kivy has version 3.0.0.dev0, which satisfies requirement Kivy==3.0.0.dev0 from file:///Users/pabloherrero/dev/kivy
+  Removed Kivy==3.0.0.dev0 from file:///Users/pabloherrero/dev/kivy from build tracker '/private/var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/pip-build-tracker-mf3ymw8y'
+Created temporary directory: /private/var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/pip-unpack-8_o9lsii
+Building wheels for collected packages: Kivy
+  Created temporary directory: /private/var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/pip-wheel-p7ruuf1g
+  Destination directory: /private/var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/pip-wheel-p7ruuf1g
+  Building editable for Kivy (pyproject.toml): started
+  Running command Building editable for Kivy (pyproject.toml)
+  [[1;32mINFO[0m   ] [Logger      ] Record log in /Users/pabloherrero/.kivy/logs/kivy_25-07-31_34.txt
+  [[1;32mINFO[0m   ] [Kivy        ] v3.0.0.dev0
+  [[1;32mINFO[0m   ] [Kivy        ] Installed at "/Users/pabloherrero/dev/kivy/kivy/__init__.py"
+  [[1;32mINFO[0m   ] [Python      ] v3.9.23 (main, Jun  3 2025, 18:47:52)
+  [Clang 17.0.0 (clang-1700.0.13.3)]
+  [[1;32mINFO[0m   ] [Python      ] Interpreter at "/Users/pabloherrero/dev/kivy_venv/bin/python"
+  [[1;32mINFO[0m   ] [Logger      ] Purge log fired. Processing...
+  [[1;32mINFO[0m   ] [Logger      ] Purge finished!
+   /Users/pabloherrero/dev/kivy_venv/lib/python3.9/site-packages/setuptools/dist.py:759: SetuptoolsDeprecationWarning: License classifiers are deprecated.
+   !!
+
+           ********************************************************************************
+           Please consider removing the following classifiers in favor of a SPDX license expression:
+
+           License :: OSI Approved :: MIT License
+
+           See https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#license for details.
+           ********************************************************************************
+
+   !!
+     self._finalize_license_expression()
+  [[1;32mINFO[0m   ] running editable_wheel
+  [[1;32mINFO[0m   ] creating /private/var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/pip-wheel-p7ruuf1g/.tmp-h1gzvp12/Kivy.egg-info
+  [[1;32mINFO[0m   ] writing /private/var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/pip-wheel-p7ruuf1g/.tmp-h1gzvp12/Kivy.egg-info/PKG-INFO
+  [[1;32mINFO[0m   ] writing dependency_links to /private/var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/pip-wheel-p7ruuf1g/.tmp-h1gzvp12/Kivy.egg-info/dependency_links.txt
+  [[1;32mINFO[0m   ] writing requirements to /private/var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/pip-wheel-p7ruuf1g/.tmp-h1gzvp12/Kivy.egg-info/requires.txt
+  [[1;32mINFO[0m   ] writing top-level names to /private/var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/pip-wheel-p7ruuf1g/.tmp-h1gzvp12/Kivy.egg-info/top_level.txt
+  [[1;32mINFO[0m   ] writing manifest file '/private/var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/pip-wheel-p7ruuf1g/.tmp-h1gzvp12/Kivy.egg-info/SOURCES.txt'
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/properties.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/_event.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/_metrics.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/_event.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/common.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vbo.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/buffer.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/cgl.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/common.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/config.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/gl_redirect.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vertex.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/context_instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/transformation.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/texture.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/compiler.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/shader.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/../_event.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/context_instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/transformation.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vbo.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/buffer.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/cgl.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/common.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/config.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/gl_redirect.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vertex.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/compiler.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/shader.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/texture.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/../_event.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/transformation.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vbo.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/buffer.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/cgl.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/common.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/config.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/gl_redirect.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vertex.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/context_instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/texture.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/compiler.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/shader.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/../_event.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/config.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/opcodes.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/transformation.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/context.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vbo.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/buffer.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/cgl.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/common.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/gl_redirect.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vertex.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/context_instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/texture.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/compiler.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/shader.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/../_event.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/config.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/opcodes.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/cgl.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/common.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/gl_redirect.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vbo.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/buffer.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vertex.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/context_instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/transformation.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/texture.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/compiler.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/shader.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/../_event.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/config.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/opcodes.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/cgl.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/common.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/gl_redirect.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/context.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vbo.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/buffer.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vertex.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/context_instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/transformation.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/texture.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/compiler.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/shader.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/../_event.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/config.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/common.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/cgl.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/gl_redirect.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/opengl_utils_def.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/cgl.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/common.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/config.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/gl_redirect.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/config.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/common.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/cgl.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/gl_redirect.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vertex.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/transformation.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/context.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vbo.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/buffer.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/context_instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/texture.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/compiler.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/shader.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/../_event.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/gl_debug_logger.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/config.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/opcodes.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/cgl.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/common.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/gl_redirect.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/gl_debug_logger.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vbo.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/buffer.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vertex.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/context_instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/transformation.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/texture.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/compiler.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/shader.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/../_event.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/config.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/opcodes.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/cgl.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/common.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/gl_redirect.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/config.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/common.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/opengl_utils_def.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/context.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vbo.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/buffer.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/cgl.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/gl_redirect.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vertex.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/context_instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/transformation.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/texture.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/compiler.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/shader.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/../_event.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/opengl_utils.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/img_tools.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/gl_debug_logger.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/config.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/common.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/context.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vbo.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/buffer.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/cgl.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/gl_redirect.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vertex.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/context_instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/transformation.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/texture.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/compiler.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/shader.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/../_event.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/gl_debug_logger.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/config.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/common.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/cgl.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/gl_redirect.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/config.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/common.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vbo.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/buffer.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/cgl.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/gl_redirect.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vertex.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/context_instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/transformation.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/texture.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/compiler.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/shader.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/../_event.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vertex_instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vertex_instructions_line.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/stencil_instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/cgl.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/common.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/config.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/gl_redirect.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/cgl.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/common.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/config.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/gl_redirect.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/cgl.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/common.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/config.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/gl_redirect.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/cgl.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/common.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/config.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/gl_redirect.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/cgl.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/common.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/config.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/gl_redirect.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/config.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/common.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/texture.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/cgl.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/gl_redirect.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vbo.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/buffer.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vertex.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/context_instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/transformation.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/compiler.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/shader.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/../_event.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vertex_instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/tesselator.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/fbo.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/cgl.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/common.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/config.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/include/gl_redirect.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vbo.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/buffer.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vertex.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/context_instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/transformation.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/texture.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/compiler.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/shader.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/../_event.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/instructions.pyx won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/opcodes.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/context.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/graphics/vertex_instructions.pxd won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/lib/pango/pangoft2.pxi won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/lib/pango/pangoft2.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] [dependency /Users/pabloherrero/dev/kivy/kivy/lib/gstplayer/_gstplayer.h won't be automatically included in the manifest] the path must be relative
+  [[1;32mINFO[0m   ] reading manifest file '/private/var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/pip-wheel-p7ruuf1g/.tmp-h1gzvp12/Kivy.egg-info/SOURCES.txt'
+  [[1;32mINFO[0m   ] reading manifest template 'MANIFEST.in'
+  [[1;33mWARNING[0m] [warning     ] no files found matching '*.txt' under directory 'kivy/tools'
+  [[1;33mWARNING[0m] [warning     ] no files found matching '*.bat' under directory 'kivy/tools'
+  [[1;33mWARNING[0m] [warning     ] no files found matching '*.pyd' under directory 'kivy'
+  [[1;33mWARNING[0m] [warning     ] no files found matching '*.m' under directory 'kivy'
+  [[1;32mINFO[0m   ] adding license file 'LICENSE'
+  [[1;32mINFO[0m   ] adding license file 'AUTHORS'
+  [[1;32mINFO[0m   ] writing manifest file '/private/var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/pip-wheel-p7ruuf1g/.tmp-h1gzvp12/Kivy.egg-info/SOURCES.txt'
+  [[1;32mINFO[0m   ] creating '/private/var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/pip-wheel-p7ruuf1g/.tmp-h1gzvp12/kivy-3.0.0.dev0.dist-info'
+  [[1;32mINFO[0m   ] creating /private/var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/pip-wheel-p7ruuf1g/.tmp-h1gzvp12/kivy-3.0.0.dev0.dist-info/WHEEL
+  [[1;32mINFO[0m   ] running build_py
+  [[1;32mINFO[0m   ] running build_ext
+  ###############################################
+  WARNING: KIVY_DEPS_ROOT is not set, using system provided SDL
+  which is not recommended as it may be incompatible with Kivy.
+  Please build dependencies from source via the provided script
+  and set KIVY_DEPS_ROOT to the root of the dependencies directory.
+  ###############################################
+  Environ change use_pangoft2 -> True
+  Current directory is: /Users/pabloherrero/dev/kivy
+  Source and initial build directory is: /Users/pabloherrero/dev/kivy
+  Python path is:
+  /Users/pabloherrero/dev/kivy
+  /Users/pabloherrero/dev/kivy/~/Documents/ManHatTan
+  /Users/pabloherrero/sabat/sabatsw
+  /opt/homebrew/Cellar/python@3.9/3.9.23/Frameworks/Python.framework/Versions/3.9/lib/python39.zip
+  /opt/homebrew/Cellar/python@3.9/3.9.23/Frameworks/Python.framework/Versions/3.9/lib/python3.9
+  /opt/homebrew/Cellar/python@3.9/3.9.23/Frameworks/Python.framework/Versions/3.9/lib/python3.9/lib-dynload
+  /Users/pabloherrero/dev/kivy_venv/lib/python3.9/site-packages
+  /Users/pabloherrero/dev/kivy_venv/lib/python3.9/site-packages/setuptools/_vendor
+  /Users/pabloherrero/dev/kivy/kivy/modules
+  /Users/pabloherrero/.kivy/mods
+
+
+  Found Cython at /Users/pabloherrero/dev/kivy_venv/lib/python3.9/site-packages/Cython/__init__.py
+  Detected supported Cython version 3.0.10
+  User distribution detected, avoid portable command.
+  Using this graphics system: OpenGL ES 2
+  GStreamer framework not found, fallback on pkg-config
+  GStreamer found via pkg-config
+  Missing framework /Library/Frameworks/SDL3.framework
+  Missing framework /Library/Frameworks/SDL3_ttf.framework
+  Missing framework /Library/Frameworks/SDL3_image.framework
+  Missing framework /Library/Frameworks/SDL3_mixer.framework
+  SDL3 frameworks not found, fallback on pkg-config
+  WARNING: A problem occurred while running pkg-config --libs --cflags sdl3 sdl3-ttf sdl3-image sdl3-mixer (code 1)
+
+  b"Package sdl3-mixer was not found in the pkg-config search path.\nPerhaps you should add the directory containing `sdl3-mixer.pc'\nto the PKG_CONFIG_PATH environment variable\nPackage 'sdl3-mixer' not found\n"
+
+  Xcode detected at b'/Applications/Xcode.app/Contents/Developer', and using OS X15.5 sdk
+  Pango: pangoft2 found via pkg-config
+  {'libraries': ['pangoft2-1.0', 'pango-1.0', 'fontconfig', 'harfbuzz', 'freetype', 'gobject-2.0', 'glib-2.0', 'intl'], 'include_dirs': ['/Users/pabloherrero/dev/kivy/kivy/include', '/opt/homebrew/Cellar/pango/1.56.4/include/pango-1.0', '/opt/homebrew/Cellar/glib/2.84.3/include', '/opt/homebrew/Cellar/fribidi/1.0.16/include/fribidi', '/opt/homebrew/Cellar/cairo/1.18.4/include/cairo', '/opt/homebrew/Cellar/fontconfig/2.16.0/include', '/opt/homebrew/Cellar/libxext/1.3.6/include', '/opt/homebrew/Cellar/xorgproto/2024.1/include', '/opt/homebrew/Cellar/libxrender/0.9.12/include', '/opt/homebrew/Cellar/libx11/1.8.12/include', '/opt/homebrew/Cellar/libxcb/1.17.0/include', '/opt/homebrew/Cellar/libxau/1.0.12/include', '/opt/homebrew/Cellar/libxdmcp/1.1.5/include', '/opt/homebrew/Cellar/pixman/0.46.4/include/pixman-1', '/opt/homebrew/Cellar/harfbuzz/11.3.3/include/harfbuzz', '/opt/homebrew/opt/freetype/include/freetype2', '/opt/homebrew/opt/libpng/include/libpng16', '/opt/homebrew/Cellar/graphite2/1.3.14/include', '/opt/homebrew/Cellar/glib/2.84.3/include/glib-2.0', '/opt/homebrew/Cellar/glib/2.84.3/lib/glib-2.0/include', '/opt/homebrew/opt/gettext/include', '/opt/homebrew/Cellar/pcre2/10.45/include', '/Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk/usr/include/ffi'], 'library_dirs': ['/opt/homebrew/Cellar/pango/1.56.4/lib', '/opt/homebrew/Cellar/fontconfig/2.16.0/lib', '/opt/homebrew/Cellar/harfbuzz/11.3.3/lib', '/opt/homebrew/opt/freetype/lib', '/opt/homebrew/Cellar/glib/2.84.3/lib', '/opt/homebrew/opt/gettext/lib'], 'extra_link_args': ['-F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks'], 'extra_compile_args': ['-F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks'], 'depends': ['lib/pango/pangoft2.pxi', 'lib/pango/pangoft2.h']}
+  Building extensions in parallel using 4 cores
+  Building extensions in parallel using 4 cores
+  Build configuration is:
+   * use_rpi_vidcore_lite = 0
+   * use_egl = 0
+   * use_opengl_es2 = 1
+   * use_opengl_mock = 0
+   * use_sdl3 = 0
+   * use_pangoft2 = 1
+   * use_ios = 0
+   * use_android = 0
+   * use_mesagl = 0
+   * use_x11 = 0
+   * use_wayland = 0
+   * use_gstreamer = 1
+   * use_avfoundation = 1
+   * use_osx_frameworks = 1
+   * use_angle_gl_backend = 1
+   * debug_gl = 0
+   * kivy_sdl_gl_alpha_size = 8
+   * debug = False
+  Detected compiler is unix
+  [[1;32mINFO[0m   ] building 'kivy.weakproxy' extension
+  [[1;32mINFO[0m   ] creating /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy
+  [[1;32mINFO[0m   ] building 'kivy._clock' extension
+  [[1;32mINFO[0m   ] creating /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy
+  [[1;32mINFO[0m   ] clang -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -I/Users/pabloherrero/dev/kivy_venv/include -I/opt/homebrew/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/include/python3.9 -c /Users/pabloherrero/dev/kivy/kivy/_clock.c -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/_clock.o
+  [[1;32mINFO[0m   ] clang -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -I/Users/pabloherrero/dev/kivy_venv/include -I/opt/homebrew/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/include/python3.9 -c /Users/pabloherrero/dev/kivy/kivy/weakproxy.c -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/weakproxy.o
+  [[1;32mINFO[0m   ] building 'kivy.properties' extension
+  [[1;32mINFO[0m   ] clang -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy_venv/include -I/opt/homebrew/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/include/python3.9 -c /Users/pabloherrero/dev/kivy/kivy/properties.c -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/properties.o -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks
+  [[1;32mINFO[0m   ] building 'kivy._event' extension
+  [[1;32mINFO[0m   ] clang -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy_venv/include -I/opt/homebrew/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/include/python3.9 -c /Users/pabloherrero/dev/kivy/kivy/_event.c -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/_event.o -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks
+  [[1;32mINFO[0m   ] creating /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy
+  [[1;32mINFO[0m   ] clang -bundle -undefined dynamic_lookup -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk -L/usr/local/opt/libomp/lib -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/weakproxy.o -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy/weakproxy.cpython-39-darwin.so -lm
+  [[1;32mINFO[0m   ] building 'kivy._metrics' extension
+  [[1;32mINFO[0m   ] clang -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy_venv/include -I/opt/homebrew/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/include/python3.9 -c /Users/pabloherrero/dev/kivy/kivy/_metrics.c -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/_metrics.o -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks
+  [[1;32mINFO[0m   ] clang -bundle -undefined dynamic_lookup -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk -L/usr/local/opt/libomp/lib -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/_event.o -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy/_event.cpython-39-darwin.so -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks -lm
+  [[1;32mINFO[0m   ] clang -bundle -undefined dynamic_lookup -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk -L/usr/local/opt/libomp/lib -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/_clock.o -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy/_clock.cpython-39-darwin.so -lm
+  [[1;32mINFO[0m   ] clang -bundle -undefined dynamic_lookup -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk -L/usr/local/opt/libomp/lib -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/_metrics.o -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy/_metrics.cpython-39-darwin.so -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks -lm
+  [[1;32mINFO[0m   ] building 'kivy.graphics.buffer' extension
+  [[1;32mINFO[0m   ] creating /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics
+  [[1;32mINFO[0m   ] clang -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy_venv/include -I/opt/homebrew/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/include/python3.9 -c /Users/pabloherrero/dev/kivy/kivy/graphics/buffer.c -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/buffer.o -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks
+  [[1;32mINFO[0m   ] building 'kivy.graphics.compiler' extension
+  [[1;32mINFO[0m   ] clang -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy_venv/include -I/opt/homebrew/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/include/python3.9 -c /Users/pabloherrero/dev/kivy/kivy/graphics/compiler.c -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/compiler.o -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks
+  [[1;32mINFO[0m   ] creating /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy/graphics
+  [[1;32mINFO[0m   ] clang -bundle -undefined dynamic_lookup -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk -L/usr/local/opt/libomp/lib -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/buffer.o -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy/graphics/buffer.cpython-39-darwin.so -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks -lm
+  [[1;32mINFO[0m   ] building 'kivy.graphics.context' extension
+  [[1;32mINFO[0m   ] clang -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy_venv/include -I/opt/homebrew/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/include/python3.9 -c /Users/pabloherrero/dev/kivy/kivy/graphics/context.c -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/context.o -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks
+  [[1;32mINFO[0m   ] building 'kivy.graphics.context_instructions' extension
+  [[1;32mINFO[0m   ] clang -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy_venv/include -I/opt/homebrew/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/include/python3.9 -c /Users/pabloherrero/dev/kivy/kivy/graphics/context_instructions.c -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/context_instructions.o -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks
+  [[1;32mINFO[0m   ] clang -bundle -undefined dynamic_lookup -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk -L/usr/local/opt/libomp/lib -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/compiler.o -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy/graphics/compiler.cpython-39-darwin.so -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks -lm
+  [[1;32mINFO[0m   ] clang -bundle -undefined dynamic_lookup -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk -L/usr/local/opt/libomp/lib -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/properties.o -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy/properties.cpython-39-darwin.so -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks -lm
+  [[1;32mINFO[0m   ] building 'kivy.graphics.fbo' extension
+  [[1;32mINFO[0m   ] clang -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy_venv/include -I/opt/homebrew/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/include/python3.9 -c /Users/pabloherrero/dev/kivy/kivy/graphics/fbo.c -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/fbo.o -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks
+  [[1;32mINFO[0m   ] building 'kivy.graphics.gl_instructions' extension
+  [[1;32mINFO[0m   ] clang -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy_venv/include -I/opt/homebrew/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/include/python3.9 -c /Users/pabloherrero/dev/kivy/kivy/graphics/gl_instructions.c -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/gl_instructions.o -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks
+  [[1;32mINFO[0m   ] clang -bundle -undefined dynamic_lookup -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk -L/usr/local/opt/libomp/lib -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/context.o -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy/graphics/context.cpython-39-darwin.so -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks -lm
+  [[1;32mINFO[0m   ] building 'kivy.graphics.instructions' extension
+  [[1;32mINFO[0m   ] clang -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy_venv/include -I/opt/homebrew/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/include/python3.9 -c /Users/pabloherrero/dev/kivy/kivy/graphics/instructions.c -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/instructions.o -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks
+  [[1;32mINFO[0m   ] clang -bundle -undefined dynamic_lookup -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk -L/usr/local/opt/libomp/lib -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/gl_instructions.o -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy/graphics/gl_instructions.cpython-39-darwin.so -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks -lm
+  [[1;32mINFO[0m   ] clang -bundle -undefined dynamic_lookup -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk -L/usr/local/opt/libomp/lib -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/fbo.o -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy/graphics/fbo.cpython-39-darwin.so -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks -lm
+  [[1;32mINFO[0m   ] building 'kivy.graphics.opengl' extension
+  [[1;32mINFO[0m   ] clang -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy_venv/include -I/opt/homebrew/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/include/python3.9 -c /Users/pabloherrero/dev/kivy/kivy/graphics/opengl.c -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/opengl.o -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks
+  [[1;32mINFO[0m   ] building 'kivy.graphics.opengl_utils' extension
+  [[1;32mINFO[0m   ] clang -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy_venv/include -I/opt/homebrew/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/include/python3.9 -c /Users/pabloherrero/dev/kivy/kivy/graphics/opengl_utils.c -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/opengl_utils.o -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks
+  /Users/pabloherrero/dev/kivy/kivy/graphics/opengl.c:14639:20: warning: cast to 'void *' from smaller integer type 'unsigned int' [-Wint-to-void-pointer-cast]
+   14639 |     __pyx_v_ptr = ((void *)((unsigned int)__pyx_t_3));
+         |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  [[1;32mINFO[0m   ] clang -bundle -undefined dynamic_lookup -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk -L/usr/local/opt/libomp/lib -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/context_instructions.o -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy/graphics/context_instructions.cpython-39-darwin.so -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks -lm
+  [[1;32mINFO[0m   ] clang -bundle -undefined dynamic_lookup -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk -L/usr/local/opt/libomp/lib -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/instructions.o -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy/graphics/instructions.cpython-39-darwin.so -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks -lm
+  /Users/pabloherrero/dev/kivy/kivy/graphics/opengl.c:32537:20: warning: cast to 'void *' from smaller integer type 'unsigned int' [-Wint-to-void-pointer-cast]
+   32537 |     __pyx_v_ptr = ((void *)((unsigned int)__pyx_t_3));
+         |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  [[1;32mINFO[0m   ] building 'kivy.graphics.shader' extension
+  [[1;32mINFO[0m   ] clang -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy_venv/include -I/opt/homebrew/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/include/python3.9 -c /Users/pabloherrero/dev/kivy/kivy/graphics/shader.c -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/shader.o -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks
+  [[1;32mINFO[0m   ] building 'kivy.graphics.stencil_instructions' extension
+  [[1;32mINFO[0m   ] clang -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy_venv/include -I/opt/homebrew/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/include/python3.9 -c /Users/pabloherrero/dev/kivy/kivy/graphics/stencil_instructions.c -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/stencil_instructions.o -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks
+  [[1;32mINFO[0m   ] clang -bundle -undefined dynamic_lookup -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk -L/usr/local/opt/libomp/lib -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/opengl_utils.o -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy/graphics/opengl_utils.cpython-39-darwin.so -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks -lm
+  [[1;32mINFO[0m   ] building 'kivy.graphics.scissor_instructions' extension
+  [[1;32mINFO[0m   ] clang -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy_venv/include -I/opt/homebrew/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/include/python3.9 -c /Users/pabloherrero/dev/kivy/kivy/graphics/scissor_instructions.c -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/scissor_instructions.o -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks
+  [[1;32mINFO[0m   ] clang -bundle -undefined dynamic_lookup -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk -L/usr/local/opt/libomp/lib -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/stencil_instructions.o -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy/graphics/stencil_instructions.cpython-39-darwin.so -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks -lm
+  [[1;32mINFO[0m   ] clang -bundle -undefined dynamic_lookup -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk -L/usr/local/opt/libomp/lib -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/shader.o -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy/graphics/shader.cpython-39-darwin.so -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks -lm
+  [[1;32mINFO[0m   ] clang -bundle -undefined dynamic_lookup -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk -L/usr/local/opt/libomp/lib -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/scissor_instructions.o -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy/graphics/scissor_instructions.cpython-39-darwin.so -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks -lm
+  [[1;32mINFO[0m   ] building 'kivy.graphics.texture' extension
+  [[1;32mINFO[0m   ] clang -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy_venv/include -I/opt/homebrew/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/include/python3.9 -c /Users/pabloherrero/dev/kivy/kivy/graphics/texture.c -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/texture.o -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks
+  [[1;32mINFO[0m   ] building 'kivy.graphics.transformation' extension
+  [[1;32mINFO[0m   ] clang -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy_venv/include -I/opt/homebrew/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/include/python3.9 -c /Users/pabloherrero/dev/kivy/kivy/graphics/transformation.c -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/transformation.o -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks
+  [[1;32mINFO[0m   ] building 'kivy.graphics.vbo' extension
+  [[1;32mINFO[0m   ] clang -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy_venv/include -I/opt/homebrew/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/include/python3.9 -c /Users/pabloherrero/dev/kivy/kivy/graphics/vbo.c -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/vbo.o -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks
+  2 warnings generated.
+  [[1;32mINFO[0m   ] clang -bundle -undefined dynamic_lookup -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk -L/usr/local/opt/libomp/lib -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/opengl.o -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy/graphics/opengl.cpython-39-darwin.so -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks -lm
+  /Users/pabloherrero/dev/kivy/kivy/graphics/vbo.c:7314:173: warning: cast to 'GLvoid *' (aka 'void *') from smaller integer type 'unsigned int' [-Wint-to-void-pointer-cast]
+   7314 |       __pyx_v_4kivy_8graphics_3cgl_cgl->glVertexAttribPointer(__pyx_v_attr->index, __pyx_v_attr->size, __pyx_v_attr->type, GL_FALSE, ((GLsizei)__pyx_v_self->format_size), ((GLvoid *)((unsigned int)__pyx_v_offset))); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 108, __pyx_L1_error)
+        |                                                                                                                                                                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  [[1;32mINFO[0m   ] building 'kivy.graphics.vertex' extension
+  [[1;32mINFO[0m   ] clang -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy_venv/include -I/opt/homebrew/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/include/python3.9 -c /Users/pabloherrero/dev/kivy/kivy/graphics/vertex.c -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/vertex.o -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks
+  1 warning generated.
+  [[1;32mINFO[0m   ] clang -bundle -undefined dynamic_lookup -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk -L/usr/local/opt/libomp/lib -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/vbo.o -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy/graphics/vbo.cpython-39-darwin.so -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks -lm
+  [[1;32mINFO[0m   ] clang -bundle -undefined dynamic_lookup -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk -L/usr/local/opt/libomp/lib -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/transformation.o -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy/graphics/transformation.cpython-39-darwin.so -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks -lm
+  [[1;32mINFO[0m   ] clang -bundle -undefined dynamic_lookup -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk -L/usr/local/opt/libomp/lib -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/vertex.o -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy/graphics/vertex.cpython-39-darwin.so -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks -lm
+  [[1;32mINFO[0m   ] building 'kivy.graphics.vertex_instructions' extension
+  [[1;32mINFO[0m   ] clang -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy_venv/include -I/opt/homebrew/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/include/python3.9 -c /Users/pabloherrero/dev/kivy/kivy/graphics/vertex_instructions.c -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/vertex_instructions.o -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks
+  [[1;32mINFO[0m   ] building 'kivy.graphics.cgl' extension
+  [[1;32mINFO[0m   ] clang -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy_venv/include -I/opt/homebrew/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/include/python3.9 -c /Users/pabloherrero/dev/kivy/kivy/graphics/cgl.c -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/cgl.o -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks
+  [[1;32mINFO[0m   ] building 'kivy.graphics.cgl_backend.cgl_mock' extension
+  [[1;32mINFO[0m   ] creating /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/cgl_backend
+  [[1;32mINFO[0m   ] clang -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy_venv/include -I/opt/homebrew/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/include/python3.9 -c /Users/pabloherrero/dev/kivy/kivy/graphics/cgl_backend/cgl_mock.c -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/cgl_backend/cgl_mock.o -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks
+  [[1;32mINFO[0m   ] creating /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy/graphics/cgl_backend
+  [[1;32mINFO[0m   ] clang -bundle -undefined dynamic_lookup -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk -L/usr/local/opt/libomp/lib -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/cgl_backend/cgl_mock.o -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy/graphics/cgl_backend/cgl_mock.cpython-39-darwin.so -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks -lm
+  [[1;32mINFO[0m   ] building 'kivy.graphics.cgl_backend.cgl_gl' extension
+  [[1;32mINFO[0m   ] clang -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -I/Users/pabloherrero/dev/kivy/kivy/include -I -I/Users/pabloherrero/dev/kivy_venv/include -I/opt/homebrew/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/include/python3.9 -c /Users/pabloherrero/dev/kivy/kivy/graphics/cgl_backend/cgl_gl.c -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/cgl_backend/cgl_gl.o -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks
+  [[1;32mINFO[0m   ] clang -bundle -undefined dynamic_lookup -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk -L/usr/local/opt/libomp/lib -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/texture.o -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy/graphics/texture.cpython-39-darwin.so -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks -lm
+  [[1;32mINFO[0m   ] clang -bundle -undefined dynamic_lookup -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk -L/usr/local/opt/libomp/lib -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/cgl.o -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy/graphics/cgl.cpython-39-darwin.so -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks -lm
+  [[1;32mINFO[0m   ] building 'kivy.graphics.cgl_backend.cgl_glew' extension
+  [[1;32mINFO[0m   ] clang -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -I/Users/pabloherrero/dev/kivy/kivy/include -I -I/Users/pabloherrero/dev/kivy_venv/include -I/opt/homebrew/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/include/python3.9 -c /Users/pabloherrero/dev/kivy/kivy/graphics/cgl_backend/cgl_glew.c -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/cgl_backend/cgl_glew.o -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks
+  [[1;32mINFO[0m   ] clang -bundle -undefined dynamic_lookup -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk -L/usr/local/opt/libomp/lib -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/cgl_backend/cgl_gl.o -L -lEGL -lGLESv2 -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy/graphics/cgl_backend/cgl_gl.cpython-39-darwin.so -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks -Wl,-rpath, -lm
+  [[1;32mINFO[0m   ] building 'kivy.graphics.cgl_backend.cgl_sdl3' extension
+  [[1;32mINFO[0m   ] clang -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy_venv/include -I/opt/homebrew/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/include/python3.9 -c /Users/pabloherrero/dev/kivy/kivy/graphics/cgl_backend/cgl_sdl3.c -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/cgl_backend/cgl_sdl3.o -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks
+  ld: warning: -rpath missing <path>
+  ld: warning: search path '-lEGL' not found
+  ld: library 'GLESv2' not found
+  clang: error: linker command failed with exit code 1 (use -v to see invocation)
+  [[1;32mINFO[0m   ] building 'kivy.graphics.cgl_backend.cgl_angle' extension
+  [[1;32mINFO[0m   ] clang -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -I/Users/pabloherrero/dev/kivy/kivy/include -I -I/Users/pabloherrero/dev/kivy_venv/include -I/opt/homebrew/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/include/python3.9 -c /Users/pabloherrero/dev/kivy/kivy/graphics/cgl_backend/cgl_angle.c -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/cgl_backend/cgl_angle.o -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks
+  [[1;32mINFO[0m   ] clang -bundle -undefined dynamic_lookup -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk -L/usr/local/opt/libomp/lib -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/cgl_backend/cgl_glew.o -L -lEGL -lGLESv2 -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy/graphics/cgl_backend/cgl_glew.cpython-39-darwin.so -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks -Wl,-rpath, -lm
+  [[1;32mINFO[0m   ] clang -bundle -undefined dynamic_lookup -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk -L/usr/local/opt/libomp/lib -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/cgl_backend/cgl_sdl3.o -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy/graphics/cgl_backend/cgl_sdl3.cpython-39-darwin.so -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks -lm
+  ld: warning: -rpath missing <path>
+  ld: warning: search path '-lEGL' not found
+  ld: library 'GLESv2' not found
+  clang: error: linker command failed with exit code 1 (use -v to see invocation)
+  [[1;32mINFO[0m   ] building 'kivy.graphics.cgl_backend.cgl_debug' extension
+  [[1;32mINFO[0m   ] clang -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy_venv/include -I/opt/homebrew/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/include/python3.9 -c /Users/pabloherrero/dev/kivy/kivy/graphics/cgl_backend/cgl_debug.c -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/cgl_backend/cgl_debug.o -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks
+  [[1;32mINFO[0m   ] clang -bundle -undefined dynamic_lookup -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk -L/usr/local/opt/libomp/lib -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/cgl_backend/cgl_angle.o -L -lEGL -lGLESv2 -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy/graphics/cgl_backend/cgl_angle.cpython-39-darwin.so -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks -Wl,-rpath, -lm
+  [[1;32mINFO[0m   ] building 'kivy.graphics.egl_backend.egl_angle' extension
+  [[1;32mINFO[0m   ] creating /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/egl_backend
+  [[1;32mINFO[0m   ] clang -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -I/Users/pabloherrero/dev/kivy/kivy/include -I -I/Users/pabloherrero/dev/kivy_venv/include -I/opt/homebrew/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/include/python3.9 -c /Users/pabloherrero/dev/kivy/kivy/graphics/egl_backend/egl_angle.c -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/egl_backend/egl_angle.o -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks -ObjC++
+  ld: warning: -rpath missing <path>
+  ld: warning: search path '-lEGL' not found
+  ld: library 'GLESv2' not found
+  clang: error: linker command failed with exit code 1 (use -v to see invocation)
+  [[1;32mINFO[0m   ] building 'kivy.core.text.text_layout' extension
+  [[1;32mINFO[0m   ] creating /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/core/text
+  [[1;32mINFO[0m   ] clang -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy_venv/include -I/opt/homebrew/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/include/python3.9 -c /Users/pabloherrero/dev/kivy/kivy/core/text/text_layout.c -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/core/text/text_layout.o -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks
+  [[1;32mINFO[0m   ] creating /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy/graphics/egl_backend
+  [[1;32mINFO[0m   ] clang -bundle -undefined dynamic_lookup -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk -L/usr/local/opt/libomp/lib -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/egl_backend/egl_angle.o -L -lEGL -lGLESv2 -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy/graphics/egl_backend/egl_angle.cpython-39-darwin.so -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks -Wl,-rpath, -lm
+  ld: warning: -rpath missing <path>
+  ld: warning: search path '-lEGL' not found
+  ld: library 'GLESv2' not found
+  clang: error: linker command failed with exit code 1 (use -v to see invocation)
+  [[1;32mINFO[0m   ] building 'kivy.core.window.window_info' extension
+  [[1;32mINFO[0m   ] creating /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/core/window
+  [[1;32mINFO[0m   ] clang -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy_venv/include -I/opt/homebrew/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/include/python3.9 -c /Users/pabloherrero/dev/kivy/kivy/core/window/window_info.c -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/core/window/window_info.o -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks -ObjC++
+  [[1;32mINFO[0m   ] creating /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy/core/text
+  [[1;32mINFO[0m   ] clang -bundle -undefined dynamic_lookup -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk -L/usr/local/opt/libomp/lib -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/core/text/text_layout.o -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy/core/text/text_layout.cpython-39-darwin.so -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks -lm
+  [[1;32mINFO[0m   ] building 'kivy.graphics.tesselator' extension
+  [[1;32mINFO[0m   ] creating /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/lib/libtess2/Source
+  [[1;32mINFO[0m   ] clang -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -I/Users/pabloherrero/dev/kivy/kivy/include -Ikivy/lib/libtess2/Include -I/Users/pabloherrero/dev/kivy_venv/include -I/opt/homebrew/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/include/python3.9 -c /Users/pabloherrero/dev/kivy/kivy/graphics/tesselator.c -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/tesselator.o -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks
+  [[1;32mINFO[0m   ] clang -bundle -undefined dynamic_lookup -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk -L/usr/local/opt/libomp/lib -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/cgl_backend/cgl_debug.o -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy/graphics/cgl_backend/cgl_debug.cpython-39-darwin.so -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks -lm
+  [[1;32mINFO[0m   ] building 'kivy.graphics.svg' extension
+  [[1;32mINFO[0m   ] clang -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy_venv/include -I/opt/homebrew/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/include/python3.9 -c /Users/pabloherrero/dev/kivy/kivy/graphics/svg.c -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/svg.o -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks
+  [[1;32mINFO[0m   ] clang -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -I/Users/pabloherrero/dev/kivy/kivy/include -Ikivy/lib/libtess2/Include -I/Users/pabloherrero/dev/kivy_venv/include -I/opt/homebrew/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/include/python3.9 -c /Users/pabloherrero/dev/kivy/kivy/lib/libtess2/Source/bucketalloc.c -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/lib/libtess2/Source/bucketalloc.o -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks
+  [[1;32mINFO[0m   ] clang -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -I/Users/pabloherrero/dev/kivy/kivy/include -Ikivy/lib/libtess2/Include -I/Users/pabloherrero/dev/kivy_venv/include -I/opt/homebrew/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/include/python3.9 -c /Users/pabloherrero/dev/kivy/kivy/lib/libtess2/Source/dict.c -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/lib/libtess2/Source/dict.o -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks
+  [[1;32mINFO[0m   ] clang -bundle -undefined dynamic_lookup -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk -L/usr/local/opt/libomp/lib -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/vertex_instructions.o -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy/graphics/vertex_instructions.cpython-39-darwin.so -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks -lm
+  [[1;32mINFO[0m   ] clang -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -I/Users/pabloherrero/dev/kivy/kivy/include -Ikivy/lib/libtess2/Include -I/Users/pabloherrero/dev/kivy_venv/include -I/opt/homebrew/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/include/python3.9 -c /Users/pabloherrero/dev/kivy/kivy/lib/libtess2/Source/geom.c -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/lib/libtess2/Source/geom.o -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks
+  [[1;32mINFO[0m   ] clang -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -I/Users/pabloherrero/dev/kivy/kivy/include -Ikivy/lib/libtess2/Include -I/Users/pabloherrero/dev/kivy_venv/include -I/opt/homebrew/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/include/python3.9 -c /Users/pabloherrero/dev/kivy/kivy/lib/libtess2/Source/mesh.c -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/lib/libtess2/Source/mesh.o -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks
+  [[1;32mINFO[0m   ] building 'kivy.graphics.boxshadow' extension
+  [[1;32mINFO[0m   ] clang -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy_venv/include -I/opt/homebrew/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/include/python3.9 -c /Users/pabloherrero/dev/kivy/kivy/graphics/boxshadow.c -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/boxshadow.o -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks
+  [[1;32mINFO[0m   ] clang -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -I/Users/pabloherrero/dev/kivy/kivy/include -Ikivy/lib/libtess2/Include -I/Users/pabloherrero/dev/kivy_venv/include -I/opt/homebrew/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/include/python3.9 -c /Users/pabloherrero/dev/kivy/kivy/lib/libtess2/Source/priorityq.c -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/lib/libtess2/Source/priorityq.o -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks
+  [[1;32mINFO[0m   ] clang -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -I/Users/pabloherrero/dev/kivy/kivy/include -Ikivy/lib/libtess2/Include -I/Users/pabloherrero/dev/kivy_venv/include -I/opt/homebrew/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/include/python3.9 -c /Users/pabloherrero/dev/kivy/kivy/lib/libtess2/Source/sweep.c -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/lib/libtess2/Source/sweep.o -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks
+  [[1;32mINFO[0m   ] clang -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -I/Users/pabloherrero/dev/kivy/kivy/include -Ikivy/lib/libtess2/Include -I/Users/pabloherrero/dev/kivy_venv/include -I/opt/homebrew/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/include/python3.9 -c /Users/pabloherrero/dev/kivy/kivy/lib/libtess2/Source/tess.c -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/lib/libtess2/Source/tess.o -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks
+  [[1;32mINFO[0m   ] creating /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy/core/window
+  [[1;32mINFO[0m   ] clang -bundle -undefined dynamic_lookup -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk -L/usr/local/opt/libomp/lib -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/core/window/window_info.o -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy/core/window/window_info.cpython-39-darwin.so -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks -framework ApplicationServices -lm
+  [[1;32mINFO[0m   ] clang -bundle -undefined dynamic_lookup -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk -L/usr/local/opt/libomp/lib -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/tesselator.o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/lib/libtess2/Source/bucketalloc.o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/lib/libtess2/Source/dict.o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/lib/libtess2/Source/geom.o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/lib/libtess2/Source/mesh.o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/lib/libtess2/Source/priorityq.o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/lib/libtess2/Source/sweep.o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/lib/libtess2/Source/tess.o -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy/graphics/tesselator.cpython-39-darwin.so -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks -lm
+  [[1;32mINFO[0m   ] clang -bundle -undefined dynamic_lookup -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk -L/usr/local/opt/libomp/lib -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/boxshadow.o -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy/graphics/boxshadow.cpython-39-darwin.so -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks -lm
+  [[1;32mINFO[0m   ] building 'kivy.core.image.img_imageio' extension
+  [[1;32mINFO[0m   ] creating /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/core/image
+  [[1;32mINFO[0m   ] clang++ -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy_venv/include -I/opt/homebrew/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/include/python3.9 -c /Users/pabloherrero/dev/kivy/kivy/core/image/img_imageio.cpp -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/core/image/img_imageio.o -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks -ObjC++
+  [[1;32mINFO[0m   ] building 'kivy.core.text._text_pango' extension
+  [[1;32mINFO[0m   ] clang -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/opt/homebrew/Cellar/pango/1.56.4/include/pango-1.0 -I/opt/homebrew/Cellar/glib/2.84.3/include -I/opt/homebrew/Cellar/fribidi/1.0.16/include/fribidi -I/opt/homebrew/Cellar/cairo/1.18.4/include/cairo -I/opt/homebrew/Cellar/fontconfig/2.16.0/include -I/opt/homebrew/Cellar/libxext/1.3.6/include -I/opt/homebrew/Cellar/xorgproto/2024.1/include -I/opt/homebrew/Cellar/libxrender/0.9.12/include -I/opt/homebrew/Cellar/libx11/1.8.12/include -I/opt/homebrew/Cellar/libxcb/1.17.0/include -I/opt/homebrew/Cellar/libxau/1.0.12/include -I/opt/homebrew/Cellar/libxdmcp/1.1.5/include -I/opt/homebrew/Cellar/pixman/0.46.4/include/pixman-1 -I/opt/homebrew/Cellar/harfbuzz/11.3.3/include/harfbuzz -I/opt/homebrew/opt/freetype/include/freetype2 -I/opt/homebrew/opt/libpng/include/libpng16 -I/opt/homebrew/Cellar/graphite2/1.3.14/include -I/opt/homebrew/Cellar/glib/2.84.3/include/glib-2.0 -I/opt/homebrew/Cellar/glib/2.84.3/lib/glib-2.0/include -I/opt/homebrew/opt/gettext/include -I/opt/homebrew/Cellar/pcre2/10.45/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk/usr/include/ffi -I/Users/pabloherrero/dev/kivy_venv/include -I/opt/homebrew/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/include/python3.9 -c /Users/pabloherrero/dev/kivy/kivy/core/text/_text_pango.c -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/core/text/_text_pango.o -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks
+  [[1;32mINFO[0m   ] building 'kivy.core.camera.camera_avfoundation' extension
+  [[1;32mINFO[0m   ] creating /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/core/camera
+  [[1;32mINFO[0m   ] clang++ -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/Users/pabloherrero/dev/kivy_venv/include -I/opt/homebrew/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/include/python3.9 -c /Users/pabloherrero/dev/kivy/kivy/core/camera/camera_avfoundation.cpp -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/core/camera/camera_avfoundation.o -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks -ObjC++
+  /Users/pabloherrero/dev/kivy/kivy/core/text/_text_pango.c:9493:3: warning: 'pango_ft2_font_map_substitute_changed' is deprecated: Use 'pango_fc_font_map_substitute_changed' instead [-Wdeprecated-declarations]
+   9493 |   pango_ft2_font_map_substitute_changed(PANGO_FT2_FONT_MAP(__pyx_v_cc->fontmap));
+        |   ^
+  /opt/homebrew/Cellar/pango/1.56.4/include/pango-1.0/pango/pangoft2.h:125:1: note: 'pango_ft2_font_map_substitute_changed' has been explicitly marked deprecated here
+    125 | PANGO_DEPRECATED_IN_1_48_FOR(pango_fc_font_map_substitute_changed)
+        | ^
+  /opt/homebrew/Cellar/pango/1.56.4/include/pango-1.0/pango/pango-version-macros.h:746:49: note: expanded from macro 'PANGO_DEPRECATED_IN_1_48_FOR'
+    746 | # define PANGO_DEPRECATED_IN_1_48_FOR(f)        PANGO_DEPRECATED_FOR(f)
+        |                                                 ^
+  /opt/homebrew/Cellar/pango/1.56.4/include/pango-1.0/pango/pango-version-macros.h:416:49: note: expanded from macro 'PANGO_DEPRECATED_FOR'
+    416 | # define PANGO_DEPRECATED_FOR(f)                G_DEPRECATED_FOR(f) _PANGO_EXTERN
+        |                                                 ^
+  /opt/homebrew/Cellar/glib/2.84.3/include/glib-2.0/glib/gmacros.h:1277:44: note: expanded from macro 'G_DEPRECATED_FOR'
+   1277 | #define G_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
+        |                                            ^
+  /Users/pabloherrero/dev/kivy/kivy/core/text/_text_pango.c:10162:3: warning: 'pango_ft2_font_map_set_default_substitute' is deprecated: Use 'pango_fc_font_map_set_default_substitute' instead [-Wdeprecated-declarations]
+   10162 |   pango_ft2_font_map_set_default_substitute(PANGO_FT2_FONT_MAP(__pyx_v_cc->fontmap), (&__pyx_f_4kivy_4core_4text_11_text_pango__ft2subst_callback), ((gpointer)(&__pyx_v_cc->ft2subst_callback_data)), NULL);
+         |   ^
+  /opt/homebrew/Cellar/pango/1.56.4/include/pango-1.0/pango/pangoft2.h:120:1: note: 'pango_ft2_font_map_set_default_substitute' has been explicitly marked deprecated here
+    120 | PANGO_DEPRECATED_IN_1_48_FOR(pango_fc_font_map_set_default_substitute)
+        | ^
+  /opt/homebrew/Cellar/pango/1.56.4/include/pango-1.0/pango/pango-version-macros.h:746:49: note: expanded from macro 'PANGO_DEPRECATED_IN_1_48_FOR'
+    746 | # define PANGO_DEPRECATED_IN_1_48_FOR(f)        PANGO_DEPRECATED_FOR(f)
+        |                                                 ^
+  /opt/homebrew/Cellar/pango/1.56.4/include/pango-1.0/pango/pango-version-macros.h:416:49: note: expanded from macro 'PANGO_DEPRECATED_FOR'
+    416 | # define PANGO_DEPRECATED_FOR(f)                G_DEPRECATED_FOR(f) _PANGO_EXTERN
+        |                                                 ^
+  /opt/homebrew/Cellar/glib/2.84.3/include/glib-2.0/glib/gmacros.h:1277:44: note: expanded from macro 'G_DEPRECATED_FOR'
+   1277 | #define G_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
+        |                                            ^
+  /Users/pabloherrero/dev/kivy/kivy/core/text/_text_pango.c:14577:47: warning: 'pango_find_base_dir' is deprecated [-Wdeprecated-declarations]
+   14577 |   __pyx_t_1 = __Pyx_PyInt_From_PangoDirection(pango_find_base_dir(__pyx_t_2, __pyx_t_3)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 703, __pyx_L1_error)
+         |                                               ^
+  /opt/homebrew/Cellar/pango/1.56.4/include/pango-1.0/pango/pango-bidi-type.h:106:1: note: 'pango_find_base_dir' has been explicitly marked deprecated here
+    106 | PANGO_DEPRECATED_IN_1_44
+        | ^
+  /opt/homebrew/Cellar/pango/1.56.4/include/pango-1.0/pango/pango-version-macros.h:717:49: note: expanded from macro 'PANGO_DEPRECATED_IN_1_44'
+    717 | # define PANGO_DEPRECATED_IN_1_44               PANGO_DEPRECATED
+        |                                                 ^
+  /opt/homebrew/Cellar/pango/1.56.4/include/pango-1.0/pango/pango-version-macros.h:415:49: note: expanded from macro 'PANGO_DEPRECATED'
+    415 | # define PANGO_DEPRECATED                       G_DEPRECATED _PANGO_EXTERN
+        |                                                 ^
+  /opt/homebrew/Cellar/glib/2.84.3/include/glib-2.0/glib/gmacros.h:1267:37: note: expanded from macro 'G_DEPRECATED'
+   1267 | #define G_DEPRECATED __attribute__((__deprecated__))
+        |                                     ^
+  [[1;32mINFO[0m   ] clang -bundle -undefined dynamic_lookup -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk -L/usr/local/opt/libomp/lib -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/svg.o -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy/graphics/svg.cpython-39-darwin.so -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks -lm
+  [[1;32mINFO[0m   ] building 'kivy.graphics.egl_backend.egl_angle_metal' extension
+  [[1;32mINFO[0m   ] clang++ -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -I/Users/pabloherrero/dev/kivy/kivy/include -I -I/Users/pabloherrero/dev/kivy_venv/include -I/opt/homebrew/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/include/python3.9 -c /Users/pabloherrero/dev/kivy/kivy/graphics/egl_backend/egl_angle_metal.cpp -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/graphics/egl_backend/egl_angle_metal.o -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks -ObjC++
+  3 warnings generated.
+  [[1;32mINFO[0m   ] clang -bundle -undefined dynamic_lookup -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk -L/usr/local/opt/libomp/lib -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/core/text/_text_pango.o -L/opt/homebrew/Cellar/pango/1.56.4/lib -L/opt/homebrew/Cellar/fontconfig/2.16.0/lib -L/opt/homebrew/Cellar/harfbuzz/11.3.3/lib -L/opt/homebrew/opt/freetype/lib -L/opt/homebrew/Cellar/glib/2.84.3/lib -L/opt/homebrew/opt/gettext/lib -lpangoft2-1.0 -lpango-1.0 -lfontconfig -lharfbuzz -lfreetype -lgobject-2.0 -lglib-2.0 -lintl -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy/core/text/_text_pango.cpython-39-darwin.so -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks -lm
+  [[1;32mINFO[0m   ] building 'kivy.lib.gstplayer._gstplayer' extension
+  [[1;32mINFO[0m   ] creating /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/lib/gstplayer
+  [[1;32mINFO[0m   ] clang -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -I/Users/pabloherrero/dev/kivy/kivy/include -I/opt/homebrew/Cellar/gstreamer/1.26.4/include/gstreamer-1.0 -I/opt/homebrew/Cellar/glib/2.84.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk/usr/include/ffi -I/opt/homebrew/Cellar/glib/2.84.3/include/glib-2.0 -I/opt/homebrew/Cellar/glib/2.84.3/lib/glib-2.0/include -I/opt/homebrew/opt/gettext/include -I/opt/homebrew/Cellar/pcre2/10.45/include -I/Users/pabloherrero/dev/kivy_venv/include -I/opt/homebrew/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/include/python3.9 -c /Users/pabloherrero/dev/kivy/kivy/lib/gstplayer/_gstplayer.c -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/lib/gstplayer/_gstplayer.o -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks
+  [[1;32mINFO[0m   ] creating /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy/lib/gstplayer
+  [[1;32mINFO[0m   ] clang -bundle -undefined dynamic_lookup -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk -L/usr/local/opt/libomp/lib -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/lib/gstplayer/_gstplayer.o -L/opt/homebrew/Cellar/gstreamer/1.26.4/lib -L/opt/homebrew/Cellar/glib/2.84.3/lib -L/opt/homebrew/opt/gettext/lib -lgstreamer-1.0 -lgobject-2.0 -lglib-2.0 -lintl -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy/lib/gstplayer/_gstplayer.cpython-39-darwin.so -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks -lm
+  In file included from /Users/pabloherrero/dev/kivy/kivy/graphics/egl_backend/egl_angle_metal.cpp:1271:
+  /Users/pabloherrero/dev/kivy/kivy/graphics/egl_backend/egl_angle_metal_implem.mm:29:9: error: use of undeclared identifier 'EGL_PLATFORM_ANGLE_TYPE_ANGLE'
+     29 |         EGL_PLATFORM_ANGLE_TYPE_ANGLE, EGL_PLATFORM_ANGLE_TYPE_METAL_ANGLE,
+        |         ^
+  /Users/pabloherrero/dev/kivy/kivy/graphics/egl_backend/egl_angle_metal_implem.mm:29:40: error: use of undeclared identifier 'EGL_PLATFORM_ANGLE_TYPE_METAL_ANGLE'
+     29 |         EGL_PLATFORM_ANGLE_TYPE_ANGLE, EGL_PLATFORM_ANGLE_TYPE_METAL_ANGLE,
+        |                                        ^
+  In file included from /Users/pabloherrero/dev/kivy/kivy/core/camera/camera_avfoundation.cpp:1264:
+  /Users/pabloherrero/dev/kivy/kivy/core/camera/camera_avfoundation_implem.mm:134:16: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+    134 |         return "";
+        |                ^
+  /Users/pabloherrero/dev/kivy/kivy/core/camera/camera_avfoundation_implem.mm:255:32: warning: 'devicesWithMediaType:' is deprecated: first deprecated in macOS 10.15 - Use AVCaptureDeviceDiscoverySession instead. [-Wdeprecated-declarations]
+    255 |     devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
+        |                                ^
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AVFoundation.framework/Headers/AVCaptureDevice.h:107:1: note: 'devicesWithMediaType:' has been explicitly marked deprecated here
+    107 | + (NSArray<AVCaptureDevice *> *)devicesWithMediaType:(AVMediaType)mediaType API_DEPRECATED("Use AVCaptureDeviceDiscoverySession instead.", ios(4.0, 10.0), macos(10.7, 10.15)) API_UNAVAILABLE(visionos) API_UNAVAILABLE(tvos);
+        | ^
+  In file included from /Users/pabloherrero/dev/kivy/kivy/core/camera/camera_avfoundation.cpp:1264:
+  /Users/pabloherrero/dev/kivy/kivy/core/camera/camera_avfoundation_implem.mm:320:30: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+    320 |         attemptCapturePreset("AVCaptureSessionPresetHigh");
+        |                              ^
+  /Users/pabloherrero/dev/kivy/kivy/core/camera/camera_avfoundation_implem.mm:331:9: warning: 'AVCaptureVideoOrientation' is deprecated: first deprecated in macOS 14.0 - Use AVCaptureDeviceRotationCoordinator instead [-Wdeprecated-declarations]
+    331 |         AVCaptureVideoOrientation default_orientation = AVCaptureVideoOrientationLandscapeRight;
+        |         ^
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AVFoundation.framework/Headers/AVCaptureSession.h:140:28: note: 'AVCaptureVideoOrientation' has been explicitly marked deprecated here
+    140 | typedef NS_ENUM(NSInteger, AVCaptureVideoOrientation) {
+        |                            ^
+  In file included from /Users/pabloherrero/dev/kivy/kivy/core/camera/camera_avfoundation.cpp:1264:
+  /Users/pabloherrero/dev/kivy/kivy/core/camera/camera_avfoundation_implem.mm:331:57: warning: 'AVCaptureVideoOrientationLandscapeRight' is deprecated: first deprecated in macOS 14.0 - Use AVCaptureDeviceRotationCoordinator instead [-Wdeprecated-declarations]
+    331 |         AVCaptureVideoOrientation default_orientation = AVCaptureVideoOrientationLandscapeRight;
+        |                                                         ^
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AVFoundation.framework/Headers/AVCaptureSession.h:140:28: note: 'AVCaptureVideoOrientation' has been explicitly marked deprecated here
+    140 | typedef NS_ENUM(NSInteger, AVCaptureVideoOrientation) {
+        |                            ^
+  In file included from /Users/pabloherrero/dev/kivy/kivy/core/camera/camera_avfoundation.cpp:1264:
+  /Users/pabloherrero/dev/kivy/kivy/core/camera/camera_avfoundation_implem.mm:333:15: warning: 'setVideoOrientation:' is deprecated: first deprecated in macOS 14.0 - Use -videoRotationAngle instead [-Wdeprecated-declarations]
+    333 |         [conn setVideoOrientation:default_orientation];
+        |               ^
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AVFoundation.framework/Headers/AVCaptureSession.h:1056:48: note: property 'videoOrientation' is declared deprecated here
+   1056 | @property(nonatomic) AVCaptureVideoOrientation videoOrientation API_DEPRECATED("Use -videoRotationAngle instead", macos(10.7, 14.0), ios(4.0, 17.0), macCatalyst(14.0, 17.0)) API_UNAVAILABLE(tvos, visionos);
+        |                                                ^
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AVFoundation.framework/Headers/AVCaptureSession.h:1056:48: note: 'setVideoOrientation:' has been explicitly marked deprecated here
+  In file included from /Users/pabloherrero/dev/kivy/kivy/core/camera/camera_avfoundation.cpp:1264:
+  /Users/pabloherrero/dev/kivy/kivy/core/camera/camera_avfoundation_implem.mm:350:14: warning: 'isVideoOrientationSupported' is deprecated: first deprecated in macOS 14.0 - Use -isVideoRotationAngleSupported: instead [-Wdeprecated-declarations]
+    350 |     if([conn isVideoOrientationSupported]){
+        |              ^
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AVFoundation.framework/Headers/AVCaptureSession.h:1046:73: note: property 'supportsVideoOrientation' is declared deprecated here
+   1046 | @property(nonatomic, readonly, getter=isVideoOrientationSupported) BOOL supportsVideoOrientation API_DEPRECATED("Use -isVideoRotationAngleSupported: instead", macos(10.7, 14.0), ios(4.0, 17.0), macCatalyst(14.0, 17.0)) API_UNAVAILABLE(tvos, visionos);
+        |                                                                         ^
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AVFoundation.framework/Headers/AVCaptureSession.h:1046:73: note: 'isVideoOrientationSupported' has been explicitly marked deprecated here
+  In file included from /Users/pabloherrero/dev/kivy/kivy/core/camera/camera_avfoundation.cpp:1264:
+  /Users/pabloherrero/dev/kivy/kivy/core/camera/camera_avfoundation_implem.mm:351:36: warning: 'AVCaptureVideoOrientation' is deprecated: first deprecated in macOS 14.0 - Use AVCaptureDeviceRotationCoordinator instead [-Wdeprecated-declarations]
+    351 |         [conn setVideoOrientation:(AVCaptureVideoOrientation) orientation];
+        |                                    ^
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AVFoundation.framework/Headers/AVCaptureSession.h:140:28: note: 'AVCaptureVideoOrientation' has been explicitly marked deprecated here
+    140 | typedef NS_ENUM(NSInteger, AVCaptureVideoOrientation) {
+        |                            ^
+  In file included from /Users/pabloherrero/dev/kivy/kivy/core/camera/camera_avfoundation.cpp:1264:
+  /Users/pabloherrero/dev/kivy/kivy/core/camera/camera_avfoundation_implem.mm:351:15: warning: 'setVideoOrientation:' is deprecated: first deprecated in macOS 14.0 - Use -videoRotationAngle instead [-Wdeprecated-declarations]
+    351 |         [conn setVideoOrientation:(AVCaptureVideoOrientation) orientation];
+        |               ^
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AVFoundation.framework/Headers/AVCaptureSession.h:1056:48: note: property 'videoOrientation' is declared deprecated here
+   1056 | @property(nonatomic) AVCaptureVideoOrientation videoOrientation API_DEPRECATED("Use -videoRotationAngle instead", macos(10.7, 14.0), ios(4.0, 17.0), macCatalyst(14.0, 17.0)) API_UNAVAILABLE(tvos, visionos);
+        |                                                ^
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AVFoundation.framework/Headers/AVCaptureSession.h:1056:48: note: 'setVideoOrientation:' has been explicitly marked deprecated here
+  /Users/pabloherrero/dev/kivy/kivy/graphics/egl_backend/egl_angle_metal_implem.mm:30:9: error: use of undeclared identifier 'EGL_POWER_PREFERENCE_ANGLE'
+     30 |         EGL_POWER_PREFERENCE_ANGLE, EGL_HIGH_POWER_ANGLE,
+        |         ^
+  /Users/pabloherrero/dev/kivy/kivy/graphics/egl_backend/egl_angle_metal_implem.mm:30:37: error: use of undeclared identifier 'EGL_HIGH_POWER_ANGLE'
+     30 |         EGL_POWER_PREFERENCE_ANGLE, EGL_HIGH_POWER_ANGLE,
+        |                                     ^
+  /Users/pabloherrero/dev/kivy/kivy/graphics/egl_backend/egl_angle_metal_implem.mm:36:9: error: use of undeclared identifier 'EGL_PLATFORM_ANGLE_ANGLE'
+     36 |         EGL_PLATFORM_ANGLE_ANGLE,
+        |         ^
+  5 errors generated.
+  9 warnings generated.
+  In file included from /Users/pabloherrero/dev/kivy/kivy/core/image/img_imageio.cpp:1280:
+  /Users/pabloherrero/dev/kivy/kivy/core/image/img_imageio_implem.mm:76:49: warning: 'kUTTagClassFilenameExtension' is deprecated: first deprecated in macOS 12.0 - Use UTTagClassFilenameExtension instead. [-Wdeprecated-declarations]
+     76 |                 UTTypeCopyAllTagsWithClass(uti, kUTTagClassFilenameExtension));
+        |                                                 ^
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Headers/UTType.h:258:26: note: 'kUTTagClassFilenameExtension' has been explicitly marked deprecated here
+    258 | extern const CFStringRef kUTTagClassFilenameExtension                API_DEPRECATED("Use UTTagClassFilenameExtension instead.", ios(3.0, 15.0), macos(10.3, 12.0), tvos(9.0, 15.0), watchos(1.0, 8.0));
+        |                          ^
+  In file included from /Users/pabloherrero/dev/kivy/kivy/core/image/img_imageio.cpp:1280:
+  /Users/pabloherrero/dev/kivy/kivy/core/image/img_imageio_implem.mm:76:17: warning: 'UTTypeCopyAllTagsWithClass' is deprecated: first deprecated in macOS 12.0 - Use the UTType class instead. [-Wdeprecated-declarations]
+     76 |                 UTTyp[[1;32mINFO[0m   ] creating /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy/core/camera
+  eCopyAllTagsWithClass(uti, kUTTagClassFilenameExtension));
+        |                 ^
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Headers/UTType.h:420:1: note: 'UTTypeCopyAllTagsWithClass' has been explicitly marked deprecated here
+    420 | UTTypeCopyAllTagsWithClass(
+        | ^
+  [[1;32mINFO[0m   ] clang++ -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -bundle -undefined dynamic_lookup -L/usr/local/opt/libomp/lib -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/core/camera/camera_avfoundation.o -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy/core/camera/camera_avfoundation.cpython-39-darwin.so -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks -framework AVFoundation -lm
+  2 warnings generated.
+  [[1;32mINFO[0m   ] creating /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy/core/image
+  [[1;32mINFO[0m   ] clang++ -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include -bundle -undefined dynamic_lookup -L/usr/local/opt/libomp/lib -Wno-error=nullability-completeness -I/usr/local/opt/libomp/include /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmpdzg6j8q_.build-temp/Users/pabloherrero/dev/kivy/kivy/core/image/img_imageio.o -o /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmparfyi_n0.build-lib/kivy/core/image/img_imageio.cpython-39-darwin.so -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/System/Library/Frameworks -framework ApplicationServices -lm
+   error: command '/usr/bin/clang' failed with exit code 1
+  error: subprocess-exited-with-error
+  
+  × Building editable for Kivy (pyproject.toml) did not run successfully.
+  │ exit code: 1
+  ╰─> See above for output.
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+  full command: /Users/pabloherrero/dev/kivy_venv/bin/python /Users/pabloherrero/dev/kivy_venv/lib/python3.9/site-packages/pip/_vendor/pyproject_hooks/_in_process/_in_process.py build_editable /var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/tmp6frnen7k
+  cwd: /Users/pabloherrero/dev/kivy
+  Building editable for Kivy (pyproject.toml): finished with status 'error'
+  ERROR: Failed building editable for Kivy
+Failed to build Kivy
+Remote version of pip: 25.2
+Local version of pip:  25.2
+Was pip installed by pip? True
+error: failed-wheel-build-for-install
+
+× Failed to build installable wheels for some pyproject.toml based projects
+╰─> Kivy
+Exception information:
+Traceback (most recent call last):
+  File "/Users/pabloherrero/dev/kivy_venv/lib/python3.9/site-packages/pip/_internal/cli/base_command.py", line 107, in _run_wrapper
+    status = _inner_run()
+  File "/Users/pabloherrero/dev/kivy_venv/lib/python3.9/site-packages/pip/_internal/cli/base_command.py", line 98, in _inner_run
+    return self.run(options, args)
+  File "/Users/pabloherrero/dev/kivy_venv/lib/python3.9/site-packages/pip/_internal/cli/req_command.py", line 71, in wrapper
+    return func(self, options, args)
+  File "/Users/pabloherrero/dev/kivy_venv/lib/python3.9/site-packages/pip/_internal/commands/install.py", line 442, in run
+    raise InstallWheelBuildError(build_failures)
+pip._internal.exceptions.InstallWheelBuildError: <InstallWheelBuildError: failed-wheel-build-for-install>
+Removed build tracker: '/private/var/folders/tb/zxwsw51n6_g6gs5lnxdv2bcr0000gn/T/pip-build-tracker-mf3ymw8y'
