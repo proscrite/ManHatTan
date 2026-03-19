@@ -28,7 +28,8 @@ class ApiService {
   }
 
   // 2. Submit Review
-  static Future<bool> submitReview(String vocabId, bool isCorrect) async {
+  // Now returns a bool? (true = correct, false = incorrect, null = server error)
+  static Future<bool?> submitReview(String vocabId, String userAnswer) async {
     final url = Uri.parse('$baseUrl/progress/review');
     
     try {
@@ -37,16 +38,23 @@ class ApiService {
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'vocab_id': vocabId,
-          'exercise_type': 'self_grade',
-          'is_correct': isCorrect,
+          'exercise_type': 'typing_test',
+          'user_answer': userAnswer, // Sending the raw text
           'speed': 1.5,
         }),
       );
       
-      return response.statusCode == 200;
+      if (response.statusCode == 200) {
+        // Parse the backend's grading decision!
+        final data = jsonDecode(response.body);
+        return data['is_correct'] as bool;
+      } else {
+        debugPrint("Server Error: ${response.statusCode}");
+        return null;
+      }
     } catch (e) {
       debugPrint("Network Error: $e");
-      return false;
+      return null;
     }
   }
 }
