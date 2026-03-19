@@ -4,8 +4,11 @@ import 'package:flutter/foundation.dart';
 
 class ApiService {
   // Base URL for the Android Emulator to reach Mac Localhost
-  static const String baseUrl = 'http://10.0.2.2:8000/api/v1';
-  
+  // static const String baseUrl = 'http://10.0.2.2:8000/api/v1'; (for Mac Localhost, only within the computer)
+
+  // Base URL for the Android Emulator to reach Mac Localhost through WiFi
+  static const String baseUrl = 'http://192.168.1.225:8000/api/v1';
+
   // We'll hardcode the course ID for now, but eventually this will come from user login
   static const String courseId = '3f23e536-b589-487b-bbaa-8c78f0562766';
 
@@ -31,7 +34,7 @@ class ApiService {
   // Now returns a bool? (true = correct, false = incorrect, null = server error)
   static Future<bool?> submitReview(String vocabId, String userAnswer) async {
     final url = Uri.parse('$baseUrl/progress/review');
-    
+
     try {
       final response = await http.post(
         url,
@@ -43,7 +46,7 @@ class ApiService {
           'speed': 1.5,
         }),
       );
-      
+
       if (response.statusCode == 200) {
         // Parse the backend's grading decision!
         final data = jsonDecode(response.body);
