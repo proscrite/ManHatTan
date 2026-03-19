@@ -50,12 +50,14 @@ class VocabularyResponse(VocabularyBase):
 class ReviewCreate(BaseModel):
     vocab_id: str
     exercise_type: str
+    user_answer: str
+    speed: float
+
+class ReviewResponse(BaseModel):
+    id: str
+    vocab_id: str
+    exercise_type: str
     is_correct: bool
     speed: float
-    # We don't need timestamp here; the backend generates it automatically
 
-class ReviewResponse(ReviewCreate):
-    id: str
-    timestamp: datetime
-    
     model_config = ConfigDict(from_attributes=True)
