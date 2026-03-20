@@ -4,33 +4,26 @@ from typing import List
 
 from app.database import SessionLocal
 from app import models, schemas
+from app.security import get_current_user
+from app.database import get_db
 
 router = APIRouter(
     prefix="/api/v1/users",
     tags=["Users & Courses"]
 )
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-@router.get("/{email}/courses", response_model=List[schemas.CourseResponse])
-def get_user_courses_by_email(email: str, db: Session = Depends(get_db)):
+@router.get("/me/courses", response_model=List[schemas.CourseResponse])
+def get_my_courses(
+    db: Session = Depends(get_db), 
+    current_user: models.User = Depends(get_current_user) # <-- The Bouncer!
+):
     """
-    Fetches all active courses for a user based on their email.
+    Fetches all active courses for the currently authenticated user.
     """
-    # 1. Find the user by email
-    user = db.query(models.User).filter(models.User.email == email).first()
-    
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
-        
-    # 2. Find their courses
+    # We don't need to look up the email anymore.
+    # The token already proved who current_user is.
     courses = db.query(models.UserCourse).filter(
-        models.UserCourse.user_id == user.id,
+        models.UserCourse.user_id == current_user.id,
         models.UserCourse.is_active == True
     ).all()
     

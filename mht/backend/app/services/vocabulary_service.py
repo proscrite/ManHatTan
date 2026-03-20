@@ -2,6 +2,7 @@ import os
 import pandas as pd
 from app.database import engine, SessionLocal
 from app.models import Base, User, UserCourse, UserVocabulary, generate_uuid
+from app.security import get_password_hash
 
 def test_database_import():
     print("1. Creating database tables in manhattan.db...")
@@ -15,7 +16,8 @@ def test_database_import():
         # Check if user already exists to avoid errors on multiple runs
         test_user = db.query(User).filter(User.email == "pablo@test.com").first()
         if not test_user:
-            test_user = User(email="pablo@test.com", name="Pablo")
+            hashed_password = get_password_hash("password123")
+            test_user = User(email="pablo@test.com", name="Pablo", hashed_password=hashed_password)
             db.add(test_user)
             db.commit()
             db.refresh(test_user)

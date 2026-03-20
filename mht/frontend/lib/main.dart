@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'screens/mode_selection_screen.dart';
+// import 'screens/mode_selection_screen.dart';
+import 'screens/login_screen.dart'; 
 
 void main() {
   runApp(const ManhattanApp());
@@ -17,8 +18,8 @@ class ManhattanApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
         useMaterial3: true,
       ),
-      // Set the new Hub as the starting screen
-      home: const ModeSelectionScreen(),
+      // Set the LoginScreen as the starting screen
+      home: const LoginScreen(),
     );
   }
 }
