@@ -51,6 +51,13 @@ class UserVocabulary(Base):
     session_correct = Column(Integer, default=0)
     mdt_history = Column(Integer, default=0)
     mdt_correct = Column(Integer, default=0)
+    mrt_history = Column(Integer, default=0)
+    mrt_correct = Column(Integer, default=0)
+    wdt_history = Column(Integer, default=0)
+    wdt_correct = Column(Integer, default=0)
+    wrt_history = Column(Integer, default=0)
+    wrt_correct = Column(Integer, default=0)
+    speed = Column(Float, default=0.0)
     next_review_at = Column(DateTime, default=datetime.datetime.utcnow)
 
     course = relationship("UserCourse", back_populates="vocabulary")

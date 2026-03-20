@@ -20,23 +20,31 @@ def test_database_import():
             db.commit()
             db.refresh(test_user)
 
-        # Check if course exists
-        test_course = db.query(UserCourse).filter(UserCourse.user_id == test_user.id).first()
+        # Check if Hebrew course exists for this user (don't overwrite other courses)
+        test_course = db.query(UserCourse).filter(
+            UserCourse.user_id == test_user.id,
+            UserCourse.learning_language == "iw",
+            UserCourse.ui_language == "en",
+        ).first()
         if not test_course:
             test_course = UserCourse(
-                user_id=test_user.id, 
-                learning_language="de", 
-                ui_language="en", 
-                is_active=True
+                user_id=test_user.id,
+                learning_language="iw",
+                ui_language="en",
+                is_active=True,
             )
             db.add(test_course)
             db.commit()
             db.refresh(test_course)
 
-        print("3. Reading Schachnovelle.csv with Pandas...")
-        # Make sure the path to your CSV is correct
-        print(os.getcwd())  # Print current working directory for debugging
-        df = pd.read_csv("app/services/Schachnovelle.csv")
+        # print("3. Reading Schachnovelle.csv with Pandas...")
+        print("3. Reading hebrew_db.csv with Pandas...")
+        
+        # Read CSV relative to this service file so CWD doesn't matter
+        csv_path = os.path.join(os.path.dirname(__file__), "hebrew_db.csv")
+        print(f"Reading CSV from: {csv_path}")
+        # df = pd.read_csv("app/services/Schachnovelle.csv", encoding='utf-8')
+        df = pd.read_csv(csv_path, encoding='utf-8')
                 
         # 1. Convert DataFrame to a list of dictionaries (Extremely fast)
         records = df.to_dict(orient="records")
@@ -47,12 +55,21 @@ def test_database_import():
             record['id'] = generate_uuid() # From your models.py
 
         # 3. Bulk insert directly into the database (Bypasses the heavy ORM object creation)
-        if records:
-            db.bulk_insert_mappings(UserVocabulary, records)
-            db.commit()
-            print(f"-> Inserted {len(records)} new words.")
+        # Only insert if this course has no vocabulary yet to avoid duplicates
+        existing = db.query(UserVocabulary).filter(UserVocabulary.course_id == test_course.id).first()
+        if existing:
+            print("-> Words already exist in database for this course. Skipping insert.")
         else:
-            print("-> Words already exist in database. Skipping insert.")
+            for record in records:
+                record['course_id'] = test_course.id
+                record['id'] = generate_uuid() # From your models.py
+
+            if records:
+                db.bulk_insert_mappings(UserVocabulary, records)
+                db.commit()
+                print(f"-> Inserted {len(records)} new words.")
+            else:
+                print("-> No records found in CSV. Nothing to insert.")
 
         print("\n5. Verification: Querying SQLite using pandas.read_sql!")
         # We use raw SQL here just for Pandas, but usually FastAPI uses the ORM
