@@ -41,7 +41,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     setState(() => _isLoading = true);
 
     // Send to the FastAPI Grading Engine!
-    final isCorrect = await ApiService.submitReview(vocabId, userAnswer);
+    final isCorrect = await ApiService.submitReview(vocabId, userAnswer, 'wrt');
 
     if (isCorrect != null) {
       // Refresh the list to show the new stats
@@ -74,7 +74,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       builder: (context) {
         return AlertDialog(
           // 1. Ask for the German translation
-          title: const Text('Translate to German', textAlign: TextAlign.center, style: TextStyle(fontSize: 18, color: Colors.grey)),
+          title: const Text('Translate to Hebrew', textAlign: TextAlign.center, style: TextStyle(fontSize: 18, color: Colors.grey)),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -86,11 +86,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
               const SizedBox(height: 24),
               // 3. The Text Input Field!
+
               TextField(
                 controller: answerController,
                 autofocus: true, // Automatically pops up the keyboard!
                 decoration: const InputDecoration(
-                  labelText: 'Type the German word...',
+                  labelText: 'Type the Hebrew word...',
                   border: OutlineInputBorder(),
                 ),
                 // Allow hitting "Enter" on the keyboard to submit
@@ -126,7 +127,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Schachnovelle Vocab'),
+        title: const Text('Database Vocab'),
         centerTitle: true,
         actions: [
           // Only show these controls if we actually have words loaded!
@@ -174,7 +175,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         child: ElevatedButton.icon(
           onPressed: loadWords,
           icon: const Icon(Icons.download),
-          label: const Text('Fetch Schachnovelle Words'),
+          label: const Text('Fetch Word Database'),
         ),
       )
           : ListView.builder(

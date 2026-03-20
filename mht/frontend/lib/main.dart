@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/dashboard_screen.dart'; // Import the screen!
+import 'screens/mode_selection_screen.dart';
 
 void main() {
   runApp(const ManhattanApp());
@@ -11,17 +11,14 @@ class ManhattanApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false, // Hides the "Debug" banner in the corner
       title: 'Manhattan',
-      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.teal,
-          brightness: Brightness.dark,
-        ),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
         useMaterial3: true,
       ),
-      // Point the home page to our new DashboardScreen class
-      home: const DashboardScreen(), 
+      // Set the new Hub as the starting screen
+      home: const ModeSelectionScreen(),
     );
   }
 }

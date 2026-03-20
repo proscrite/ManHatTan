@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from datetime import datetime
 from rapidfuzz import utils, distance
 
-from app.database import SessionLocal
+from app.database import SessionLocal, get_db
 from app import models, schemas
 
 router = APIRouter(
@@ -11,31 +11,35 @@ router = APIRouter(
     tags=["Progress & Reviews"]
 )
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
 @router.post("/review", response_model=schemas.ReviewResponse)
 def submit_exercise_review(review: schemas.ReviewCreate, db: Session = Depends(get_db)):
     vocab = db.query(models.UserVocabulary).filter(models.UserVocabulary.id == review.vocab_id).first()
     if not vocab:
         raise HTTPException(status_code=404, detail="Item not found")
 
-    # --- THE GRADING ENGINE ---
-    # 1. Clean both strings (lowercase, strip whitespace, remove punctuation)
-    actual_correct = utils.default_process(vocab.word_ll)
-    provided_answer = utils.default_process(review.user_answer)
+    # --- DYNAMIC RAPIDFUZZ GRADING ---
+    if review.exercise_type == "wdt":
+        actual_correct = utils.default_process(vocab.word_ul) # Direct: Answer is English
+        vocab.wdt_history += 1
+    else: # wrt
+        actual_correct = utils.default_process(vocab.word_ll) # Reverse: Answer is Hebrew
+        vocab.wrt_history += 1
 
-    # 2. Calculate Similarity (0 to 100)
-    # Using Jaro-Winkler distance which is great for short phrases/words
+    provided_answer = utils.default_process(review.user_answer)
     score = distance.JaroWinkler.similarity(actual_correct, provided_answer)
-    
-    # 3. Decision Gate: 0.9 (90% match) allows for 1 tiny typo in a long word
     is_correct = score >= 0.9
-    # ---------------------------
+
+    # Update correct stats
+    if is_correct:
+        if review.exercise_type == "wdt":
+            vocab.wdt_correct += 1
+        else:
+            vocab.wrt_correct += 1
+        vocab.history_correct += 1
+
+    vocab.history_seen += 1
+    if vocab.history_seen > 0:
+        vocab.p_recall = round(vocab.history_correct / vocab.history_seen, 3)
 
     new_review = models.ReviewLog(
         vocab_id=review.vocab_id,
@@ -44,15 +48,58 @@ def submit_exercise_review(review: schemas.ReviewCreate, db: Session = Depends(g
         speed=review.speed
     )
     db.add(new_review)
+    db.commit()
+    db.refresh(vocab)
+    db.refresh(new_review)
 
-    # Update stats based on our backend decision
+    return schemas.ReviewResponse(
+        id=str(new_review.id),
+        vocab_id=str(vocab.id),
+        exercise_type=new_review.exercise_type,
+        is_correct=new_review.is_correct,
+        speed=new_review.speed,
+        new_p_recall=vocab.p_recall
+    )
+
+@router.post("/review/multiple-choice", response_model=schemas.ReviewResponse)
+def submit_mc_review(review: schemas.ReviewCreate, db: Session = Depends(get_db)):
+    # Note: We will eventually add User Authentication here to ensure 
+    # the user actually owns this vocab_id!
+    vocab = db.query(models.UserVocabulary).filter(models.UserVocabulary.id == review.vocab_id).first()
+    
+    if not vocab:
+        raise HTTPException(status_code=404, detail="Item not found")
+
+    # --- DYNAMIC SECURE GRADING ---
+    if review.exercise_type == "mdt":
+        is_correct = (review.user_answer.strip() == vocab.word_ul.strip())
+        vocab.mdt_history += 1
+        if is_correct:
+            vocab.mdt_correct += 1
+    else: # mrt
+        is_correct = (review.user_answer.strip() == vocab.word_ll.strip())
+        vocab.mrt_history += 1
+        if is_correct:
+            vocab.mrt_correct += 1
+
+    # Update global stats
     vocab.history_seen += 1
     if is_correct:
         vocab.history_correct += 1
-        vocab.p_recall = min(1.0, vocab.p_recall + 0.15)
-    else:
-        vocab.p_recall = max(0.0, vocab.p_recall - 0.25)
+        
+    if vocab.history_seen > 0:
+        vocab.p_recall = round(vocab.history_correct / vocab.history_seen, 3)
 
     db.commit()
-    db.refresh(new_review)
-    return new_review
+    db.refresh(vocab)
+    db.refresh(new_review) # Ensure the DB has hydrated the review ID
+
+    # Return ALL the fields required by your schema
+    return schemas.ReviewResponse(
+        id=str(new_review.id),
+        vocab_id=str(vocab.id),
+        exercise_type=new_review.exercise_type,
+        is_correct=new_review.is_correct,
+        speed=new_review.speed,
+        new_p_recall=vocab.p_recall # Assuming you added this to your schema!
+    )

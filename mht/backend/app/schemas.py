@@ -61,3 +61,14 @@ class ReviewResponse(BaseModel):
     speed: float
 
     model_config = ConfigDict(from_attributes=True)
+
+class MultipleChoiceResponse(BaseModel):
+    vocab_id: str
+    question_text: str       # The word to translate (e.g., English 'monster')
+    options: List[str]       # The 4 shuffled options (e.g., Hebrew words)
+    correct_answer: str      # The correct option (for frontend validation)
+
+class WrittenExerciseResponse(BaseModel):
+    vocab_id: str
+    question_text: str
+    correct_answer: str # We send this so the UI can show them what they missed!
