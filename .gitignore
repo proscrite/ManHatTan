@@ -30,5 +30,17 @@ mht/legacy_mht/data/fonts/NotoSansHebrew.ttf
 mht/legacy_mht/ManHatTan.code-workspace
 .vscode/settings.json
 .vscode/launch.json
-ManHatTan.code-workspace
-ManHatTan.code-workspace
+mht/backend/app/manhattan.db
+mht/backend/app/services/*.csv
+
+# Local sqlite DB
+mht/backend/app/manhattan.db
+
+# Flutter
+.dart_tool/
+build/
+mht/frontend/ios/Pods/
+mht/frontend/macos/Pods/
+**/ephemeral/
+.flutter-plugins
+.flutter-plugins-dependencies
