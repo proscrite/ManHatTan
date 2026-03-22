@@ -71,18 +71,19 @@ def submit_mc_review(review: schemas.ReviewCreate, db: Session = Depends(get_db)
         raise HTTPException(status_code=404, detail="Item not found")
 
     # --- DYNAMIC SECURE GRADING ---
+    # The server retains absolute authority over what is correct.
     if review.exercise_type == "mdt":
         is_correct = (review.user_answer.strip() == vocab.word_ul.strip())
         vocab.mdt_history += 1
         if is_correct:
             vocab.mdt_correct += 1
-    else: # mrt
+    else: # mrt (default/fallback)
         is_correct = (review.user_answer.strip() == vocab.word_ll.strip())
         vocab.mrt_history += 1
         if is_correct:
             vocab.mrt_correct += 1
 
-    # Update global stats
+    # --- GLOBAL STATS & P_RECALL ---
     vocab.history_seen += 1
     if is_correct:
         vocab.history_correct += 1
@@ -90,9 +91,18 @@ def submit_mc_review(review: schemas.ReviewCreate, db: Session = Depends(get_db)
     if vocab.history_seen > 0:
         vocab.p_recall = round(vocab.history_correct / vocab.history_seen, 3)
 
+    new_review = models.ReviewLog(
+        vocab_id=review.vocab_id,
+        exercise_type=review.exercise_type, # Records 'mrt' or 'mdt'
+        is_correct=is_correct,
+        speed=review.speed
+    )
+    db.add(new_review)
+
+    # Save everything to the database
     db.commit()
     db.refresh(vocab)
-    db.refresh(new_review) # Ensure the DB has hydrated the review ID
+    db.refresh(new_review) # This will no longer throw a NameError!
 
     # Return ALL the fields required by your schema
     return schemas.ReviewResponse(
@@ -101,5 +111,5 @@ def submit_mc_review(review: schemas.ReviewCreate, db: Session = Depends(get_db)
         exercise_type=new_review.exercise_type,
         is_correct=new_review.is_correct,
         speed=new_review.speed,
-        new_p_recall=vocab.p_recall # Assuming you added this to your schema!
+        new_p_recall=vocab.p_recall 
     )

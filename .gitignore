@@ -44,3 +44,8 @@ mht/frontend/macos/Pods/
 **/ephemeral/
 .flutter-plugins
 .flutter-plugins-dependencies
+*.xcconfig
+*.*cmake
+*.cc
+mht/frontend/macos/Flutter/GeneratedPluginRegistrant.swift
+ManHatTan.code-workspace
