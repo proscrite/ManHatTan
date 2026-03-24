@@ -1,7 +1,23 @@
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, EmailStr
 from typing import Optional, List
 from datetime import datetime
 
+# ==========================================
+# USERS
+# ==========================================
+class UserCreate(BaseModel):
+    email: EmailStr
+    name: str
+    password: str
+
+class UserResponse(BaseModel):
+    id: str
+    email: str
+    name: str
+
+    class Config:
+        from_attributes = True
+        
 # ==========================================
 # USER COURSES
 # ==========================================

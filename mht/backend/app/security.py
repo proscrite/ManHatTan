@@ -42,20 +42,13 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
     )
     
     try:
-        print(f"\n--- AUTH DEBUG ---")
-        print(f"1. Token received: {token[:20]}...") # Did Swagger send it?
-        
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         user_id: str = payload.get("sub")
         
-        print(f"2. Decoded user_id: {user_id}") # Did it decode successfully?
-        
         if user_id is None:
-            print("3. FAILURE: No 'sub' (user_id) found in token payload.")
             raise credentials_exception
             
     except JWTError as e:
-        print(f"3. FAILURE: JWT Decode Error: {e}")
         raise credentials_exception
         
     user = db.query(models.User).filter(models.User.id == user_id).first()

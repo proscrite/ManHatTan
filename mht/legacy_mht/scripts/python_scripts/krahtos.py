@@ -101,13 +101,16 @@ def make_cadera(mWords: list, labels : list, DEBUG = False) -> pd.DataFrame:
 
 def clean_filename(filename : str)->str:
     """Remove automatically added "Notes from..." string from filename"""
-    filename = filename.replace(' ', '_')
-    filename = filename.replace('_-_Bloc-notes', '')
-    filename = filename.replace('_-_Bloc_de_notas', '')
-    filename = filename.replace('_-_Notizbuch', '')
-
-    filename = filename.replace('Notes_from__', '')
-    filename = filename.replace('Notizen_aus__', '')
+    replacements = {
+        ' ': '_',
+        '_-_Bloc-notes': '',
+        '_-_Bloc_de_notas': '',
+        '_-_Notizbuch': '',
+        'Notes_from__': '',
+        'Notizen_aus__': ''
+    }
+    for old, new in replacements.items():
+        filename = filename.replace(old, new)
 
     return filename
 
