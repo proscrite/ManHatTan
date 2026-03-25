@@ -49,3 +49,4 @@ mht/frontend/macos/Pods/
 *.cc
 mht/frontend/macos/Flutter/GeneratedPluginRegistrant.swift
 ManHatTan.code-workspace
+requirements_backup.txt

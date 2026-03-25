@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' hide TextDirection;
-import '../services/api_service.dart';
+import '../services/exercise_service.dart';
 
 // Data model for cleaner code
 class McQuestion {
@@ -52,7 +52,7 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
     }
 
     try {
-      final data = await ApiService.fetchMultipleChoice(widget.mode);
+      final data = await ExerciseService.fetchMultipleChoice(widget.mode);
       if (mounted) {
         if (data != null) {
           setState(() {
@@ -84,7 +84,7 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
     setState(() => _selectedOption = tappedWord);
 
     // Backend validation (Background)
-    await ApiService.submitMcReview(_question!.id, tappedWord, widget.mode);
+    await ExerciseService.submitMcReview(_question!.id, tappedWord, widget.mode);
 
     // Visual feedback delay
     await Future.delayed(const Duration(milliseconds: 1200));

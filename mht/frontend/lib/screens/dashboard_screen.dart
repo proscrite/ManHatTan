@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../services/api_service.dart'; // Import the service
+import '../services/exercise_service.dart';
+import '../services/vocabulary_service.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -22,7 +23,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   Future<void> loadWords() async {
     setState(() => _isLoading = true);
-    final words = await ApiService.fetchVocabulary();
+    final words = await VocabularyService.fetchVocabulary();
 
     // Sort logic!
     if (_sortByWeakest) {
@@ -41,7 +42,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     setState(() => _isLoading = true);
 
     // Send to the FastAPI Grading Engine!
-    final isCorrect = await ApiService.submitReview(vocabId, userAnswer, 'wrt');
+    final isCorrect = await ExerciseService.submitWrittenReview(vocabId, userAnswer, 'wrt');
 
     if (isCorrect != null) {
       // Refresh the list to show the new stats

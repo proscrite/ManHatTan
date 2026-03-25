@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../services/api_service.dart';
+import '../services/auth_service.dart';
 import 'mode_selection_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -21,7 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
       _errorMessage = null;
     });
 
-    final success = await ApiService.login(
+    final success = await AuthService.login(
       _emailController.text.trim(),
       _passwordController.text,
     );

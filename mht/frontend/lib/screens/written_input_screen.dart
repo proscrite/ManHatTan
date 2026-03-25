@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' hide TextDirection;
-import '../services/api_service.dart';
+import '../services/exercise_service.dart';
 
 class WrittenInputScreen extends StatefulWidget {
   final String mode; // 'wrt' or 'wdt'
@@ -34,7 +34,7 @@ class _WrittenInputScreenState extends State<WrittenInputScreen> {
     setState(() => _isLoading = true);
     _textController.clear();
     
-    final data = await ApiService.fetchWrittenExercise(widget.mode);
+    final data = await ExerciseService.fetchWrittenExercise(widget.mode);
     setState(() {
       _questionData = data;
       _isLoading = false;
@@ -51,7 +51,7 @@ class _WrittenInputScreenState extends State<WrittenInputScreen> {
     
     setState(() => _isChecking = true);
     
-    final bool? isCorrect = await ApiService.submitReview(
+    final bool? isCorrect = await ExerciseService.submitWrittenReview(
       _questionData!['vocab_id'].toString(), 
       _textController.text.trim(),
       widget.mode
