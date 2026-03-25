@@ -12,6 +12,29 @@ router = APIRouter(
     tags=["Data Ingestion"]
 )
 
+@router.post("/analyze-docs", response_model=dict)
+async def analyze_uploaded_document(
+    file: UploadFile = File(...),
+    current_user: models.User = Depends(get_current_user)
+):
+    """
+    Step 1 of the Ingestion Wizard. 
+    Returns document metadata (colors, languages) so the frontend can guide the user.
+    """
+    try:
+        # Read the file into RAM
+        contents = await file.read()
+        
+        # Await the async analysis (which calls your statistical language detection)
+        analysis_result = await parsers.analyze_file(contents, file.filename)
+        
+        return analysis_result
+        
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Analysis failed: {str(e)}")
+
 @router.post("/document", response_model=dict)
 async def import_highlighted_document(
     course_id: str,

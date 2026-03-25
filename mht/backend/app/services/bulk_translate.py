@@ -87,6 +87,7 @@ async def find_language(word_list: list, min_confidence=4.0):
     # Sample 10 words from the word_list
 
     sample_list = random.sample(word_list, 10)
+    print(f"Sampled words for language detection: {sample_list}")
 
     result = await detect_language_list(sample_list)
     

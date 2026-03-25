@@ -6,6 +6,7 @@ from typing import List, Dict
 from .rashib_clean import extract_highlights_docx
 from .krahtos_clean import extract_highlights_html
 from .bulk_translate import find_language, bulk_translate 
+from app.services.bulk_translate import find_language
 
 def remove_nikud(text: str) -> str:
     """Removes all Hebrew Niqqud (vowels) and cantillation marks."""
@@ -58,6 +59,74 @@ def parse_google_translate_csv(file_bytes: bytes) -> List[Dict[str, str]]:
         })
         
     return parsed_words
+
+
+async def analyze_file(file_bytes: bytes, filename: str) -> dict:
+    """
+    Peeks inside an uploaded document to extract metadata (colors, languages) 
+    without saving it to the database.
+    """
+    filename = filename.lower()
+    
+    # --- 1. CSV ANALYSIS (Google Translate) ---
+    if filename.endswith('.csv'):
+        print("Analyzing CSV structure...")
+        try:
+            # We only need to read the first 5 rows to figure out the file structure
+            df = pd.read_csv(io.BytesIO(file_bytes), header=None, sep=None, engine='python', nrows=5)
+            
+            # The languages are declared in the first two columns of the first row
+            lang1 = str(df.iloc[0, 0]).strip()
+            lang2 = str(df.iloc[0, 1]).strip()
+            
+            return {
+                "file_type": "csv",
+                "detected_languages": [lang1, lang2],
+                "requires_color_selection": False
+            }
+        except Exception as e:
+            raise ValueError(f"Could not read CSV structure: {str(e)}")
+            
+    # --- 2. HTML/DOCX ANALYSIS (Kindle & Play Books) ---
+    elif filename.endswith('.html') or filename.endswith('.docx'):
+        platform = "kindle" if filename.endswith('.html') else "playbooks"
+        
+        # Route to krahtos and rashib's highlight extraction engines respectively
+        if platform == "kindle":
+            print("Extracting highlights from HTML for analysis...")
+            df = extract_highlights_html(io.BytesIO(file_bytes))
+        else:
+            print("Extracting highlights from DOCX for analysis...")
+            df = extract_highlights_docx(io.BytesIO(file_bytes))
+            
+        available_colors = list(df.columns)
+        
+        if not available_colors:
+            raise ValueError("No highlights found in this document.")
+            
+        # Grab a sample of up to 15 words to detect the language statistically
+        sample_words = []
+        for color in available_colors:
+            # Drop NaNs, convert to string, strip whitespace
+            words = df[color].dropna().astype(str).str.strip().tolist()
+            # Filter out empty strings
+            words = [w for w in words if w]
+            sample_words.extend(words)
+            if len(sample_words) >= 15:
+                break
+                
+        # Use find_language to guess the language!
+        detected_lang = await find_language(sample_words[:15])
+        
+        return {
+            "file_type": platform,
+            "detected_language": detected_lang,
+            "available_colors": available_colors,
+            "requires_color_selection": True
+        }
+        
+    else:
+        raise ValueError("Unsupported file extension. Please upload .csv, .html, or .docx")
 
 async def parse_highlighted_document(file_bytes: bytes, target_color: str, 
                                source_lang: str, target_lang: str,
