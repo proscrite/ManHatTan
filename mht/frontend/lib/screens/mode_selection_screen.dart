@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'dashboard_screen.dart';
 import 'multiple_choice_screen.dart';
 import 'written_input_screen.dart';
+import 'document_upload_screen.dart';
+import 'settings_screen.dart';
+import '../services/ingestion_service.dart';
 
 import '../widgets/exercise_card.dart';
 
@@ -16,6 +19,25 @@ class _ModeSelectionScreenState extends State<ModeSelectionScreen> {
   // true = Reverse Translation (Prompt: English -> Answer: Hebrew)
   // false = Direct Translation (Prompt: Hebrew -> Answer: English)
   bool _isReverseTranslation = true;
+  @override
+  void initState() {
+    super.initState();
+    // Fetch courses immediately when the Hub opens so global state is ready!
+    _initializeGlobalState();
+  }
+
+  Future<void> _initializeGlobalState() async {
+    try {
+      // If we haven't loaded courses yet, fetch them
+      if (IngestionService.allCourses.isEmpty) {
+        await IngestionService.fetchMyCourses();
+        // Optional: if you want the Hub to redraw after finding the active course
+        if (mounted) setState(() {}); 
+      }
+    } catch (e) {
+      debugPrint('Error initializing courses: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +50,35 @@ class _ModeSelectionScreenState extends State<ModeSelectionScreen> {
         title: const Text('Manhattan Hub'),
         centerTitle: true,
         elevation: 0,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            tooltip: 'Settings & Courses',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const SettingsScreen()),
+              ).then((_) {
+                // Refresh the Hub when returning, just in case the active course changed!
+                setState(() {});
+              });
+            },
+          ),
+        ],
       ),
+
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const DocumentUploadScreen()),
+          );
+        },
+        backgroundColor: Colors.teal.shade600,
+        tooltip: 'Import Vocabulary',
+        child: const Icon(Icons.upload_file, color: Colors.white),
+      ),
+
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24.0),
