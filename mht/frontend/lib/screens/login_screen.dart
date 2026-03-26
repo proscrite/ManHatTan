@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../services/auth_service.dart';
 import 'mode_selection_screen.dart';
-
+import 'registration_screen.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -10,8 +10,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final _emailController = TextEditingController(text: 'pablo@test.com'); // Pre-filled for dev speed!
-  final _passwordController = TextEditingController(text: 'password123');
+  final _emailController = TextEditingController(text: 'pablogfr94@gmail.com'); // Pre-filled for dev speed!
+  final _passwordController = TextEditingController(text: 'manhattanFTW');
   bool _isLoading = false;
   String? _errorMessage;
 
@@ -83,7 +83,26 @@ class _LoginScreenState extends State<LoginScreen> {
                     : const Text('Login', style: TextStyle(fontSize: 18)),
                 ),
               ),
+
+            const SizedBox(height: 24),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text("Don't have an account?"),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const RegistrationScreen()),
+                      );
+                    },
+                    child: const Text('Sign up', style: TextStyle(fontWeight: FontWeight.bold)),
+                  ),
+                ],
+              ),  
             ],
+
+            
           ),
         ),
       ),

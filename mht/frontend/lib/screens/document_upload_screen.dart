@@ -155,7 +155,7 @@ class _DocumentUploadScreenState extends State<DocumentUploadScreen> {
 
     return Scaffold(
       appBar: AppBar(title: const Text('Import Vocabulary'), centerTitle: true),
-      body: activeCourse == null 
+      body: (activeCourse == null && _pendingCourse == null)
         ? const Center(child: Text('No active course. Please create one in Settings.'))
         : SingleChildScrollView(
             padding: const EdgeInsets.all(24.0),
@@ -178,7 +178,7 @@ class _DocumentUploadScreenState extends State<DocumentUploadScreen> {
                         Text(
                             _pendingCourse != null 
                             ? 'Will Create: ${_pendingCourse!['learningLang']!.toUpperCase()} -> ${_pendingCourse!['uiLang']!.toUpperCase()}'
-                            : 'Active Course: ${activeCourse.learningLanguage.toUpperCase()} -> ${activeCourse.uiLanguage.toUpperCase()}', 
+                            : 'Active Course: ${activeCourse!.learningLanguage.toUpperCase()} -> ${activeCourse!.uiLanguage.toUpperCase()}', 
                             style: TextStyle(
                             fontWeight: FontWeight.bold, 
                             color: _pendingCourse != null ? Colors.blue : Colors.teal, 

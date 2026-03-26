@@ -12,7 +12,7 @@ class User(Base):
 
     id = Column(String(36), primary_key=True, default=generate_uuid, index=True)
     email = Column(String, unique=True, index=True)
-    name = Column(String)
+
     hashed_password = Column(String)
 
     # Relationships allow you to easily fetch a user's courses

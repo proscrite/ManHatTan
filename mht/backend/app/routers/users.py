@@ -12,7 +12,7 @@ router = APIRouter(
     tags=["Users & Courses"]
 )
 
-@router.post("/users", response_model=schemas.UserResponse, status_code=status.HTTP_201_CREATED)
+@router.post("", response_model=schemas.UserResponse, status_code=status.HTTP_201_CREATED)
 def create_user(user_in: schemas.UserCreate, db: Session = Depends(get_db)):
     """
     Register a new user in the system.
@@ -31,7 +31,6 @@ def create_user(user_in: schemas.UserCreate, db: Session = Depends(get_db)):
     # 3. Create the SQLAlchemy model instance
     new_user = models.User(
         email=user_in.email,
-        name=user_in.name,
         hashed_password=hashed_pw
     )
     

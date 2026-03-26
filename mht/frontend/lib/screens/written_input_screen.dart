@@ -87,11 +87,15 @@ class _WrittenInputScreenState extends State<WrittenInputScreen> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+      return Scaffold(
+        appBar: AppBar(title: const Text('Exercise')), 
+        body: const Center(child: CircularProgressIndicator())
+      );
     }
 
     if (_questionData == null) {
       return Scaffold(
+        appBar: AppBar(title: const Text('Exercise')),
         body: Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
