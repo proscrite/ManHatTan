@@ -7,6 +7,7 @@ import 'settings_screen.dart';
 import '../services/ingestion_service.dart';
 import '../services/api_client.dart';
 import '../widgets/exercise_card.dart';
+import '../utils/language_helper.dart';
 
 class ModeSelectionScreen extends StatefulWidget {
   const ModeSelectionScreen({super.key});
@@ -46,8 +47,8 @@ class _ModeSelectionScreenState extends State<ModeSelectionScreen> {
     final String writtenMode = _isReverseTranslation ? 'wrt' : 'wdt';
 
     final activeCourse = ApiClient.activeCourse;
-    final String learnLang = activeCourse?.learningLanguage?.toUpperCase() ?? 'TARGET';
-    final String uiLang = activeCourse?.uiLanguage?.toUpperCase() ?? 'BASE';
+    final String learnLang = LanguageHelper.getFlagAndCode(activeCourse?.learningLanguage);
+    final String uiLang = LanguageHelper.getFlagAndCode(activeCourse?.uiLanguage);
 
     return Scaffold(
       appBar: AppBar(
@@ -101,12 +102,12 @@ class _ModeSelectionScreenState extends State<ModeSelectionScreen> {
                   ButtonSegment<bool>(
                     value: true,
                     // For example "English → Hebrew (RT)" 
-                    label: Text('$uiLang \u2192 $learnLang (RT)'),
+                    label: Text('$uiLang → $learnLang'),
                     icon: Icon(Icons.east),
                   ),
                   ButtonSegment<bool>(
                     value: false,
-                    label: Text('$learnLang \u2192 $uiLang (DT)'),
+                    label: Text('$learnLang → $uiLang'),
                     icon: Icon(Icons.west),
                   ),
                 ],

@@ -50,3 +50,8 @@ mht/frontend/macos/Pods/
 mht/frontend/macos/Flutter/GeneratedPluginRegistrant.swift
 ManHatTan.code-workspace
 requirements_backup.txt
+mht/frontend/macos/Podfile.lock
+mht/frontend/macos/Runner.xcworkspace/contents.xcworkspacedata
+mht/frontend/macos/Runner.xcodeproj/project.pbxproj
+mht/legacy_mht/data/raw/googletranslate_csv/Saved translations.csv
+mht/frontend/pubspec.lock

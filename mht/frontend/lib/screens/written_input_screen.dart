@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' hide TextDirection;
 import '../services/exercise_service.dart';
 import '../services/api_client.dart';
+import '../utils/language_helper.dart';
 
 class WrittenInputScreen extends StatefulWidget {
   final String mode; // 'wrt' or 'wdt'
@@ -113,10 +114,10 @@ class _WrittenInputScreenState extends State<WrittenInputScreen> {
     final learnLang = activeCourse?.learningLanguage ?? 'TARGET';
     final uiLang = activeCourse?.uiLanguage ?? 'BASE';
 
-    final expectedLangName = widget.mode == 'wrt' ? learnLang : uiLang;
     final expectedLangCode = widget.mode == 'wrt' 
-      ? activeCourse?.learningLanguage.toLowerCase() 
-      : activeCourse?.uiLanguage.toLowerCase();
+        ? activeCourse?.learningLanguage.toLowerCase() 
+        : activeCourse?.uiLanguage.toLowerCase();
+    final expectedLangName = LanguageHelper.getName(expectedLangCode);
 
     const rtlLanguages = ['iw', 'he', 'ar', 'fa', 'ur']; // Hebrew, Arabic, Persian, Urdu, etc.
     final bool isInputExpectedRtl = rtlLanguages.contains(expectedLangCode);

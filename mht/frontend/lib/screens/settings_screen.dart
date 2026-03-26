@@ -4,6 +4,7 @@ import '../models/course.dart';
 import 'course_creation_screen.dart';
 import 'document_upload_screen.dart';
 import '../services/api_client.dart';
+import '../utils/language_helper.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -32,8 +33,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 value: ApiClient.activeCourse,
                 isExpanded: true,
                 items: ApiClient.allCourses.map((Course c) => 
-                  DropdownMenuItem(value: c, child: Text('${c.learningLanguage.toUpperCase()} -> ${c.uiLanguage.toUpperCase()}'))
-                ).toList(),
+                  DropdownMenuItem(
+                    value: c,
+                     child: Text(LanguageHelper.getFlagAndName(c.learningLanguage) + ' -> ' + LanguageHelper.getFlagAndName(c.uiLanguage)) )
+                     ).toList(),
                 onChanged: (Course? newVal) {
                   setState(() => ApiClient.activeCourse = newVal);
                 },
