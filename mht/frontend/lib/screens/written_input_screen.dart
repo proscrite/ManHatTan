@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' hide TextDirection;
 import '../services/exercise_service.dart';
+import '../services/api_client.dart';
 
 class WrittenInputScreen extends StatefulWidget {
   final String mode; // 'wrt' or 'wdt'
@@ -108,9 +109,17 @@ class _WrittenInputScreenState extends State<WrittenInputScreen> {
     final targetWord = _questionData!['question_text'];
     final bool isPromptRtl = Bidi.hasAnyRtl(targetWord);
     
-    // A smart UI trick: If they are doing WIRTE (wrt), they MUST type Hebrew.
-    // So we force the text field to RTL immediately, before they even type a letter.
-    final bool isInputExpectedRtl = (widget.mode == 'wrt');
+    final activeCourse = ApiClient.activeCourse;
+    final learnLang = activeCourse?.learningLanguage ?? 'TARGET';
+    final uiLang = activeCourse?.uiLanguage ?? 'BASE';
+
+    final expectedLangName = widget.mode == 'wrt' ? learnLang : uiLang;
+    final expectedLangCode = widget.mode == 'wrt' 
+      ? activeCourse?.learningLanguage.toLowerCase() 
+      : activeCourse?.uiLanguage.toLowerCase();
+
+    const rtlLanguages = ['iw', 'he', 'ar', 'fa', 'ur']; // Hebrew, Arabic, Persian, Urdu, etc.
+    final bool isInputExpectedRtl = rtlLanguages.contains(expectedLangCode);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Type the Translation'), centerTitle: true),
@@ -135,7 +144,7 @@ class _WrittenInputScreenState extends State<WrittenInputScreen> {
               textDirection: isInputExpectedRtl ? TextDirection.rtl : TextDirection.ltr,
               style: const TextStyle(fontSize: 24),
               decoration: InputDecoration(
-                hintText: isInputExpectedRtl ? 'Type in Hebrew...' : 'Type in English...',
+                hintText: 'Type in $expectedLangName...',
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                 filled: true,
                 fillColor: Colors.grey.shade100,

@@ -5,6 +5,7 @@ import '../models/course.dart';
 import '../services/ingestion_service.dart';
 import '../widgets/smart_guardrail_card.dart';
 import 'course_creation_screen.dart'; 
+import '../services/api_client.dart';
 
 class DocumentUploadScreen extends StatefulWidget {
   final Map<String, String>? initialPendingCourse;
@@ -46,7 +47,7 @@ class _DocumentUploadScreenState extends State<DocumentUploadScreen> {
     // 1. Identify the target language we are comparing against
     final targetCourseLang = _pendingCourse != null 
         ? _pendingCourse!['learningLang']! 
-        : (IngestionService.activeCourse?.learningLanguage ?? '');
+        : (ApiClient.activeCourse?.learningLanguage ?? '');
         
     if (targetCourseLang.isEmpty) return false;
 
@@ -66,7 +67,7 @@ class _DocumentUploadScreenState extends State<DocumentUploadScreen> {
   String _getDetectedLearningLang() {
     if (_analysisResult!['file_type'] == 'csv') {
       final langs = (_analysisResult!['detected_languages'] as List).map((l) => l.toString().toLowerCase()).toList();
-      final uiLang = IngestionService.activeCourse?.uiLanguage.toLowerCase() ?? 'en';
+      final uiLang = ApiClient.activeCourse?.uiLanguage.toLowerCase() ?? 'en';
       return langs.firstWhere((l) => l != uiLang, orElse: () => langs.first);
     }
     return _analysisResult!['detected_language']?.toString().toLowerCase() ?? 'unknown';
@@ -122,11 +123,11 @@ class _DocumentUploadScreenState extends State<DocumentUploadScreen> {
       }
       
       // Fallback check just in case
-      if (IngestionService.activeCourse == null) throw Exception("No active course available.");
+      if (ApiClient.activeCourse == null) throw Exception("No active course available.");
 
       // API Call 2: Upload the document
       final result = await IngestionService.uploadDocument(
-        IngestionService.activeCourse!.id, 
+        ApiClient.activeCourse!.id, 
         _selectedFile!,
         targetColor: _selectedColor,
       );
@@ -150,7 +151,7 @@ class _DocumentUploadScreenState extends State<DocumentUploadScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final activeCourse = IngestionService.activeCourse;
+    final activeCourse = ApiClient.activeCourse;
 
     return Scaffold(
       appBar: AppBar(title: const Text('Import Vocabulary'), centerTitle: true),
@@ -266,20 +267,20 @@ class _DocumentUploadScreenState extends State<DocumentUploadScreen> {
   Widget _buildGuardrailIntegration() {
     // Hide if no analysis is done, or if NO course exists at all
     if (_analysisResult == null) return const SizedBox.shrink();
-    if (_pendingCourse == null && IngestionService.activeCourse == null) return const SizedBox.shrink();
+    if (_pendingCourse == null && ApiClient.activeCourse == null) return const SizedBox.shrink();
     
     // The core check! (This now safely accounts for pending courses)
     if (_isLanguageMatch()) return const SizedBox.shrink();
 
     final targetLang = _getDetectedLearningLang();
-    final backgroundMatch = IngestionService.allCourses.where(
+    final backgroundMatch = ApiClient.allCourses.where(
       (c) => _normalizeLang(c.learningLanguage) == _normalizeLang(targetLang)
     ).firstOrNull;
 
     // Determine what language they were *trying* to upload to
     final currentTargetLang = _pendingCourse != null 
         ? _pendingCourse!['learningLang']! 
-        : IngestionService.activeCourse!.learningLanguage;
+        : ApiClient.activeCourse!.learningLanguage;
 
     return SmartGuardrailCard(
       targetLang: targetLang,
@@ -287,7 +288,7 @@ class _DocumentUploadScreenState extends State<DocumentUploadScreen> {
       backgroundMatchLang: backgroundMatch?.learningLanguage,
       onSwitchCourse: () {
         setState(() {
-          IngestionService.activeCourse = backgroundMatch;
+          ApiClient.activeCourse = backgroundMatch;
           _pendingCourse = null; // Important: Clear the pending queue if they switch to an existing course!
         });
         _showSnackBar('Switched Active Course to ${backgroundMatch!.learningLanguage.toUpperCase()}');

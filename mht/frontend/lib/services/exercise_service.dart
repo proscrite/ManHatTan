@@ -2,10 +2,14 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'api_client.dart';
+import 'ingestion_service.dart';
 
 class ExerciseService {
   static Future<Map<String, dynamic>?> fetchMultipleChoice(String mode) async {
-    final url = Uri.parse('${ApiClient.baseUrl}/exercise/multiple-choice?course_id=${ApiClient.courseId}&mode=$mode');
+    final courseId = ApiClient.activeCourse?.id;
+    if (courseId == null) throw Exception('No active course selected');
+
+    final url = Uri.parse('${ApiClient.baseUrl}/exercise/multiple-choice?course_id=$courseId&mode=$mode');
     try {
       final response = await http.get(url, headers: ApiClient.headers);
       if (response.statusCode == 200) return jsonDecode(response.body);
@@ -33,7 +37,9 @@ class ExerciseService {
   }
 
   static Future<Map<String, dynamic>?> fetchWrittenExercise(String mode) async {
-    final url = Uri.parse('${ApiClient.baseUrl}/exercise/written?course_id=${ApiClient.courseId}&mode=$mode');
+    
+    final courseId = ApiClient.activeCourse?.id;
+    final url = Uri.parse('${ApiClient.baseUrl}/exercise/written?course_id=$courseId&mode=$mode');
     try {
       final response = await http.get(url, headers: ApiClient.headers);
       if (response.statusCode == 200) return jsonDecode(response.body);

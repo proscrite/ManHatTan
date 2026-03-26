@@ -5,7 +5,7 @@ import 'written_input_screen.dart';
 import 'document_upload_screen.dart';
 import 'settings_screen.dart';
 import '../services/ingestion_service.dart';
-
+import '../services/api_client.dart';
 import '../widgets/exercise_card.dart';
 
 class ModeSelectionScreen extends StatefulWidget {
@@ -29,7 +29,7 @@ class _ModeSelectionScreenState extends State<ModeSelectionScreen> {
   Future<void> _initializeGlobalState() async {
     try {
       // If we haven't loaded courses yet, fetch them
-      if (IngestionService.allCourses.isEmpty) {
+      if (ApiClient.allCourses.isEmpty) {
         await IngestionService.fetchMyCourses();
         // Optional: if you want the Hub to redraw after finding the active course
         if (mounted) setState(() {}); 
@@ -44,6 +44,10 @@ class _ModeSelectionScreenState extends State<ModeSelectionScreen> {
     // Dynamically calculate the mode strings based on the toggle state
     final String mcMode = _isReverseTranslation ? 'mrt' : 'mdt';
     final String writtenMode = _isReverseTranslation ? 'wrt' : 'wdt';
+
+    final activeCourse = ApiClient.activeCourse;
+    final String learnLang = activeCourse?.learningLanguage?.toUpperCase() ?? 'TARGET';
+    final String uiLang = activeCourse?.uiLanguage?.toUpperCase() ?? 'BASE';
 
     return Scaffold(
       appBar: AppBar(
@@ -93,15 +97,16 @@ class _ModeSelectionScreenState extends State<ModeSelectionScreen> {
               ),
               const SizedBox(height: 12),
               SegmentedButton<bool>(
-                segments: const [
+                segments: [
                   ButtonSegment<bool>(
                     value: true,
-                    label: Text('English → Hebrew (RT)'),
+                    // For example "English → Hebrew (RT)" 
+                    label: Text('$uiLang \u2192 $learnLang (RT)'),
                     icon: Icon(Icons.east),
                   ),
                   ButtonSegment<bool>(
                     value: false,
-                    label: Text('Hebrew → English (DT)'),
+                    label: Text('$learnLang \u2192 $uiLang (DT)'),
                     icon: Icon(Icons.west),
                   ),
                 ],

@@ -3,6 +3,7 @@ import '../services/ingestion_service.dart';
 import '../models/course.dart';
 import 'course_creation_screen.dart';
 import 'document_upload_screen.dart';
+import '../services/api_client.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -28,13 +29,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
             decoration: BoxDecoration(color: Colors.grey.shade100, borderRadius: BorderRadius.circular(12)),
             child: DropdownButtonHideUnderline(
               child: DropdownButton<Course>(
-                value: IngestionService.activeCourse,
+                value: ApiClient.activeCourse,
                 isExpanded: true,
-                items: IngestionService.allCourses.map((Course c) => 
+                items: ApiClient.allCourses.map((Course c) => 
                   DropdownMenuItem(value: c, child: Text('${c.learningLanguage.toUpperCase()} -> ${c.uiLanguage.toUpperCase()}'))
                 ).toList(),
                 onChanged: (Course? newVal) {
-                  setState(() => IngestionService.activeCourse = newVal);
+                  setState(() => ApiClient.activeCourse = newVal);
                 },
               ),
             ),

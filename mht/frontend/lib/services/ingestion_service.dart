@@ -5,8 +5,8 @@ import 'api_client.dart';
 import '../models/course.dart';
 
 class IngestionService {
-  static Course? activeCourse;
-  static List<Course> allCourses = [];  
+//   static Course? activeCourse;
+//   static List<Course> allCourses = [];  
   
   static Future<List<Course>> fetchMyCourses() async {
     final response = await http.get(
@@ -16,14 +16,14 @@ class IngestionService {
 
     if (response.statusCode == 200) {
         List<dynamic> data = jsonDecode(response.body);
-        allCourses = data.map((json) => Course.fromJson(json)).toList();
+        ApiClient.allCourses = data.map((json) => Course.fromJson(json)).toList();
         
         // Automatically set the active course if one isn't set yet
-        if (allCourses.isNotEmpty && activeCourse == null) {
-            activeCourse = allCourses.first;
+        if (ApiClient.allCourses.isNotEmpty && ApiClient.activeCourse == null) {
+            ApiClient.activeCourse = ApiClient.allCourses.first;
         }
         
-        return allCourses;
+        return ApiClient.allCourses;
     } else {
         throw Exception('Failed to load courses.');
     }
@@ -42,8 +42,8 @@ class IngestionService {
     
     if (response.statusCode == 200 || response.statusCode == 201) {
         final newCourse = Course.fromJson(jsonDecode(response.body));
-        allCourses.add(newCourse);
-        activeCourse = newCourse; // Automatically make the new course active
+        ApiClient.allCourses.add(newCourse);
+        ApiClient.activeCourse = newCourse; // Automatically make the new course active
         return newCourse;
     }
     throw Exception('Failed to create course');

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'api_client.dart';
+import 'ingestion_service.dart';
 
 class AuthService {
   static Future<bool> login(String email, String password) async {
@@ -33,7 +34,7 @@ class AuthService {
       if (response.statusCode == 200) {
         final List<dynamic> courses = jsonDecode(response.body);
         if (courses.isNotEmpty) {
-          ApiClient.courseId = courses[0]['id'].toString();
+          await IngestionService.fetchMyCourses(); // This will set the active course
           return true;
         }
       }

@@ -5,7 +5,7 @@ import 'api_client.dart';
 
 class VocabularyService {
   static Future<List<dynamic>> fetchVocabulary() async {
-    final url = Uri.parse('${ApiClient.baseUrl}/vocabulary/${ApiClient.courseId}');
+    final url = Uri.parse('${ApiClient.baseUrl}/vocabulary/${ApiClient.activeCourse?.id}');
     try {
       final response = await http.get(url, headers: ApiClient.headers);
       if (response.statusCode == 200) return jsonDecode(response.body);

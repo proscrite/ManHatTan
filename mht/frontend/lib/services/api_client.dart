@@ -1,11 +1,12 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
+import '../models/course.dart';
 class ApiClient {
   static const String baseUrl = 'http://192.168.1.225:8000/api/v1';
   static const storage = FlutterSecureStorage();
   
   static String? jwtToken;
-  static String? courseId;
+  static Course? activeCourse;
+  static List<Course> allCourses = [];
 
   // Global header generator
   static Map<String, String> get headers {
