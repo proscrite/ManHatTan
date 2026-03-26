@@ -58,7 +58,12 @@ class _CourseCreationScreenState extends State<CourseCreationScreen> {
             const SizedBox(height: 8),
             TextField(
               controller: _learningLangController,
-              decoration: const InputDecoration(border: OutlineInputBorder()),
+              readOnly: widget.initialLearningLang != null, // Locks it if it was auto-detected!
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                filled: widget.initialLearningLang != null,
+                fillColor: widget.initialLearningLang != null ? Colors.grey.shade200 : null,
+              ),
             ),
             const SizedBox(height: 24),
             
@@ -70,12 +75,30 @@ class _CourseCreationScreenState extends State<CourseCreationScreen> {
             ),
             
             const Spacer(),
-            ElevatedButton(
-              onPressed: _isLoading ? null : _submit,
-              style: ElevatedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 16)),
-              child: _isLoading 
-                ? const CircularProgressIndicator(color: Colors.white) 
-                : const Text('Create & Set as Active', style: TextStyle(fontSize: 16)),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                ElevatedButton.icon(
+                  onPressed: () {
+                    if (_learningLangController.text.isEmpty || _uiLangController.text.isEmpty) return;
+                    // Do NOT call the API here anymore. Just pass the data back to the Upload Screen!
+                    Navigator.pop(context, {
+                      'learningLang': _learningLangController.text,
+                      'uiLang': _uiLangController.text,
+                    });
+                  },
+                  icon: const Icon(Icons.upload_file),
+                  label: const Text('Continue to Upload Wordbank', style: TextStyle(fontSize: 16)),
+                  style: ElevatedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 16)),
+                ),
+                const SizedBox(height: 12),
+                OutlinedButton.icon(
+                  onPressed: null, // Keeps the button disabled!
+                  icon: const Icon(Icons.library_books),
+                  label: const Text('Select from Template (Coming Soon)'),
+                  style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 16)),
+                ),
+              ],
             )
           ],
         ),

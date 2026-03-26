@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../services/ingestion_service.dart';
 import '../models/course.dart';
 import 'course_creation_screen.dart';
+import 'document_upload_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -43,10 +44,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
           
           OutlinedButton.icon(
             onPressed: () async {
-              // Wait for the creation screen to pop back
-              final created = await Navigator.push(context, MaterialPageRoute(builder: (_) => const CourseCreationScreen()));
-              if (created == true) {
-                setState(() {}); // Refresh UI to show new active course
+              // 1. Wait for the creation screen to pop back with the Map data
+              final result = await Navigator.push(
+                context, 
+                MaterialPageRoute(builder: (_) => const CourseCreationScreen())
+              );
+              
+              // 2. If it returned data (meaning they didn't just hit the back arrow)
+              if (result != null && result is Map<String, String>) {
+                // 3. Immediately launch the Upload Screen and pass the data!
+                if (mounted) {
+                  Navigator.push(
+                    context, 
+                    MaterialPageRoute(
+                      builder: (_) => DocumentUploadScreen(initialPendingCourse: result)
+                    )
+                  ).then((_) {
+                    // Refresh Settings when they return, just in case they successfully uploaded/created it
+                    setState(() {}); 
+                  });
+                }
               }
             },
             icon: const Icon(Icons.add),

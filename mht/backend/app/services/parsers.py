@@ -99,7 +99,13 @@ async def analyze_file(file_bytes: bytes, filename: str) -> dict:
             print("Extracting highlights from DOCX for analysis...")
             df = extract_highlights_docx(io.BytesIO(file_bytes))
             
-        available_colors = list(df.columns)
+        available_colors = []
+        for col in df.columns:
+            # Drop NaNs, convert to string, strip whitespace, and check if any words remain for this color
+            valid_words = df[col].dropna().astype(str).str.strip()
+            valid_words = valid_words[valid_words != '']
+            if not valid_words.empty:
+                available_colors.append(col)
         
         if not available_colors:
             raise ValueError("No highlights found in this document.")
