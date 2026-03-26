@@ -30,3 +30,40 @@ def get_due_vocabulary(course_id: str, db: Session = Depends(get_db)):
     
     # FastAPI automatically passes them through the Pydantic schemas.VocabularyResponse to format the JSON
     return words
+
+@router.put("/{vocab_id}", response_model=schemas.VocabularyResponse)
+def update_vocabulary(
+    vocab_id: str, 
+    payload: schemas.VocabularyUpdate, 
+    db: Session = Depends(get_db)
+):
+    """
+    Updates the text of a specific vocabulary word.
+    """
+    word = db.query(models.UserVocabulary).filter(models.UserVocabulary.id == vocab_id).first()
+    
+    if not word:
+        raise HTTPException(status_code=404, detail="Word not found")
+    
+    # Update the fields
+    word.word_ll = payload.word_ll
+    word.word_ul = payload.word_ul
+    
+    db.commit()
+    db.refresh(word)
+    return word
+
+@router.delete("/{vocab_id}")
+def delete_vocabulary(vocab_id: str, db: Session = Depends(get_db)):
+    """
+    Permanently deletes a vocabulary word from the database.
+    """
+    word = db.query(models.UserVocabulary).filter(models.UserVocabulary.id == vocab_id).first()
+    
+    if not word:
+        raise HTTPException(status_code=404, detail="Word not found")
+    
+    db.delete(word)
+    db.commit()
+    
+    return {"message": "Vocabulary word deleted successfully"}

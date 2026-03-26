@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '../services/exercise_service.dart';
 import '../services/vocabulary_service.dart';
+import '../services/api_client.dart';
+import '../utils/language_helper.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -11,113 +12,127 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   List<dynamic> _words = [];
-  bool _isLoading = false;
+  bool _isLoading = true; // Start true since we auto-load!
   bool _sortByWeakest = false;
 
   @override
   void initState() {
     super.initState();
-    // Optional: Auto-load words when the app starts!
-    // loadWords();
+    loadWords(); // Auto-load triggered immediately!
   }
 
   Future<void> loadWords() async {
     setState(() => _isLoading = true);
     final words = await VocabularyService.fetchVocabulary();
 
-    // Sort logic!
     if (_sortByWeakest) {
-      // Sorts ascending (0.0 comes before 1.0)
       words.sort((a, b) => (a['p_recall'] as num).compareTo(b['p_recall'] as num));
     }
 
-    setState(() {
-      _words = words;
-      _isLoading = false;
-    });
+    if (mounted) {
+      setState(() {
+        _words = words;
+        _isLoading = false;
+      });
+    }
   }
 
-  // Updated to accept the user's typed text
-  Future<void> handleReview(String vocabId, String userAnswer) async {
+  Future<void> handleEditWord(String vocabId, String newLl, String newUl) async {
+    if (newLl.trim().isEmpty || newUl.trim().isEmpty) return;
+
     setState(() => _isLoading = true);
 
-    // Send to the FastAPI Grading Engine!
-    final isCorrect = await ExerciseService.submitWrittenReview(vocabId, userAnswer, 'wrt');
+    final success = await VocabularyService.updateWord(vocabId, newLl.trim(), newUl.trim());
 
-    if (isCorrect != null) {
-      // Refresh the list to show the new stats
-      await loadWords();
-
-      // Show a highly satisfying pop-up banner!
+    if (success) {
+      await loadWords(); // Refresh to show the updated words
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              isCorrect ? '✅ Correct!' : '❌ Incorrect. Keep trying!',
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            backgroundColor: isCorrect ? Colors.green[700] : Colors.redAccent,
-            duration: const Duration(seconds: 2),
-          ),
+          const SnackBar(content: Text('✅ Entry updated successfully!'), backgroundColor: Colors.teal),
         );
       }
     } else {
       setState(() => _isLoading = false);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: const Text('❌ Failed to update entry.'), backgroundColor: Colors.red.shade700),
+        );
+      }
     }
   }
 
-  void showReviewDialog(Map<String, dynamic> word) {
-    // Controller to capture what the user types
-    final TextEditingController answerController = TextEditingController();
+  void showEditDialog(Map<String, dynamic> word) {
+    // Pre-fill the controllers with the existing words
+    final TextEditingController llController = TextEditingController(text: word['word_ll']);
+    final TextEditingController ulController = TextEditingController(text: word['word_ul']);
+    
+    final activeCourse = ApiClient.activeCourse;
+    final learnLangCode = activeCourse?.learningLanguage.toUpperCase() ?? 'TARGET';
+    final uiLangCode = activeCourse?.uiLanguage.toUpperCase() ?? 'BASE';
 
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          // 1. Ask for the German translation
-          title: const Text('Translate to Hebrew', textAlign: TextAlign.center, style: TextStyle(fontSize: 18, color: Colors.grey)),
+          title: const Text('Edit Vocabulary', textAlign: TextAlign.center, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // 2. Show the English word
-              Text(
-                word['word_ul'] ?? 'No translation',
-                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 24),
-              // 3. The Text Input Field!
-
               TextField(
-                controller: answerController,
-                autofocus: true, // Automatically pops up the keyboard!
-                decoration: const InputDecoration(
-                  labelText: 'Type the Hebrew word...',
-                  border: OutlineInputBorder(),
+                controller: llController,
+                decoration: InputDecoration(
+                  labelText: 'Learning Language ($learnLangCode)',
+                  border: const OutlineInputBorder(),
                 ),
-                // Allow hitting "Enter" on the keyboard to submit
-                onSubmitted: (value) {
-                  Navigator.pop(context);
-                  handleReview(word['id'], value);
-                },
+              ),
+              const SizedBox(height: 16),
+              TextField(
+                controller: ulController,
+                decoration: InputDecoration(
+                  labelText: 'Translation ($uiLangCode)',
+                  border: const OutlineInputBorder(),
+                ),
               ),
             ],
           ),
           actionsAlignment: MainAxisAlignment.end,
           actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context), // Just close without saving
-              child: const Text('Cancel', style: TextStyle(color: Colors.grey)),
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.teal),
-              onPressed: () {
-                Navigator.pop(context);
-                // Pass the typed text to our API
-                handleReview(word['id'], answerController.text);
+            // LEFT SIDE: The Delete Button
+            IconButton(
+              icon: const Icon(Icons.delete_outline, color: Colors.redAccent),
+              tooltip: 'Delete Word',
+              onPressed: () async {
+                Navigator.pop(context); // Close dialog
+                setState(() => _isLoading = true);
+                
+                final success = await VocabularyService.deleteWord(word['id'].toString());
+                if (success) {
+                  await loadWords();
+                  if (mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('🗑️ Word deleted.'), backgroundColor: Colors.redAccent));
+                } else {
+                  setState(() => _isLoading = false);
+                }
               },
-              child: const Text('Submit', style: TextStyle(color: Colors.white)),
             ),
+            
+            // RIGHT SIDE: Cancel and Save Buttons
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('Cancel', style: TextStyle(color: Colors.grey)),
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.teal),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    handleEditWord(word['id'].toString(), llController.text, ulController.text);
+                  },
+                  child: const Text('Save', style: TextStyle(color: Colors.white)),
+                ),
+              ],
+            )
           ],
         );
       },
@@ -126,45 +141,33 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Format the AppBar Title contextually
+    final activeCourse = ApiClient.activeCourse;
+    final String titleStr = activeCourse != null 
+        ? 'Database: ${LanguageHelper.getFlagAndCode(activeCourse.learningLanguage)}'
+        : 'Vocabulary Database';
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Database Vocab'),
+        title: Text(titleStr),
         centerTitle: true,
         actions: [
-          // Only show these controls if we actually have words loaded!
           if (_words.isNotEmpty) ...[
-            // 1. The Sort Toggle Button
             IconButton(
               icon: Icon(
                 _sortByWeakest ? Icons.filter_list_off : Icons.filter_list,
-                color: _sortByWeakest ? Colors.greenAccent : Colors.white,
+                color: _sortByWeakest ? Colors.greenAccent : Colors.grey,
               ),
               tooltip: 'Sort by Weakest',
               onPressed: () {
-                setState(() {
-                  _sortByWeakest = !_sortByWeakest; // Toggle the boolean
-                });
-                loadWords(); // Re-fetch and apply the sort!
+                setState(() => _sortByWeakest = !_sortByWeakest);
+                loadWords();
               },
             ),
-
-            // 2. The Refresh Button
             IconButton(
               icon: const Icon(Icons.refresh),
               tooltip: 'Refresh Data',
               onPressed: loadWords,
-            ),
-
-            // 3. The "Return/Clear" Button
-            IconButton(
-              icon: const Icon(Icons.close, color: Colors.redAccent),
-              tooltip: 'Clear List',
-              onPressed: () {
-                setState(() {
-                  _words = []; // Instantly empties the list!
-                  _sortByWeakest = false; // Reset the sort
-                });
-              },
             ),
           ]
         ],
@@ -172,38 +175,45 @@ class _DashboardScreenState extends State<DashboardScreen> {
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : _words.isEmpty
-          ? Center(
-        child: ElevatedButton.icon(
-          onPressed: loadWords,
-          icon: const Icon(Icons.download),
-          label: const Text('Fetch Word Database'),
-        ),
-      )
-          : ListView.builder(
-        padding: const EdgeInsets.all(8.0),
-        itemCount: _words.length,
-        itemBuilder: (context, index) {
-          final word = _words[index];
-          final pRecall = (word['p_recall'] as num).toDouble();
-          final scoreColor = Color.lerp(Colors.redAccent, Colors.greenAccent, pRecall);
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.library_books_outlined, size: 64, color: Colors.grey.shade400),
+                      const SizedBox(height: 16),
+                      Text(
+                        'No vocabulary found.\nUse the + button on the Hub to import words!',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 16, color: Colors.grey.shade600),
+                      ),
+                    ],
+                  ),
+                )
+              : ListView.builder(
+                  padding: const EdgeInsets.all(8.0),
+                  itemCount: _words.length,
+                  itemBuilder: (context, index) {
+                    final word = _words[index];
+                    final pRecall = (word['p_recall'] as num).toDouble();
+                    final scoreColor = Color.lerp(Colors.redAccent, Colors.greenAccent, pRecall);
 
-          return Card(
-            child: ListTile(
-              title: Text(word['word_ll'] ?? 'Unknown', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-              subtitle: Text(word['word_ul'] ?? ''),
-              trailing: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text('Recall: ${(pRecall * 100).toInt()}%', style: TextStyle(color: scoreColor, fontWeight: FontWeight.bold)),
-                  Text('Seen: ${word['history_seen']}', style: const TextStyle(fontSize: 12, color: Colors.grey)),
-                ],
-              ),
-              onTap: () => showReviewDialog(word),
-            ),
-          );
-        },
-      ),
+                    return Card(
+                      child: ListTile(
+                        title: Text(word['word_ll'] ?? 'Unknown', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                        subtitle: Text(word['word_ul'] ?? ''),
+                        trailing: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text('Recall: ${(pRecall * 100).toInt()}%', style: TextStyle(color: scoreColor, fontWeight: FontWeight.bold)),
+                            Text('Seen: ${word['history_seen']}', style: const TextStyle(fontSize: 12, color: Colors.grey)),
+                          ],
+                        ),
+                        onTap: () => showEditDialog(word),
+                      ),
+                    );
+                  },
+                ),
     );
   }
 }

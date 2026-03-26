@@ -50,6 +50,24 @@ class VocabularyBase(BaseModel):
 class VocabularyCreate(VocabularyBase):
     pass 
 
+class VocabularyUpdate(BaseModel):
+    word_ul: Optional[str] = None        
+    word_ll: Optional[str] = None
+    lexeme_string: Optional[str] = None  
+    p_recall: Optional[float] = None
+    history_seen: Optional[int] = None
+    history_correct: Optional[int] = None
+    session_seen: Optional[int] = None
+    session_correct: Optional[int] = None
+    mdt_history: Optional[int] = None
+    mdt_correct: Optional[int] = None
+    mrt_history: Optional[int] = None
+    mrt_correct: Optional[int] = None
+    wdt_history: Optional[int] = None
+    wdt_correct: Optional[int] = None
+    wrt_history: Optional[int] = None
+    wrt_correct: Optional[int] = None
+
 class VocabularyResponse(VocabularyBase):
     id: str
     course_id: str

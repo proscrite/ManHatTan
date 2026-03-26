@@ -15,4 +15,35 @@ class VocabularyService {
       return [];
     }
   }
+
+  static Future<bool> updateWord(String vocabId, String newWordLl, String newWordUl) async {
+    final url = Uri.parse('${ApiClient.baseUrl}/vocabulary/$vocabId');
+    
+    try {
+      final response = await http.put(
+        url,
+        headers: ApiClient.headers,
+        body: jsonEncode({
+          'word_ll': newWordLl,
+          'word_ul': newWordUl,
+        }),
+      );
+      
+      return response.statusCode == 200;
+    } catch (e) {
+      debugPrint("Update Error: $e");
+      return false;
+    }
+  }
+
+  static Future<bool> deleteWord(String vocabId) async {
+    final url = Uri.parse('${ApiClient.baseUrl}/vocabulary/$vocabId');
+    try {
+      final response = await http.delete(url, headers: ApiClient.headers);
+      return response.statusCode == 200;
+    } catch (e) {
+      debugPrint("Delete Error: $e");
+      return false;
+    }
+  }
 }
