@@ -57,3 +57,7 @@ mht/legacy_mht/data/raw/googletranslate_csv/Saved translations.csv
 mht/frontend/pubspec.lock
 mht/backend/.env
 mht/frontend/prod.env
+mht/frontend/.vscode/launch.json
+mht/frontend/android/app/src/main/res/drawable-hdpi/*.png
+mht/frontend/ios/Runner/**/**/*.png
+mht/frontend/android/app/src/main/res/**/*.png
