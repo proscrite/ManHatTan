@@ -1,7 +1,7 @@
 import pandas as pd
 import io
 import re
-from deep_translator import GoogleTranslator
+# from deep_translator import GoogleTranslator
 from typing import List, Dict
 from .rashib_clean import extract_highlights_docx
 from .krahtos_clean import extract_highlights_html

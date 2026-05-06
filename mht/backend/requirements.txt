@@ -1,0 +1,17 @@
+fastapi>=0.100.0
+uvicorn>=0.23.0
+sqlalchemy>=2.0.0
+passlib[bcrypt,argon2]
+psycopg2-binary
+pydantic>=2.0.0
+pydantic-settings
+pydantic[email]
+python-jose[cryptography]
+python-multipart
+pandas
+numpy
+beautifulsoup4
+python-bidi
+python-docx
+rapidfuzz
+googletrans

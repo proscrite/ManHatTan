@@ -7,12 +7,14 @@ from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 
 from app.database import get_db
+from app.config import Settings
 from app import models
 
 # In production, this goes in a .env file!
-SECRET_KEY = "[REMOVED]" 
-ALGORITHM = "[REMOVED]"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7 # 1 week expiration for mobile
+SECRET_KEY = Settings().secret_key
+ALGORITHM = Settings().algorithm
+ACCESS_TOKEN_EXPIRE_MINUTES = Settings().access_token_expire_minutes
+
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
 
 pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")

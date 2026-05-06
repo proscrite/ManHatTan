@@ -1,7 +1,12 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../models/course.dart';
 class ApiClient {
-  static const String baseUrl = 'http://192.168.1.225:8000/api/v1';
+  static const String baseUrl = String.fromEnvironment(
+    'API_URL',
+    // Fallback to local dev IP (10.0.2.2 is the Android emulator's alias for localhost)
+    // 192.168.1.225 for testing on a physical device from the same network
+    defaultValue: 'http://192.168.1.225:8000/api/v1', 
+  );
   static const storage = FlutterSecureStorage();
   
   static String? jwtToken;

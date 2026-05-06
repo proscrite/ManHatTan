@@ -55,3 +55,5 @@ mht/frontend/macos/Runner.xcworkspace/contents.xcworkspacedata
 mht/frontend/macos/Runner.xcodeproj/project.pbxproj
 mht/legacy_mht/data/raw/googletranslate_csv/Saved translations.csv
 mht/frontend/pubspec.lock
+mht/backend/.env
+mht/frontend/prod.env
