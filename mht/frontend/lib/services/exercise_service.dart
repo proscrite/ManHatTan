@@ -26,7 +26,7 @@ class ExerciseService {
         url,
         headers: ApiClient.headers,
         body: jsonEncode({
-          'vocab_id': vocabId, 'exercise_type': mode, 'user_answer': userAnswer, 'speed': 1.5,
+          'vocab_id': vocabId, 'exercise_type': mode, 'user_answer': userAnswer, 'speed': 1.5, 'grade': 3
         }),
       );
       if (response.statusCode == 200) return jsonDecode(response.body);
@@ -56,10 +56,13 @@ class ExerciseService {
         url,
         headers: ApiClient.headers,
         body: jsonEncode({
-          'vocab_id': vocabId, 'exercise_type': mode, 'user_answer': userAnswer, 'speed': 2.0,
+          'vocab_id': vocabId, 'exercise_type': mode, 'user_answer': userAnswer, 'speed': 2.0, 'grade': 3
         }),
       );
-      if (response.statusCode == 200) return jsonDecode(response.body)['is_correct'] as bool;
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return (data['grade'] as int) >= 3;
+      }
       return null;
     } catch (e) {
       return null;

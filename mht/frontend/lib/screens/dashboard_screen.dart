@@ -26,7 +26,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final words = await VocabularyService.fetchVocabulary();
 
     if (_sortByWeakest) {
-      words.sort((a, b) => (a['p_recall'] as num).compareTo(b['p_recall'] as num));
+      words.sort((a, b) => (a['fsrs_stability'] as num).compareTo(b['fsrs_stability'] as num));
     }
 
     if (mounted) {
@@ -194,8 +194,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   itemCount: _words.length,
                   itemBuilder: (context, index) {
                     final word = _words[index];
-                    final pRecall = (word['p_recall'] as num).toDouble();
-                    final scoreColor = Color.lerp(Colors.redAccent, Colors.greenAccent, pRecall);
+                    final stability = (word['fsrs_stability'] as num).toDouble();
+                    final reps = word['reps'] as int? ?? 0;
+                    
+                    // Simple color heuristics over stability
+                    final stabilityRatio = (stability / 10.0).clamp(0.0, 1.0);
+                    final scoreColor = reps == 0 
+                        ? Colors.grey 
+                        : Color.lerp(Colors.redAccent, Colors.greenAccent, stabilityRatio);
 
                     return Card(
                       child: ListTile(
@@ -205,8 +211,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            Text('Recall: ${(pRecall * 100).toInt()}%', style: TextStyle(color: scoreColor, fontWeight: FontWeight.bold)),
-                            Text('Seen: ${word['history_seen']}', style: const TextStyle(fontSize: 12, color: Colors.grey)),
+                            Text(reps == 0 ? 'New' : 'Stability: ${stability.toStringAsFixed(1)}', style: TextStyle(color: scoreColor, fontWeight: FontWeight.bold)),
+                            Text('Reps: $reps', style: const TextStyle(fontSize: 12, color: Colors.grey)),
                           ],
                         ),
                         onTap: () => showEditDialog(word),
