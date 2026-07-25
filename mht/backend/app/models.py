@@ -1,6 +1,7 @@
 import uuid
-from sqlalchemy import Boolean, Column, Float, ForeignKey, Integer, String, DateTime
+from sqlalchemy import Boolean, Column, Float, ForeignKey, Integer, String, DateTime, JSON
 from sqlalchemy.orm import relationship
+from sqlalchemy.ext.mutable import MutableDict
 from app.database import Base
 import datetime
 
@@ -45,21 +46,18 @@ class UserVocabulary(Base):
     context_sentence = Column(String, nullable=True)
     
     # Metrics
-    p_recall = Column(Float, default=0.0)
-    history_seen = Column(Integer, default=0)
-    history_correct = Column(Integer, default=0)
-    session_seen = Column(Integer, default=0)
-    session_correct = Column(Integer, default=0)
-    mdt_history = Column(Integer, default=0)
-    mdt_correct = Column(Integer, default=0)
-    mrt_history = Column(Integer, default=0)
-    mrt_correct = Column(Integer, default=0)
-    wdt_history = Column(Integer, default=0)
-    wdt_correct = Column(Integer, default=0)
-    wrt_history = Column(Integer, default=0)
-    wrt_correct = Column(Integer, default=0)
-    speed = Column(Float, default=0.0)
+    # FSRS Core Metrics
+    fsrs_state = Column(Integer, default=0)        # 0=New, 1=Learning, 2=Review, 3=Relearning
+    fsrs_difficulty = Column(Float, default=0.0)
+    fsrs_stability = Column(Float, default=0.0)
+    fsrs_last_review = Column(DateTime, nullable=True)
     next_review_at = Column(DateTime, default=datetime.datetime.utcnow)
+    reps = Column(Integer, default=0)              # Total reviews
+    lapses = Column(Integer, default=0)            # Total times forgotten
+    
+    # Consolidating legacy metrics into 1 JSON column
+    # Stores: {"mdt": {"seen": 0, "correct": 0}, "wrt": {"seen": 0, "correct": 0}}
+    modality_stats = Column(MutableDict.as_mutable(JSON), default=dict)
 
     course = relationship("UserCourse", back_populates="vocabulary")
     reviews = relationship("ReviewLog", back_populates="vocabulary")
@@ -71,7 +69,8 @@ class ReviewLog(Base):
     vocab_id = Column(String(36), ForeignKey("user_vocabulary.id"))
     
     exercise_type = Column(String) # 'mdt', 'wrt', etc.
-    is_correct = Column(Boolean)
+    # FSRS requires a grade (1-4), not just boolean
+    grade = Column(Integer) # 1: Again, 2: Hard, 3: Good, 4: Easy
     speed = Column(Float)
     timestamp = Column(DateTime, default=datetime.datetime.utcnow)
 

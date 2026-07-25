@@ -1,6 +1,8 @@
-from pydantic import BaseModel, ConfigDict, EmailStr
-from typing import Optional, List
+from pydantic import BaseModel, ConfigDict, EmailStr, Field
+from typing import Optional, Dict, Any, List
 from datetime import datetime
+from enum import Enum
+
 
 # ==========================================
 # USERS
@@ -49,30 +51,25 @@ class VocabularyCreate(VocabularyBase):
     pass 
 
 class VocabularyUpdate(BaseModel):
-    word_ul: Optional[str] = None        
-    word_ll: Optional[str] = None
-    lexeme_string: Optional[str] = None  
-    p_recall: Optional[float] = None
-    history_seen: Optional[int] = None
-    history_correct: Optional[int] = None
-    session_seen: Optional[int] = None
-    session_correct: Optional[int] = None
-    mdt_history: Optional[int] = None
-    mdt_correct: Optional[int] = None
-    mrt_history: Optional[int] = None
-    mrt_correct: Optional[int] = None
-    wdt_history: Optional[int] = None
-    wdt_correct: Optional[int] = None
-    wrt_history: Optional[int] = None
-    wrt_correct: Optional[int] = None
+    # Allows partial updates to FSRS logic or Modality Stats
+    fsrs_state: Optional[int] = None
+    fsrs_difficulty: Optional[float] = None
+    fsrs_stability: Optional[float] = None
+    next_review_at: Optional[datetime] = None
+    reps: Optional[int] = None
+    lapses: Optional[int] = None
+    modality_stats: Optional[Dict] = None
 
 class VocabularyResponse(VocabularyBase):
     id: str
     course_id: str
-    p_recall: float
-    history_seen: int
-    history_correct: int
+    fsrs_state: int
+    fsrs_difficulty: float
+    fsrs_stability: float
     next_review_at: datetime
+    reps: int
+    lapses: int
+    modality_stats: Dict
     
     model_config = ConfigDict(from_attributes=True)
 
@@ -84,12 +81,13 @@ class ReviewCreate(BaseModel):
     exercise_type: str
     user_answer: str
     speed: float
+    grade: int = Field(..., ge=1, le=4) # FSRS 1-4 scale
 
 class ReviewResponse(BaseModel):
     id: str
     vocab_id: str
     exercise_type: str
-    is_correct: bool
+    grade: int
     speed: float
 
     model_config = ConfigDict(from_attributes=True)

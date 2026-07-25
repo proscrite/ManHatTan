@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from datetime import datetime
+from datetime import datetime, timezone
 from rapidfuzz import utils, distance
+from fsrs import FSRS, Card, Rating, State
 
 from app.database import SessionLocal, get_db
 from app import models, schemas
@@ -11,6 +12,8 @@ router = APIRouter(
     tags=["Progress & Reviews"]
 )
 
+fsrs_scheduler = FSRS()
+
 @router.post("/review", response_model=schemas.ReviewResponse)
 def submit_exercise_review(review: schemas.ReviewCreate, db: Session = Depends(get_db)):
     vocab = db.query(models.UserVocabulary).filter(models.UserVocabulary.id == review.vocab_id).first()
@@ -18,33 +21,68 @@ def submit_exercise_review(review: schemas.ReviewCreate, db: Session = Depends(g
         raise HTTPException(status_code=404, detail="Item not found")
 
     # --- DYNAMIC RAPIDFUZZ GRADING ---
-    if review.exercise_type == "wdt":
+    ex_type = review.exercise_type
+    
+    if ex_type not in vocab.modality_stats:
+        vocab.modality_stats[ex_type] = {"seen": 0, "correct": 0}
+        
+    vocab.modality_stats[ex_type]["seen"] += 1
+
+    if ex_type == "wdt":
         actual_correct = utils.default_process(vocab.word_ul) # Direct: Answer is English
-        vocab.wdt_history += 1
     else: # wrt
         actual_correct = utils.default_process(vocab.word_ll) # Reverse: Answer is Hebrew
-        vocab.wrt_history += 1
 
     provided_answer = utils.default_process(review.user_answer)
     score = distance.JaroWinkler.similarity(actual_correct, provided_answer)
-    is_correct = score >= 0.9
+    
+    # Fuzzy threshold to FSRS grade mapping 
+    # (Client can also provide 'review.grade', depending on the design,
+    # but we refine it server-side for written answers)
+    if score >= 0.95:
+        computed_grade = 4  # Easy
+    elif score >= 0.9:
+        computed_grade = 3  # Good
+    elif score >= 0.8:
+        computed_grade = 2  # Hard
+    else:
+        computed_grade = 1  # Again
+        
+    # User subjective grade can override if it's strictly worse, or we just trust the computed
+    final_grade = computed_grade
 
     # Update correct stats
-    if is_correct:
-        if review.exercise_type == "wdt":
-            vocab.wdt_correct += 1
-        else:
-            vocab.wrt_correct += 1
-        vocab.history_correct += 1
+    if final_grade >= 3:
+        vocab.modality_stats[ex_type]["correct"] += 1
 
-    vocab.history_seen += 1
-    if vocab.history_seen > 0:
-        vocab.p_recall = round(vocab.history_correct / vocab.history_seen, 3)
+
+    # --- FSRS INTEGRATION ---
+    card = Card(
+        state=State(vocab.fsrs_state),
+        difficulty=vocab.fsrs_difficulty,
+        stability=vocab.fsrs_stability,
+        reps=vocab.reps,
+        lapses=vocab.lapses
+    )
+    if vocab.fsrs_last_review:
+        card.last_review = vocab.fsrs_last_review.replace(tzinfo=timezone.utc)
+
+    now = datetime.now(timezone.utc)
+    scheduling_cards = fsrs_scheduler.repeat(card, now)
+    updated_card = scheduling_cards[Rating(final_grade)].card
+
+    vocab.fsrs_state = updated_card.state.value
+    vocab.fsrs_difficulty = updated_card.difficulty
+    vocab.fsrs_stability = updated_card.stability
+    vocab.reps = updated_card.reps
+    vocab.lapses = updated_card.lapses
+    vocab.fsrs_last_review = now.replace(tzinfo=None)
+    vocab.next_review_at = updated_card.due.replace(tzinfo=None)
 
     new_review = models.ReviewLog(
         vocab_id=review.vocab_id,
-        exercise_type=review.exercise_type,
-        is_correct=is_correct,
+        exercise_type=ex_type,
+        grade=final_grade,
         speed=review.speed
     )
     db.add(new_review)
@@ -56,9 +94,9 @@ def submit_exercise_review(review: schemas.ReviewCreate, db: Session = Depends(g
         id=str(new_review.id),
         vocab_id=str(vocab.id),
         exercise_type=new_review.exercise_type,
-        is_correct=new_review.is_correct,
+        grade=new_review.grade,
         speed=new_review.speed,
-        new_p_recall=vocab.p_recall
+        timestamp=new_review.timestamp
     )
 
 @router.post("/review/multiple-choice", response_model=schemas.ReviewResponse)
@@ -71,30 +109,55 @@ def submit_mc_review(review: schemas.ReviewCreate, db: Session = Depends(get_db)
         raise HTTPException(status_code=404, detail="Item not found")
 
     # --- DYNAMIC SECURE GRADING ---
+    ex_type = review.exercise_type
+    
+    if ex_type not in vocab.modality_stats:
+        vocab.modality_stats[ex_type] = {"seen": 0, "correct": 0}
+        
+    vocab.modality_stats[ex_type]["seen"] += 1
+
     # The server retains absolute authority over what is correct.
-    if review.exercise_type == "mdt":
+    if ex_type == "mdt":
         is_correct = (review.user_answer.strip() == vocab.word_ul.strip())
-        vocab.mdt_history += 1
-        if is_correct:
-            vocab.mdt_correct += 1
     else: # mrt (default/fallback)
         is_correct = (review.user_answer.strip() == vocab.word_ll.strip())
-        vocab.mrt_history += 1
-        if is_correct:
-            vocab.mrt_correct += 1
-
-    # --- GLOBAL STATS & P_RECALL ---
-    vocab.history_seen += 1
-    if is_correct:
-        vocab.history_correct += 1
         
-    if vocab.history_seen > 0:
-        vocab.p_recall = round(vocab.history_correct / vocab.history_seen, 3)
+    if is_correct:
+        vocab.modality_stats[ex_type]["correct"] += 1
+        computed_grade = 3 # Default good for multiple-choice, unless specified by user. We can use review.grade
+    else:
+        computed_grade = 1
+
+    # Allow subjective grade if the answer was correct, otherwise force fail
+    final_grade = review.grade if is_correct and review.grade >= 2 else computed_grade
+
+    # --- FSRS INTEGRATION ---
+    card = Card(
+        state=State(vocab.fsrs_state),
+        difficulty=vocab.fsrs_difficulty,
+        stability=vocab.fsrs_stability,
+        reps=vocab.reps,
+        lapses=vocab.lapses
+    )
+    if vocab.fsrs_last_review:
+        card.last_review = vocab.fsrs_last_review.replace(tzinfo=timezone.utc)
+
+    now = datetime.now(timezone.utc)
+    scheduling_cards = fsrs_scheduler.repeat(card, now)
+    updated_card = scheduling_cards[Rating(final_grade)].card
+
+    vocab.fsrs_state = updated_card.state.value
+    vocab.fsrs_difficulty = updated_card.difficulty
+    vocab.fsrs_stability = updated_card.stability
+    vocab.reps = updated_card.reps
+    vocab.lapses = updated_card.lapses
+    vocab.fsrs_last_review = now.replace(tzinfo=None)
+    vocab.next_review_at = updated_card.due.replace(tzinfo=None)
 
     new_review = models.ReviewLog(
         vocab_id=review.vocab_id,
-        exercise_type=review.exercise_type, # Records 'mrt' or 'mdt'
-        is_correct=is_correct,
+        exercise_type=ex_type, # Records 'mrt' or 'mdt'
+        grade=final_grade,
         speed=review.speed
     )
     db.add(new_review)
@@ -102,14 +165,14 @@ def submit_mc_review(review: schemas.ReviewCreate, db: Session = Depends(get_db)
     # Save everything to the database
     db.commit()
     db.refresh(vocab)
-    db.refresh(new_review) # This will no longer throw a NameError!
+    db.refresh(new_review) 
 
     # Return ALL the fields required by your schema
     return schemas.ReviewResponse(
         id=str(new_review.id),
         vocab_id=str(vocab.id),
         exercise_type=new_review.exercise_type,
-        is_correct=new_review.is_correct,
+        grade=new_review.grade,
         speed=new_review.speed,
-        new_p_recall=vocab.p_recall 
+        timestamp=new_review.timestamp
     )

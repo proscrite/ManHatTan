@@ -51,25 +51,52 @@ def test_database_import():
         # 1. Convert DataFrame to a list of dictionaries (Extremely fast)
         records = df.to_dict(orient="records")
 
-        # 2. Add necessary database IDs to those dictionaries
-        for record in records:
-            record['course_id'] = test_course.id
-            record['id'] = generate_uuid() # From your models.py
+        # Define legacy columns to purge after mapping
+        legacy_columns = [
+            'p_recall', 'history_seen', 'history_correct', 'session_seen', 
+            'session_correct', 'mdt_history', 'mdt_correct', 'mrt_history', 
+            'mrt_correct', 'wdt_history', 'wdt_correct', 'wrt_history', 
+            'wrt_correct', 'speed'
+        ]
 
-        # 3. Bulk insert directly into the database (Bypasses the heavy ORM object creation)
-        # Only insert if this course has no vocabulary yet to avoid duplicates
+        # 2. Transform the records to match the new FSRS + JSON Schema
+        formatted_records = []
+        for record in records:
+            # Generate Base IDs
+            record['course_id'] = test_course.id
+            record['id'] = generate_uuid()
+            
+            # Initialize FSRS Base State (0 = New Card)
+            record['fsrs_state'] = 0
+            record['fsrs_difficulty'] = 0.0
+            record['fsrs_stability'] = 0.0
+            record['fsrs_last_review'] = None
+            record['reps'] = 0
+            record['lapses'] = 0
+            
+            # Consolidate legacy modality stats into the new JSON field
+            record['modality_stats'] = {
+                "mdt": {"seen": record.get('mdt_history', 0), "correct": record.get('mdt_correct', 0)},
+                "mrt": {"seen": record.get('mrt_history', 0), "correct": record.get('mrt_correct', 0)},
+                "wdt": {"seen": record.get('wdt_history', 0), "correct": record.get('wdt_correct', 0)},
+                "wrt": {"seen": record.get('wrt_history', 0), "correct": record.get('wrt_correct', 0)}
+            }
+
+            # Strip out legacy columns so SQLAlchemy doesn't crash on unknown kwargs
+            for col in legacy_columns:
+                record.pop(col, None)
+                
+            formatted_records.append(record)
+
+        # 3. Bulk insert directly into the database
         existing = db.query(UserVocabulary).filter(UserVocabulary.course_id == test_course.id).first()
         if existing:
             print("-> Words already exist in database for this course. Skipping insert.")
         else:
-            for record in records:
-                record['course_id'] = test_course.id
-                record['id'] = generate_uuid() # From your models.py
-
-            if records:
-                db.bulk_insert_mappings(UserVocabulary, records)
+            if formatted_records:
+                db.bulk_insert_mappings(UserVocabulary, formatted_records)
                 db.commit()
-                print(f"-> Inserted {len(records)} new words.")
+                print(f"-> Inserted {len(formatted_records)} new words.")
             else:
                 print("-> No records found in CSV. Nothing to insert.")
 
@@ -81,7 +108,7 @@ def test_database_import():
         df_from_db = pd.read_sql(sql_query, engine)
         
         print("\n--- RESULTS FROM SQLITE ---")
-        print(df_from_db[['word_ll', 'word_ul', 'p_recall', 'source_reference']])
+        print(df_from_db[['word_ll', 'word_ul', 'modality_stats', 'source_reference']])
 
     except Exception as e:
         print(f"An error occurred: {e}")
