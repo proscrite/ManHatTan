@@ -1,11 +1,13 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from sqlalchemy.sql.expression import func
+from typing import List
 import random
 from app.database import SessionLocal, get_db
 from app import models, schemas
 from app.models import UserVocabulary
 from app.schemas import MultipleChoiceResponse
+from app.services.exercise_service import get_next_exercise
 
 router = APIRouter(
     prefix="/api/v1/exercise",
@@ -13,12 +15,10 @@ router = APIRouter(
 )
 
 @router.get("/multiple-choice", response_model=MultipleChoiceResponse)
-def get_multiple_choice(course_id: str, mode: str = "mrt", db: Session = Depends(get_db)):
+def get_multiple_choice(course_id: str, mode: str = "mrt", exclude_ids: List[str] = Query(default=[]), db: Session = Depends(get_db) ):
     
-    # 1. Fetch the weakest word FOR THIS SPECIFIC COURSE
-    target = db.query(UserVocabulary).filter(
-        UserVocabulary.course_id == course_id, # Filter by course_id!
-    ).order_by(UserVocabulary.p_recall.asc()).first()
+    # 1. Fetch the next word for this specific course using the smart SRS logic
+    target = get_next_exercise(db=db, course_id=course_id, exclude_ids=exclude_ids)
 
     if not target:
         raise HTTPException(status_code=404, detail="No vocabulary found for this course/language.")
