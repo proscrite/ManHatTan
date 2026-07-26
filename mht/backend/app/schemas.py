@@ -102,3 +102,27 @@ class WrittenExerciseResponse(BaseModel):
     vocab_id: str
     question_text: str
     correct_answer: str # We send this so the UI can show them what they missed!
+
+# ==========================================
+# LLM PROMPTING
+# ==========================================
+
+class LLMTaskType(str, Enum):
+    CLOZE = "cloze"
+    GRAMMAR_PILL = "grammar_pill"
+    VOCAB_FACT = "vocab_fact"
+    ETYMOLOGY = "etymology"
+    WORD_ASSOCIATION = "word_association"
+
+class LLMGenerationRequest(BaseModel):
+    user_id: str
+    task_type: LLMTaskType
+    target_word: str
+    target_lang: str = "Hebrew"
+    native_lang: str = "English"
+    context_data: Optional[Dict[str, Any]] = Field(default_factory=dict)
+
+class LLMGenerationResponse(BaseModel):
+    task_type: LLMTaskType
+    content: Dict[str, Any]
+    model_used: str

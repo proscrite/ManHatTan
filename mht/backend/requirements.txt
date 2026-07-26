@@ -1,5 +1,5 @@
 fastapi>=0.100.0
-fsrs>=3.0.0
+fsrs==3.1.0
 uvicorn>=0.23.0
 sqlalchemy>=2.0.0
 passlib[bcrypt,argon2]
@@ -16,3 +16,5 @@ python-bidi
 python-docx
 rapidfuzz
 googletrans
+mlflow
+litellm
