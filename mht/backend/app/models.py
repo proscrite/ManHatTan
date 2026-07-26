@@ -1,9 +1,10 @@
 import uuid
-from sqlalchemy import Boolean, Column, Float, ForeignKey, Integer, String, DateTime, JSON
+from sqlalchemy import Boolean, Column, Float, ForeignKey, Integer, String, DateTime, JSON, text
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.mutable import MutableDict
 from app.database import Base
 import datetime
+from fsrs import State
 
 def generate_uuid():
     return str(uuid.uuid4())
@@ -47,17 +48,21 @@ class UserVocabulary(Base):
     
     # Metrics
     # FSRS Core Metrics
-    fsrs_state = Column(Integer, default=0)        # 0=New, 1=Learning, 2=Review, 3=Relearning
-    fsrs_difficulty = Column(Float, default=0.0)
-    fsrs_stability = Column(Float, default=0.0)
+    fsrs_state = Column(Integer, server_default=str(State.New.value)) # 1=New, 2=Learning, 3=Review, 4=Relearning
+    
+    fsrs_difficulty = Column(Float, server_default="0.0")
+    fsrs_stability = Column(Float, server_default="0.0")
     fsrs_last_review = Column(DateTime, nullable=True)
-    next_review_at = Column(DateTime, default=datetime.datetime.utcnow)
-    reps = Column(Integer, default=0)              # Total reviews
-    lapses = Column(Integer, default=0)            # Total times forgotten
+    next_review_at = Column(DateTime, server_default="datetime.datetime.utcnow")
+    reps = Column(Integer, server_default="0")              # Total reviews
+    lapses = Column(Integer, server_default="0")            # Total times forgotten
     
     # Consolidating legacy metrics into 1 JSON column
     # Stores: {"mdt": {"seen": 0, "correct": 0}, "wrt": {"seen": 0, "correct": 0}}
-    modality_stats = Column(MutableDict.as_mutable(JSON), default=dict)
+    next_review_at = Column(DateTime, server_default=text("CURRENT_TIMESTAMP"))
+    
+    # JSON requires a stringified empty JSON object
+    modality_stats = Column(MutableDict.as_mutable(JSON), server_default='{}')
 
     course = relationship("UserCourse", back_populates="vocabulary")
     reviews = relationship("ReviewLog", back_populates="vocabulary")

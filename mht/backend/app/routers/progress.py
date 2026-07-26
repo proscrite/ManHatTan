@@ -55,15 +55,23 @@ def submit_exercise_review(review: schemas.ReviewCreate, db: Session = Depends(g
     if final_grade >= 3:
         vocab.modality_stats[ex_type]["correct"] += 1
 
+    safe_state = vocab.fsrs_state if vocab.fsrs_state is not None else State.New.value  
+    safe_diff = vocab.fsrs_difficulty if vocab.fsrs_difficulty is not None else 0.0
+    safe_stab = vocab.fsrs_stability if vocab.fsrs_stability is not None else 0.0
+    safe_reps = vocab.reps if vocab.reps is not None else 0
+    safe_lapses = vocab.lapses if vocab.lapses is not None else 0
 
     # --- FSRS INTEGRATION ---
-    card = Card(
-        state=State(vocab.fsrs_state),
-        difficulty=vocab.fsrs_difficulty,
-        stability=vocab.fsrs_stability,
-        reps=vocab.reps,
-        lapses=vocab.lapses
-    )
+    # 1. Instantiate a pristine, default card
+    card = Card()
+    
+    # 2. Hydrate the card with your safe database state
+    card.state = State(safe_state)
+    card.difficulty = safe_diff
+    card.stability = safe_stab
+    card.reps = safe_reps
+    card.lapses = safe_lapses
+
     if vocab.fsrs_last_review:
         card.last_review = vocab.fsrs_last_review.replace(tzinfo=timezone.utc)
 
@@ -131,14 +139,24 @@ def submit_mc_review(review: schemas.ReviewCreate, db: Session = Depends(get_db)
     # Allow subjective grade if the answer was correct, otherwise force fail
     final_grade = review.grade if is_correct and review.grade >= 2 else computed_grade
 
+    safe_state = vocab.fsrs_state if vocab.fsrs_state is not None else State.New.value  
+    safe_diff = vocab.fsrs_difficulty if vocab.fsrs_difficulty is not None else 0.0
+    safe_stab = vocab.fsrs_stability if vocab.fsrs_stability is not None else 0.0
+    safe_reps = vocab.reps if vocab.reps is not None else 0
+    safe_lapses = vocab.lapses if vocab.lapses is not None else 0
+
     # --- FSRS INTEGRATION ---
-    card = Card(
-        state=State(vocab.fsrs_state),
-        difficulty=vocab.fsrs_difficulty,
-        stability=vocab.fsrs_stability,
-        reps=vocab.reps,
-        lapses=vocab.lapses
-    )
+    # 1. Instantiate a pristine, default card
+    card = Card()
+    
+    # 2. Hydrate the card with your safe database state
+    card.state = State(safe_state)
+    card.difficulty = safe_diff
+    card.stability = safe_stab
+    card.reps = safe_reps
+    card.lapses = safe_lapses
+
+
     if vocab.fsrs_last_review:
         card.last_review = vocab.fsrs_last_review.replace(tzinfo=timezone.utc)
 

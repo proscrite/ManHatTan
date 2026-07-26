@@ -62,3 +62,5 @@ mht/frontend/android/app/src/main/res/drawable-hdpi/*.png
 mht/frontend/ios/Runner/**/**/*.png
 mht/frontend/android/app/src/main/res/**/*.png
 mht/backend/mlruns
+mht/backend/app/services/gemini_prompt.py
+mht/backend/app/services/seed_hebrewDb.py

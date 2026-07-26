@@ -52,6 +52,12 @@ class VocabularyCreate(VocabularyBase):
 
 class VocabularyUpdate(BaseModel):
     # Allows partial updates to FSRS logic or Modality Stats
+    word_ll: Optional[str] = None
+    word_ul: Optional[str] = None
+    lexeme_string: Optional[str] = None
+    source_type: Optional[str] = None
+    source_reference: Optional[str] = None
+    context_sentence: Optional[str] = None
     fsrs_state: Optional[int] = None
     fsrs_difficulty: Optional[float] = None
     fsrs_stability: Optional[float] = None

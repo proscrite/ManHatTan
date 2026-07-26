@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../services/vocabulary_service.dart';
 import '../services/api_client.dart';
 import '../utils/language_helper.dart';
+import '../widgets/ai_insight_sheet.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -26,7 +27,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final words = await VocabularyService.fetchVocabulary();
 
     if (_sortByWeakest) {
-      words.sort((a, b) => (a['fsrs_stability'] as num).compareTo(b['fsrs_stability'] as num));
+      words.sort((a, b) {
+        final numA = (a['fsrs_stability'] as num?) ?? 0.0;
+        final numB = (b['fsrs_stability'] as num?) ?? 0.0;
+        return numA.compareTo(numB);
+      });
     }
 
     if (mounted) {
@@ -139,6 +144,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
+
+  void _LLMInsights(String word) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) => AiInsightSheet(
+        targetWord: word,
+        userId: ApiClient.jwtToken ?? 'dev_user', // Safely fallback if token is null
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // Format the AppBar Title contextually
@@ -194,9 +214,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   itemCount: _words.length,
                   itemBuilder: (context, index) {
                     final word = _words[index];
-                    final stability = (word['fsrs_stability'] as num).toDouble();
+                    // Safely fallback to 0.0 if stability is null
+                    final stability = (word['fsrs_stability'] as num?)?.toDouble() ?? 0.0;
                     final reps = word['reps'] as int? ?? 0;
-                    
+
                     // Simple color heuristics over stability
                     final stabilityRatio = (stability / 10.0).clamp(0.0, 1.0);
                     final scoreColor = reps == 0 
@@ -207,12 +228,23 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       child: ListTile(
                         title: Text(word['word_ll'] ?? 'Unknown', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
                         subtitle: Text(word['word_ul'] ?? ''),
-                        trailing: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.end,
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text(reps == 0 ? 'New' : 'Stability: ${stability.toStringAsFixed(1)}', style: TextStyle(color: scoreColor, fontWeight: FontWeight.bold)),
-                            Text('Reps: $reps', style: const TextStyle(fontSize: 12, color: Colors.grey)),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Text(reps == 0 ? 'New' : 'Stability: ${stability.toStringAsFixed(1)}', style: TextStyle(color: scoreColor, fontWeight: FontWeight.bold)),
+                                Text('Reps: $reps', style: const TextStyle(fontSize: 12, color: Colors.grey)),
+                              ],
+                            ),
+                            const SizedBox(width: 8),
+                            IconButton(
+                              icon: const Icon(Icons.auto_awesome, color: Colors.deepPurple),
+                              tooltip: 'AI Insights',
+                              onPressed: () => _LLMInsights(word['word_ll'] ?? ''),
+                            ),
                           ],
                         ),
                         onTap: () => showEditDialog(word),

@@ -1,5 +1,7 @@
+
 import pandas as pd
 import io
+from fsrs import State
 import re
 # from deep_translator import GoogleTranslator
 from typing import List, Dict
@@ -7,6 +9,16 @@ from .rashib_clean import extract_highlights_docx
 from .krahtos_clean import extract_highlights_html
 from .bulk_translate import find_language, bulk_translate 
 from app.services.bulk_translate import find_language
+
+FSRS_BASELINE = {
+    "fsrs_state": State.New.value, 
+    "fsrs_difficulty": 0.0,
+    "fsrs_difficulty": 0.0,
+    "fsrs_stability": 0.0,
+    "reps": 0,
+    "lapses": 0,
+    "modality_stats": {}
+}
 
 def remove_nikud(text: str) -> str:
     """Removes all Hebrew Niqqud (vowels) and cantillation marks."""
@@ -51,13 +63,14 @@ def parse_google_translate_csv(file_bytes: bytes) -> List[Dict[str, str]]:
             continue
 
         word_ll_clean = remove_nikud(word_ll)
-            
+        
         parsed_words.append({
             "word_ul": word_ul,
             "word_ll": word_ll_clean, 
-            "source_type": "Google Translate"
+            "source_type": "Google Translate",
+            **FSRS_BASELINE
         })
-        
+
     return parsed_words
 
 
@@ -176,7 +189,8 @@ async def parse_highlighted_document(file_bytes: bytes, target_color: str,
         parsed_data.append({
             "word_ul": translations.get(word_ll, ""),
             "word_ll": remove_nikud(word_ll),
-            "source_type": f"{source_prefix} ({target_color.capitalize()})"
+            "source_type": f"{source_prefix} ({target_color.capitalize()})",
+            **FSRS_BASELINE
         })
         
     return parsed_data

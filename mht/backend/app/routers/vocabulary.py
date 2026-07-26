@@ -45,9 +45,10 @@ def update_vocabulary(
     if not word:
         raise HTTPException(status_code=404, detail="Word not found")
     
-    # Update the fields
-    word.word_ll = payload.word_ll
-    word.word_ul = payload.word_ul
+    update_data = payload.model_dump(exclude_unset=True)
+
+    for key, value in update_data.items():
+        setattr(word, key, value)
     
     db.commit()
     db.refresh(word)
