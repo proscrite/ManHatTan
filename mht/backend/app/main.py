@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from app import models            
 from app.database import engine   
 from app.routers import ai, vocabulary, progress, users
-from app.routers import multiple_answer, written_input, auth, ingestion
+from app.routers import multiple_answer, written_input, cloze, auth, ingestion
 
 # Create the SQLite tables
 models.Base.metadata.create_all(bind=engine)
@@ -18,6 +18,7 @@ app.include_router(users.router)
 app.include_router(progress.router)
 app.include_router(multiple_answer.router)
 app.include_router(written_input.router)
+app.include_router(cloze.router)
 app.include_router(auth.router)
 app.include_router(ingestion.router)
 

@@ -64,3 +64,5 @@ mht/frontend/android/app/src/main/res/**/*.png
 mht/backend/mlruns
 mht/backend/app/services/gemini_prompt.py
 mht/backend/app/services/seed_hebrewDb.py
+mht/backend/milvus_local.db
+mht/zilliz-cloud-Free-01-username-password.txt
