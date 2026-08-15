@@ -30,24 +30,26 @@ class IngestionService {
 
   }
 
-  static Future<Course> createCourse(String learningLang, String uiLang) async {
+static Future<Course> createCourse(String learningLang, String uiLang, {int cefrLevel = 1, double fluencyIndex = 0.0,}) async {
     final response = await http.post(
         Uri.parse('${ApiClient.baseUrl}/users/me/courses'),
         headers: ApiClient.headers,
         body: jsonEncode({
-        'learning_language': learningLang.toLowerCase().trim(),
-        'ui_language': uiLang.toLowerCase().trim()
+          'learning_language': learningLang.toLowerCase().trim(),
+          'ui_language': uiLang.toLowerCase().trim(),
+          'cefr_level': cefrLevel,
+          'fluency_index': fluencyIndex,
         }),
     );
     
     if (response.statusCode == 200 || response.statusCode == 201) {
         final newCourse = Course.fromJson(jsonDecode(response.body));
         ApiClient.allCourses.add(newCourse);
-        ApiClient.activeCourse = newCourse; // Automatically make the new course active
+        ApiClient.activeCourse = newCourse; 
         return newCourse;
     }
     throw Exception('Failed to create course');
-    }
+  }
 
   // --- Step 1 of the Wizard ---
   static Future<Map<String, dynamic>> analyzeDocument(File file) async {

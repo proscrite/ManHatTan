@@ -1,0 +1,4 @@
+enum IngestionIntent {
+  initialSeed,
+  update
+}

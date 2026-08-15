@@ -28,6 +28,8 @@ class UserCourse(Base):
     learning_language = Column(String, index=True) # e.g., 'de', 'iw'
     ui_language = Column(String) # e.g., 'en'
     is_active = Column(Boolean, default=True)
+    cefr_level = Column(Integer, nullable=True) # Optional CEFR level for the course: values 1-6 (A1-C2)
+    fluency_index = Column(Float, nullable=True) # Intra-level progression metric (0.0-1.0) 
 
     owner = relationship("User", back_populates="courses")
     vocabulary = relationship("UserVocabulary", back_populates="course")

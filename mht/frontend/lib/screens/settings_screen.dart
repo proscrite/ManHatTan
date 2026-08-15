@@ -5,6 +5,7 @@ import 'course_creation_screen.dart';
 import 'document_upload_screen.dart';
 import '../services/api_client.dart';
 import '../utils/language_helper.dart';
+import '../routers/course_flow_router.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -48,26 +49,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
           
           OutlinedButton.icon(
             onPressed: () async {
-              // 1. Wait for the creation screen to pop back with the Map data
-              final result = await Navigator.push(
-                context, 
-                MaterialPageRoute(builder: (_) => const CourseCreationScreen())
-              );
+              // Delegate the entire Cold Start sequence to the Master Orchestrator
+              await CourseFlowRouter.launchOnboarding(context);
               
-              // 2. If it returned data (meaning they didn't just hit the back arrow)
-              if (result != null && result is Map<String, String>) {
-                // 3. Immediately launch the Upload Screen and pass the data!
-                if (mounted) {
-                  Navigator.push(
-                    context, 
-                    MaterialPageRoute(
-                      builder: (_) => DocumentUploadScreen(initialPendingCourse: result)
-                    )
-                  ).then((_) {
-                    // Refresh Settings when they return, just in case they successfully uploaded/created it
-                    setState(() {}); 
-                  });
-                }
+              // Refresh Settings when the flow completes so the dropdown shows the newly active course
+              if (mounted) {
+                setState(() {}); 
               }
             },
             icon: const Icon(Icons.add),

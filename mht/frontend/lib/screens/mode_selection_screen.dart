@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dashboard_screen.dart';
 import 'multiple_choice_screen.dart';
 import 'written_input_screen.dart';
+import 'cloze_screen.dart';
 import 'document_upload_screen.dart';
 import 'settings_screen.dart';
 import '../services/ingestion_service.dart';
@@ -147,6 +148,23 @@ class _ModeSelectionScreenState extends State<ModeSelectionScreen> {
                   context,
                   MaterialPageRoute(builder: (_) => WrittenInputScreen(mode: writtenMode)),
                 ),
+              ),
+
+              const SizedBox(height: 20),
+
+              ExerciseCard(
+                title: 'Contextual Cloze',
+                subtitle: 'Fill in the blanks using dynamic AI sentences.',
+                icon: Icons.text_fields,
+                color: Colors.orange.shade600,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const ClozeScreen(), 
+                    ),
+                  );
+                },
               ),
 
               const SizedBox(height: 20),

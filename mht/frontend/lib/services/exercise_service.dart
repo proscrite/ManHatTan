@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'api_client.dart';
-import 'ingestion_service.dart';
+// import 'ingestion_service.dart';
 
 class ExerciseService {
   static Future<Map<String, dynamic>?> fetchMultipleChoice(String mode) async {
@@ -66,6 +66,32 @@ class ExerciseService {
       return null;
     } catch (e) {
       return null;
+    }
+  }
+  static Future<Map<String, dynamic>?> fetchClozeExercise(String mode) async {
+    final courseId = ApiClient.activeCourse?.id;
+    if (courseId == null) throw Exception('No active course selected');
+
+    // Route directly to the SRS-aware exercise endpoint
+    final url = Uri.parse('${ApiClient.baseUrl}/exercise/cloze?course_id=$courseId&mode=$mode');
+    
+    try {
+      final response = await http.get(
+        url,
+        headers: ApiClient.headers,
+      );
+      
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      } else if (response.statusCode == 429) {
+        throw Exception('RATE_LIMIT');
+      } else {
+         debugPrint('API Error ${response.statusCode}: ${response.body}');
+         return null;
+      }
+    } catch (e) {
+      debugPrint('Exception fetching CLOZE exercise: $e');
+      rethrow; // Pass the exception up so the UI can trigger the Rate Limit banner
     }
   }
 }

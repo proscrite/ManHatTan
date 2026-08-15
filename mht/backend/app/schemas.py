@@ -28,12 +28,21 @@ class CourseBase(BaseModel):
 class CourseCreate(CourseBase):
     pass  # Used when Flutter asks to create a new course
 
+    cefr_level: int = Field(default=1, ge=1, le=6, description="1=A1, 2=A2, 3=B1, 4=B2, 5=C1, 6=C2")
+    fluency_index: float = Field(default=0.0, ge=0.0, le=1.0, description="Intra-level fine score")
+
+class CourseUpdate(BaseModel):
+    is_active: Optional[bool] = None
+    cefr_level: Optional[int] = Field(default=None, ge=1, le=6)
+    fluency_index: Optional[float] = Field(default=None, ge=0.0, le=1.0)
+
 class CourseResponse(CourseBase):
     id: str
     user_id: str
     is_active: bool
+    cefr_level: int
+    fluency_index: float
 
-    # This tells Pydantic to read the data directly from the SQLAlchemy ORM model
     model_config = ConfigDict(from_attributes=True)
 
 # ==========================================
