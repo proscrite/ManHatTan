@@ -42,14 +42,17 @@ docker tag ${IMAGE_NAME}:latest ${IMAGE_URL}
 echo "☁️ 3/4: Pushing image to Google Cloud Artifact Registry..."
 docker push ${IMAGE_URL}
 
+# Extract Zilliz credentials from your .env
+ZILLIZ_CLUSTER_URL="${ZILLIZ_CLUSTER_URL}"
+ZILLIZ_API_KEY="${ZILLIZ_API_KEY}"
+
 echo "🚀 4/4: Deploying to Cloud Run..."
-# Note: We do NOT need to include --set-env-vars here! 
-# Cloud Run automatically remembers the environment variables from your previous deployment.
 gcloud run deploy ${SERVICE_NAME} \
   --image ${IMAGE_URL} \
   --region ${REGION} \
   --set-env-vars="GEMINI_API_KEY=${GEMINI_API_KEY},GROQ_API_KEY=${GROQ_API_KEY},OPENROUTER_API_KEY=${OPENROUTER_API_KEY}" \
-  --set-env-vars="DATABASE_URL=${DATABASE_URL}","SECRET_KEY=${SECRET_KEY}" \
+  --set-env-vars="DATABASE_URL=${DATABASE_URL},SECRET_KEY=${SECRET_KEY}" \
+  --set-env-vars="ZILLIZ_CLUSTER_URL=${ZILLIZ_CLUSTER_URL},ZILLIZ_API_KEY=${ZILLIZ_API_KEY}" \
   --allow-unauthenticated
 
 echo "✅ Deployment complete! Your API is live."

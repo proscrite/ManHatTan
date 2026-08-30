@@ -19,7 +19,7 @@ class LLMService:
             {
                 "model_name": "gemini",
                 "litellm_params": {
-                    "model": "gemini/gemini-flash-latest",
+                    "model": "gemini/gemini-3.1-flash-lite",
                     "api_key": os.getenv("GEMINI_API_KEY"),
                     "timeout": 20,
                 },
@@ -91,7 +91,7 @@ class LLMService:
         )
 
         response = await self.router.acompletion(
-            model="gemini",
+            model="gemini/gemini-3.1-flash-lite",
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt}

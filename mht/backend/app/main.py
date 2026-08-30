@@ -1,13 +1,24 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from app import models            
 from app.database import engine   
-from app.routers import ai, vocabulary, progress, users
-from app.routers import multiple_answer, written_input, cloze, auth, ingestion
+from app.routers import (multiple_answer, written_input, cloze,
+                         vocabulary, progress, users,
+                          auth, ingestion, ai)
 
 # Create the SQLite tables
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Manhattan API")
+
+# CORS configuration
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/health")
 async def health_check():

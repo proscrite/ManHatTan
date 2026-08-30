@@ -1,8 +1,7 @@
 from pydantic import BaseModel, ConfigDict, EmailStr, Field
-from typing import Optional, Dict, Any, List
+from typing import Optional, Dict, Any, List, Literal
 from datetime import datetime
 from enum import Enum
-
 
 # ==========================================
 # USERS
@@ -141,3 +140,95 @@ class LLMGenerationResponse(BaseModel):
     task_type: LLMTaskType
     content: Dict[str, Any]
     model_used: str
+
+# --- Agent Tool Input Schemas ---
+
+class FetchDueVocabInput(BaseModel):
+    course_id: str = Field(
+        ..., 
+        description="The unique UUID of the user's active language course."
+    )
+    exclude_ids: List[str] = Field(
+        default_factory=list, 
+        description="UUIDs to exclude from the query (used for the session queue)."
+    )
+
+class ContextInput(BaseModel):
+    target_word_ll: str = Field(
+        ..., 
+        description="The target vocabulary word in the learning language."
+    )
+    learning_language: str = Field(
+        ..., 
+        description="The full phonetic name of the learning language (e.g., 'Hebrew')."
+    )
+    limit: int = Field(
+        default=3, 
+        description="The maximum number of context sentences to retrieve from the vector database."
+    )
+
+# --- Agent Structured Output Schema ---
+
+class ExerciseGenerationOutput(BaseModel):
+    """
+    Strict schema used by the Synthesizer Node to format the final exercise payload.
+    """
+    sentence_target: str = Field(
+        ..., 
+        description="The retrieved or generated context sentence in the target language, with the target word replaced by underscores (___)."
+    )
+    sentence_translated: str = Field(
+        ..., 
+        description="The translation of the sentence in the user's native language."
+    )
+    blank_word: str = Field(
+        ..., 
+        description="The correct target word that belongs in the blank."
+    )
+    options: List[str] = Field(
+        ..., 
+        description="A list containing the correct blank_word and 3 grammatically matching distractors."
+    )
+
+class GraderOutput(BaseModel):
+    """
+    Strict schema used by the Evaluator Node to grade retrieved vector context.
+    """
+    is_valid: bool = Field(
+        description="True if the context is highly relevant and grammatically sound for the target word, False otherwise."
+    )
+    relevance_score: float = Field(
+        description="A score between 0.0 and 1.0 indicating the quality and semantic alignment of the context."
+    )
+
+class TutorDecision(BaseModel):
+    intervention_type: Literal["correction", "none"] = Field(
+        description="Flag as 'correction' if a grammatical error occurred, otherwise 'none'."
+    )
+    tutor_critique_ll: Optional[str] = Field(
+        default=None,
+        description="The grammatical correction written entirely in the target learning language."
+    )
+    tutor_critique_ul: Optional[str] = Field(
+        default=None,
+        description="The exact translation of the grammatical correction in the user's native language."
+    )
+
+class ConversationalistResponse(BaseModel):
+    message_ll: str = Field(
+        description="The natural conversational reply in the target learning language."
+    )
+    message_ul: str = Field(
+        description="The exact translation of the conversational reply in the user's native language."
+    )
+
+class ChatTurnRequest(BaseModel):
+    user_message: str = Field(..., description="The user's latest message in the target language.")
+    course_id: str = Field(..., description="The active course ID to retrieve user level and languages.")
+    history_window: Optional[int] = Field(default=6, description="Number of recent turns to include in context.")
+
+class ChatTurnResponse(BaseModel):
+    conversationalist_message_ll: str
+    conversationalist_message_ul: str
+    tutor_critique_ll: Optional[str] = None
+    tutor_critique_ul: Optional[str] = None

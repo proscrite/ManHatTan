@@ -60,21 +60,20 @@ def get_my_courses(
 
 @router.post("/me/courses", response_model=schemas.CourseResponse)
 def create_my_course(
-    # Assuming you have a Pydantic schema for creating a course:
-    # class CourseCreate(BaseModel):
-    #     learning_language: str
-    #     ui_language: str
     course_in: schemas.CourseCreate, 
     db: Session = Depends(get_db),
     current_user: models.User = Depends(get_current_user)
 ):
     """
-    Creates a new course for the currently authenticated user.
+    Creates a new course for the currently authenticated user,
+    seeded with their initial CEFR diagnostic metrics.
     """
     new_course = models.UserCourse(
         user_id=current_user.id,
         learning_language=course_in.learning_language,
-        ui_language=course_in.ui_language
+        ui_language=course_in.ui_language,
+        cefr_level=course_in.cefr_level,       
+        fluency_index=course_in.fluency_index  
     )
     
     db.add(new_course)
