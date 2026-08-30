@@ -66,3 +66,4 @@ mht/backend/app/services/gemini_prompt.py
 mht/backend/app/services/seed_hebrewDb.py
 mht/backend/milvus_local.db
 mht/zilliz-cloud-Free-01-username-password.txt
+mht/backend/app/standalone_scripts/hebrew_db_embedded.parquet

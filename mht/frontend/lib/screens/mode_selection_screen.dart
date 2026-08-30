@@ -3,6 +3,7 @@ import 'dashboard_screen.dart';
 import 'multiple_choice_screen.dart';
 import 'written_input_screen.dart';
 import 'cloze_screen.dart';
+import 'chat_screen.dart';
 import 'document_upload_screen.dart';
 import 'settings_screen.dart';
 import '../services/ingestion_service.dart';
@@ -165,6 +166,17 @@ class _ModeSelectionScreenState extends State<ModeSelectionScreen> {
                     ),
                   );
                 },
+              ),
+
+              ExerciseCard(
+                title: 'AI Conversation Partner',
+                subtitle: 'Actor-Critic language exchange with real-time feedback.',
+                icon: Icons.forum_rounded,
+                color: Colors.indigo.shade600,
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const ChatScreen()),
+                ),
               ),
 
               const SizedBox(height: 20),

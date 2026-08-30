@@ -1,23 +1,27 @@
+from datetime import datetime, timezone, timedelta
 import os
 import pandas as pd
+from fsrs import State
 from app.database import engine, SessionLocal
 from app.models import Base, User, UserCourse, UserVocabulary, generate_uuid
 from app.security import get_password_hash
 
 def test_database_import():
-    print("1. Creating database tables in manhattan.db...")
+    
+    # Recreate missing tables (this will rebuild user_vocabulary with FSRS columns)
     Base.metadata.create_all(bind=engine)
     
     # Open a database session
     db = SessionLocal()
+    print("1. Database session opened. Starting import process...")
 
     try:
         print("2. Creating a test User and Course...")
         # Check if user already exists to avoid errors on multiple runs
-        test_user = db.query(User).filter(User.email == "pablo@test.com").first()
+        test_user = db.query(User).filter(User.email == "pablogfr94@gmail.com").first()
         if not test_user:
-            hashed_password = get_password_hash("password123")
-            test_user = User(email="pablo@test.com", hashed_password=hashed_password)
+            hashed_password = get_password_hash("ManhattanFTW")
+            test_user = User(email="pablogfr94@gmail.com", hashed_password=hashed_password)
             db.add(test_user)
             db.commit()
             db.refresh(test_user)
@@ -34,6 +38,8 @@ def test_database_import():
                 learning_language="iw",
                 ui_language="en",
                 is_active=True,
+                cefr_level=1,
+                fluency_index=0.0
             )
             db.add(test_course)
             db.commit()
@@ -42,7 +48,6 @@ def test_database_import():
         # print("3. Reading Schachnovelle.csv with Pandas...")
         print("3. Reading hebrew_db.csv with Pandas...")
         
-        # Read CSV relative to this service file so CWD doesn't matter
         csv_path = os.path.join(os.path.dirname(__file__), "hebrew_db.csv")
         print(f"Reading CSV from: {csv_path}")
         # df = pd.read_csv("app/services/Schachnovelle.csv", encoding='utf-8')
@@ -67,10 +72,12 @@ def test_database_import():
             record['id'] = generate_uuid()
             
             # Initialize FSRS Base State (0 = New Card)
-            record['fsrs_state'] = 0
+            record['fsrs_state'] = State.New.value
+            record['next_review_at'] = datetime.now(timezone.utc)
+    
             record['fsrs_difficulty'] = 0.0
             record['fsrs_stability'] = 0.0
-            record['fsrs_last_review'] = None
+            record['fsrs_last_review'] = datetime.now(timezone.utc) - timedelta(days=1)  
             record['reps'] = 0
             record['lapses'] = 0
             
@@ -87,6 +94,7 @@ def test_database_import():
                 record.pop(col, None)
                 
             formatted_records.append(record)
+        print(f"-> Transformed {len(formatted_records)} records to match FSRS schema.")
 
         # 3. Bulk insert directly into the database
         existing = db.query(UserVocabulary).filter(UserVocabulary.course_id == test_course.id).first()
